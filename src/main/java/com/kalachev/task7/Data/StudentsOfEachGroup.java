@@ -10,7 +10,7 @@ public class StudentsOfEachGroup {
 	Random random = new Random();
 	List<Integer> fullGroups = new ArrayList<>();
 	static final int MAX_GROUP_SIZE = 30;
-	static final String GROUPLESS = "has no group";
+	static final String GROUPLESS = "students without groups";
 
 	public Map<String, List<String>> assignStudentsToGroups(List<String> students, List<String> groups) {
 		Map<String, List<String>> studentsInGroup = prepareGroups(groups);

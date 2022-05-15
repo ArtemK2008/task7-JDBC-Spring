@@ -27,7 +27,6 @@ public class CoursesOfEachStudent {
 			}
 			coursesOfEachStudent.put(id, coursesTaken);
 		}
-		System.out.println(coursesOfEachStudent.size());
 		return coursesOfEachStudent;
 	}
 

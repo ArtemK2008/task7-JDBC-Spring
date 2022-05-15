@@ -17,7 +17,7 @@ public class GroupCreator {
 			}
 			groups.add(tempString);
 		}
-		groups.add("has no group");
+		groups.add("students without groups");
 		return groups;
 	}
 

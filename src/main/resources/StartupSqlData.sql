@@ -13,7 +13,7 @@ group_name VARCHAR(50) NOT NULL
 
 CREATE TABLE Students(
 student_id serial PRIMARY KEY,
-group_id INT ,
+group_id INT  REFERENCES Groups(group_id) ON DELETE CASCADE,
 first_name VARCHAR(25) NOT NULL,
 last_name VARCHAR(25) NOT NULL
 );
