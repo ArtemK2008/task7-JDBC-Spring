@@ -151,6 +151,22 @@ public class InitalizeStartData {
 		}
 	}
 
+	public void createStudentsCoursesFullTable() throws DAOException {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+			DriverManager.registerDriver(new org.postgresql.Driver());
+			connection = DriverManager.getConnection(url, username, password);
+			statement = connection.createStatement();
+			String SQL = "CREATE TABLE StudentsCoursesData AS ( SELECT s.student_id, s.first_name, s.last_name ,c.course_name,c.course_description FROM Students as s INNER JOIN Students_courses as sc ON s.student_id = sc.student_id INNER JOIN Courses as c ON sc.course_id = c.course_id ORDER BY s.student_id)";
+			statement.executeUpdate(SQL);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(statement, connection);
+		}
+	}
+
 	public Map<String, String> retrieveStudentsId() throws DAOException {
 		Map<String, String> idsOfEachStuden = new LinkedHashMap<>();
 		Connection connection = null;

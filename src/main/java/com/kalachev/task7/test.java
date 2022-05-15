@@ -41,6 +41,7 @@ public class test {
 				courseList);
 
 		initalizeStartData.createManyToMany(studentIdAndHisCourses);
+		initalizeStartData.createStudentsCoursesFullTable();
 
 		/*
 		 * Map<String, String> testIds = initalizeStartData.retrieveStudentsId(); for

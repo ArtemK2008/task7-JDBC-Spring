@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS Groups cascade;
 DROP TABLE IF EXISTS Students cascade;
 DROP TABLE IF EXISTS Courses cascade;
 DROP TABLE IF EXISTS students_courses cascade;
+DROP TABLE IF EXISTS StudentsCoursesData cascade;
 
 
 CREATE TABLE Groups(
@@ -26,8 +27,8 @@ course_description VARCHAR(255) NOT NULL
 CREATE TABLE Students_Courses(
 student_id int NOT NULL ,
 course_id int NOT NULL,
-FOREIGN KEY (student_id) REFERENCES students(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
-FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE,
 UNIQUE (student_id, course_id)
 );
 
