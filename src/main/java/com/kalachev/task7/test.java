@@ -48,7 +48,7 @@ public class test {
 		Map<String, List<String>> studentIdAndHisCourses = coursesOfEachStudent.assignStudentsIDToCourse(studentIDs,
 				courseList);
 
-		initalizeStartData.createManyToMany(studentIdAndHisCourses);
+		initalizeStartData.createManyToManyTable(studentIdAndHisCourses);
 		initalizeStartData.createStudentsCoursesFullTable();
 
 	}

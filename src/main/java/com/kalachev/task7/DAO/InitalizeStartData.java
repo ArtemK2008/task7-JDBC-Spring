@@ -20,27 +20,25 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class InitalizeStartData {
 
-	static final String INSERT_GROUPS = "INSERT INTO Groups (group_name) VALUES (?)";
-	static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) VALUES (?,?)";
-	static final String RETRIEVE_COURSE_iD = "SELECT(course_id) FROM Courses WHERE course_name = (?)";
+	private static final String INSERT_GROUPS = "INSERT INTO Groups (group_name) VALUES (?)";
+	private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) VALUES (?,?)";
 
-	String url = "jdbc:postgresql://localhost/task7";
-	String username = "postgres";
-	String password = "2487";
+	private static final String URL = "jdbc:postgresql://localhost/task7";
+	private static final String USERNAME = "postgres";
+	private static final String PASSWORD = "2487";
 
 	public void createTables() throws FileNotFoundException, DAOException {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			DriverManager.registerDriver(new org.postgresql.Driver());
-			connection = DriverManager.getConnection(url, username, password);
-
+			connection = getDBConnection();
 			ScriptRunner runner = new ScriptRunner(connection);
 			File resourcesDirectory = new File("src/main/resources/StartupSqlData.sql");
 			Reader reader = new BufferedReader(new FileReader(resourcesDirectory));
 			runner.runScript(reader);
-		} catch (SQLException e) {
-			throw new DAOException("create tables");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DAOException();
 		} finally {
 			closeAll(statement, connection);
 		}
@@ -51,8 +49,7 @@ public class InitalizeStartData {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			DriverManager.registerDriver(new org.postgresql.Driver());
-			connection = DriverManager.getConnection(url, username, password);
+			connection = getDBConnection();
 			statement = connection.prepareStatement(INSERT_GROUPS);
 			connection.setAutoCommit(false);
 			for (String group : groups) {
@@ -63,7 +60,8 @@ public class InitalizeStartData {
 			connection.commit();
 			connection.setAutoCommit(true);
 		} catch (SQLException e) {
-			throw new DAOException("populate groups");
+			e.printStackTrace();
+			throw new DAOException();
 		} finally {
 			closeAll(statement, connection);
 		}
@@ -76,8 +74,7 @@ public class InitalizeStartData {
 		Statement statement = null;
 		ResultSet rs = null;
 		try {
-			DriverManager.registerDriver(new org.postgresql.Driver());
-			connection = DriverManager.getConnection(url, username, password);
+			connection = getDBConnection();
 			statement = connection.createStatement();
 			for (String student : students) {
 				String curGroup = findGroupByStudent(student, groupsWithItsStudents);
@@ -92,7 +89,8 @@ public class InitalizeStartData {
 				statement.executeUpdate(insertStudentsSQL);
 			}
 		} catch (SQLException e) {
-			throw new DAOException("populate students");
+			e.printStackTrace();
+			throw new DAOException();
 		} finally {
 			closeAll(rs, statement, connection);
 		}
@@ -102,36 +100,34 @@ public class InitalizeStartData {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			DriverManager.registerDriver(new org.postgresql.Driver());
-			connection = DriverManager.getConnection(url, username, password);
+			connection = getDBConnection();
 			statement = connection.prepareStatement(INSERT_COURSES);
 			connection.setAutoCommit(false);
-			for (String course : courses.keySet()) {
-				statement.setString(1, course);
-				statement.setString(2, courses.get(course));
+			for (Entry<String, String> entry : courses.entrySet()) {
+				statement.setString(1, entry.getKey());
+				statement.setString(2, entry.getValue());
 				statement.addBatch();
 			}
 			statement.executeBatch();
 			connection.commit();
 			connection.setAutoCommit(true);
 		} catch (SQLException e) {
-			throw new DAOException("populate courses");
+			e.printStackTrace();
+			throw new DAOException();
 		} finally {
 			closeAll(statement, connection);
 		}
 	}
 
-	public void createManyToMany(Map<String, List<String>> coursesOfStudent) throws DAOException {
+	public void createManyToManyTable(Map<String, List<String>> coursesOfStudent) throws DAOException {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		try {
-			DriverManager.registerDriver(new org.postgresql.Driver());
-			connection = DriverManager.getConnection(url, username, password);
+			connection = getDBConnection();
 			statement = connection.createStatement();
-			for (String id : coursesOfStudent.keySet()) {
-
-				List<String> courses = coursesOfStudent.get(id);
+			for (Entry<String, List<String>> entry : coursesOfStudent.entrySet()) {
+				List<String> courses = entry.getValue();
 				for (String course : courses) {
 					String findIdSQL = "SELECT(course_id) FROM Courses WHERE course_name = '" + course + "'";
 					rs = statement.executeQuery(findIdSQL);
@@ -139,13 +135,15 @@ public class InitalizeStartData {
 					if (rs.next()) {
 						courseId = rs.getString(1);
 					}
-					String insertStudentsCourses = "INSERT INTO Students_Courses (student_id, course_id) VALUES ('" + id
-							+ "','" + courseId + "')";
+					String insertStudentsCourses = "INSERT INTO Students_Courses (student_id, course_id) VALUES ('"
+							+ entry.getKey() + "','" + courseId + "')";
 					statement.executeUpdate(insertStudentsCourses);
 				}
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException();
 		} finally {
 			closeAll(rs, statement, connection);
 		}
@@ -155,8 +153,7 @@ public class InitalizeStartData {
 		Connection connection = null;
 		Statement statement = null;
 		try {
-			DriverManager.registerDriver(new org.postgresql.Driver());
-			connection = DriverManager.getConnection(url, username, password);
+			connection = getDBConnection();
 			statement = connection.createStatement();
 			String SQL = "CREATE TABLE StudentsCoursesData" + " AS "
 					+ "( SELECT s.student_id, s.first_name, s.last_name ,c.course_name,c.course_description "
@@ -165,6 +162,7 @@ public class InitalizeStartData {
 			statement.executeUpdate(SQL);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException();
 		} finally {
 			closeAll(statement, connection);
 		}
@@ -176,8 +174,7 @@ public class InitalizeStartData {
 		Statement statement = null;
 		ResultSet rs = null;
 		try {
-			DriverManager.registerDriver(new org.postgresql.Driver());
-			connection = DriverManager.getConnection(url, username, password);
+			connection = getDBConnection();
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT student_id,first_name,last_name  FROM Students");
 			while (rs.next()) {
@@ -187,7 +184,7 @@ public class InitalizeStartData {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAOException("retrieve student_id");
+			throw new DAOException();
 		} finally {
 			closeAll(rs, statement, connection);
 		}
@@ -203,7 +200,7 @@ public class InitalizeStartData {
 			}
 		}
 		if (groupOfAStudent.equals("")) {
-			throw new DAOException("group not found");
+			throw new DAOException();
 		}
 		return groupOfAStudent;
 	}
@@ -223,23 +220,24 @@ public class InitalizeStartData {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				throw new DAOException("rs is null");
+				e.printStackTrace();
+				throw new DAOException();
 			}
 		}
-		{
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					throw new DAOException("statement is null");
-				}
+		if (statement != null) {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DAOException();
 			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					throw new DAOException("connection is null");
-				}
+		}
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DAOException();
 			}
 		}
 	}
@@ -250,16 +248,30 @@ public class InitalizeStartData {
 				try {
 					statement.close();
 				} catch (SQLException e) {
-					throw new DAOException("statement is null");
+					e.printStackTrace();
+					throw new DAOException();
 				}
 			}
 			if (connection != null) {
 				try {
 					connection.close();
 				} catch (SQLException e) {
-					throw new DAOException("connection is null");
+					e.printStackTrace();
+					throw new DAOException();
 				}
 			}
+		}
+	}
+
+	private static Connection getDBConnection() throws DAOException {
+		Connection connection = null;
+		try {
+			DriverManager.registerDriver(new org.postgresql.Driver());
+			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			return connection;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DAOException();
 		}
 	}
 }
