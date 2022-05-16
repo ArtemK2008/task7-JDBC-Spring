@@ -20,9 +20,9 @@ public class UserOptionsDAO {
 	private static final String ADD_STUDENT_TO_COURSE = "INSERT INTO studentscoursesdata(student_id,first_name,last_name,course_name,course_description) VALUES (?,?,?,?,?)";
 	private static final String DELETE_STUDENT_FROM_COURSE = "DELETE FROM studentscoursesdata WHERE student_id = (?) AND course_name = (?)";
 	private static final String CHECK_COURSE_IF_EXISTS = "SELECT course_name FROM studentscoursesdata WHERE course_name = (?)";
-	private static final String CHECK_STUDENT_IF_EXISTS_IN_GROUP = "SELECT * FROM Students WHERE first_name = (?), last_name = (?), group_id = (?)";
+	private static final String CHECK_STUDENT_IF_EXISTS_IN_GROUP = "SELECT * FROM Students WHERE first_name = (?) AND last_name = (?) AND group_id = (?)";
 	private static final String CHECK_STUDENT_ID_IF_EXISTS = "SELECT * FROM Students WHERE student_id = (?)";
-	private static final String CHECK_IF_STUDENT_IN_COURSE = "SELECT * FROM studentscoursesdata WHERE student_id = (?), course_name = (?)";
+	private static final String CHECK_IF_STUDENT_IN_COURSE = "SELECT * FROM studentscoursesdata WHERE student_id = (?) AND course_name = (?)";
 
 	private static final String URL = "jdbc:postgresql://localhost/task7";
 	private static final String USERNAME = "postgres";
@@ -168,6 +168,51 @@ public class UserOptionsDAO {
 			closeAll(statement, connection);
 		}
 		return isRemoved;
+	}
+
+	public List<String> retrieveCoursesNames() throws DAOException {
+		List<String> courses = new ArrayList<>();
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		try {
+			connection = getDBConnection();
+			String SQL = "SELECT course_name FROM Courses";
+			statement = connection.createStatement();
+			rs = statement.executeQuery(SQL);
+			while (rs.next()) {
+				courses.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DAOException();
+		} finally {
+			closeAll(rs, statement, connection);
+		}
+		return courses;
+	}
+
+	public List<String> retrieveCoursesNamesByID(int studentId) throws DAOException {
+		List<String> courses = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+		try {
+			connection = getDBConnection();
+			String fIND_COURSES_BY_ID = "SELECT course_name FROM StudentsCoursesData WHERE student_id = (?)";
+			statement = connection.prepareStatement(fIND_COURSES_BY_ID);
+			statement.setInt(1, studentId);
+			rs = statement.executeQuery();
+			while (rs.next()) {
+				courses.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DAOException();
+		} finally {
+			closeAll(rs, statement, connection);
+		}
+		return courses;
 	}
 
 	public boolean checkCourseIfExists(String course) throws DAOException {

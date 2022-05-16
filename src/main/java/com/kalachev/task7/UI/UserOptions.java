@@ -30,9 +30,9 @@ public class UserOptions {
 		}
 	}
 
-	public void printUserByCourse(String course) throws UIException {
+	public void printStudentsByCourse(String course) throws UIException {
 		if (!checkIfCourseExists(course)) {
-			System.out.println("No such group");
+			System.out.println("No such course");
 			return;
 		}
 		List<String> studentOfThisCourse = new ArrayList<>();
@@ -49,17 +49,11 @@ public class UserOptions {
 		}
 	}
 
-	public void addNewStudent(String name, int groupId) throws UIException {
+	public void addNewStudent(String firstName, String lastName, int groupId) throws UIException {
 		if (groupId < 1 || groupId > 11) {
 			System.out.println("Wrong groupd id");
 			return;
 		}
-		if (!checkIfNameIsValid(name)) {
-			System.out.println("Wrong name");
-			return;
-		}
-		String firstName = retrieveFirstName(name);
-		String lastName = retrieveLastName(name);
 		if (checkIfStudentAlreadyInGroup(groupId, firstName, lastName)) {
 			System.out.println("Such user exists");
 			return;
@@ -67,7 +61,7 @@ public class UserOptions {
 
 		try {
 			dao.addNewStudent(firstName, lastName, groupId);
-			System.out.println("Student " + name + " added to group " + groupId);
+			System.out.println("Student " + firstName + " " + lastName + " added to group " + groupId);
 		} catch (DAOException e) {
 			throw new UIException();
 		}
@@ -144,6 +138,30 @@ public class UserOptions {
 		}
 	}
 
+	public void printCourseNames() throws UIException {
+		try {
+			List<String> courses = dao.retrieveCoursesNames();
+			for (String c : courses) {
+				System.out.println(c);
+			}
+		} catch (DAOException e) {
+			e.printStackTrace();
+			throw new UIException();
+		}
+	}
+
+	public void printCourseNamesByID(int id) throws UIException {
+		try {
+			List<String> courses = dao.retrieveCoursesNamesByID(id);
+			for (String c : courses) {
+				System.out.println(c);
+			}
+		} catch (DAOException e) {
+			e.printStackTrace();
+			throw new UIException();
+		}
+	}
+
 	private boolean checkIfStudentAlreadyInCourse(int id, String course) throws UIException {
 		boolean isExist = false;
 		try {
@@ -195,24 +213,4 @@ public class UserOptions {
 		}
 		return isInGroup;
 	}
-
-	private String retrieveFirstName(String student) {
-		int spaceIndex = student.indexOf(' ');
-		return student.substring(0, spaceIndex);
-	}
-
-	private String retrieveLastName(String student) {
-		int spaceIndex = student.indexOf(' ');
-		return student.substring(spaceIndex + 1);
-	}
-
-	private boolean checkIfNameIsValid(String name) {
-		boolean isValid = false;
-		String[] amountOfSpace = name.split(" ");
-		if (amountOfSpace.length == 1) {
-			isValid = true;
-		}
-		return isValid;
-	}
-
 }

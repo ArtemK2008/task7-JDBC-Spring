@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
-public class InitalizeStartData {
+public class TablesDataDAO {
 
 	private static final String INSERT_GROUPS = "INSERT INTO Groups (group_name) VALUES (?)";
 	private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) VALUES (?,?)";
@@ -181,7 +181,6 @@ public class InitalizeStartData {
 				idsOfEachStuden.put(rs.getString("student_id"),
 						rs.getString("first_name") + " " + rs.getString("last_name"));
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DAOException();
@@ -243,22 +242,20 @@ public class InitalizeStartData {
 	}
 
 	private void closeAll(Statement statement, Connection connection) throws DAOException {
-		{
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-					throw new DAOException();
-				}
+		if (statement != null) {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DAOException();
 			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-					throw new DAOException();
-				}
+		}
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DAOException();
 			}
 		}
 	}

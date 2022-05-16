@@ -1,16 +1,10 @@
 package com.kalachev.task7;
 
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
 
 import com.kalachev.task7.DAO.DAOException;
-import com.kalachev.task7.DAO.InitalizeStartData;
-import com.kalachev.task7.Data.CoursesCreator;
-import com.kalachev.task7.Data.CoursesOfEachStudent;
-import com.kalachev.task7.Data.GroupCreator;
-import com.kalachev.task7.Data.StudentCreator;
-import com.kalachev.task7.Data.StudentsOfEachGroup;
+import com.kalachev.task7.UI.ConsoleApp;
 
 public class test {
 	private void cleanConsole() {
@@ -20,36 +14,39 @@ public class test {
 
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, DAOException {
+	public static void main(String[] args) throws DAOException, IOException {
 
-		InitalizeStartData initalizeStartData = new InitalizeStartData();
-		initalizeStartData.createTables();
-		test testt = new test();
-		testt.cleanConsole();
+		ConsoleApp app = new ConsoleApp();
+		app.logic();
 
-		GroupCreator gp = new GroupCreator();
-		List<String> groups = gp.generateGroups();
-		initalizeStartData.populateGroups(groups);
-
-		StudentCreator studentCreator = new StudentCreator();
-		List<String> students = studentCreator.generateStudents();
-
-		StudentsOfEachGroup studentsOfEachGroup = new StudentsOfEachGroup();
-		Map<String, List<String>> studentsInEachGroup = studentsOfEachGroup.assignStudentsToGroups(students, groups);
-		initalizeStartData.pupulateStudents(students, studentsInEachGroup);
-
-		CoursesCreator coursesCreator = new CoursesCreator();
-		Map<String, String> courses = coursesCreator.createCourses();
-		initalizeStartData.populateCourses(courses);
-
-		List<String> courseList = coursesCreator.retrieveCoursesNames(courses);
-		CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
-		Map<String, String> studentIDs = initalizeStartData.retrieveStudentsId();
-		Map<String, List<String>> studentIdAndHisCourses = coursesOfEachStudent.assignStudentsIDToCourse(studentIDs,
-				courseList);
-
-		initalizeStartData.createManyToManyTable(studentIdAndHisCourses);
-		initalizeStartData.createStudentsCoursesFullTable();
+		/*
+		 * tablesDataDAO tablesDataDAO = new tablesDataDAO();
+		 * tablesDataDAO.createTables(); test testt = new test(); testt.cleanConsole();
+		 * 
+		 * GroupCreator gp = new GroupCreator(); List<String> groups =
+		 * gp.generateGroups(); tablesDataDAO.populateGroups(groups);
+		 * 
+		 * StudentCreator studentCreator = new StudentCreator(); List<String> students =
+		 * studentCreator.generateStudents();
+		 * 
+		 * StudentsOfEachGroup studentsOfEachGroup = new StudentsOfEachGroup();
+		 * Map<String, List<String>> studentsInEachGroup =
+		 * studentsOfEachGroup.assignStudentsToGroups(students, groups);
+		 * tablesDataDAO.pupulateStudents(students, studentsInEachGroup);
+		 * 
+		 * CoursesCreator coursesCreator = new CoursesCreator(); Map<String, String>
+		 * courses = coursesCreator.createCourses();
+		 * tablesDataDAO.populateCourses(courses);
+		 * 
+		 * List<String> courseList = coursesCreator.retrieveCoursesNames(courses);
+		 * CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
+		 * Map<String, String> studentIDs = tablesDataDAO.retrieveStudentsId();
+		 * Map<String, List<String>> studentIdAndHisCourses =
+		 * coursesOfEachStudent.assignStudentsIDToCourse(studentIDs, courseList);
+		 * 
+		 * tablesDataDAO.createManyToManyTable(studentIdAndHisCourses);
+		 * tablesDataDAO.createStudentsCoursesFullTable();
+		 */
 
 	}
 

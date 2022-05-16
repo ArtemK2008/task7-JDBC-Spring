@@ -19,6 +19,6 @@ public class testUI {
 		// options.removeStudentFromCourse(150, "Bengali");
 		// System.out.println(options.checkCourseIfExists("Rusdsian"));
 		UserOptions uo = new UserOptions();
-		uo.printUserByCourse("English");
+		uo.printStudentsByCourse("English");
 	}
 }
