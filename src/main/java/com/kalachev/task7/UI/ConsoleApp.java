@@ -34,6 +34,7 @@ public class ConsoleApp {
 			} finally {
 				scanner.nextLine();
 				pressEnter();
+				cleanConsole();
 			}
 		}
 	}
@@ -69,6 +70,8 @@ public class ConsoleApp {
 			userOptions.printGroupsOfSize(size);
 		} catch (UIException e) {
 			e.printStackTrace();
+		} catch (InputMismatchException e) {
+			System.out.println("Your Input was not correct");
 		}
 	}
 
@@ -116,6 +119,10 @@ public class ConsoleApp {
 		try {
 			System.out.println("Enter ID of a student you want to add");
 			int id = scanner.nextInt();
+			if (!userOptions.checkIfStudentIdExists(id)) {
+				System.out.println("There is no student with such id");
+				return;
+			}
 			userOptions.printCourseNames();
 			System.out.println("Enter a name of a course from the list");
 			String course = scanner.next();

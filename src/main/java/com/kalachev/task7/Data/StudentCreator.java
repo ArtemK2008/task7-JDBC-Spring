@@ -6,7 +6,16 @@ import java.util.List;
 import java.util.Random;
 
 public class StudentCreator {
-	Random randomGenerator = new Random();
+	Random randomGenerator;
+
+	public StudentCreator() {
+		randomGenerator = new Random();
+	}
+
+	public StudentCreator(int seed) {
+		super();
+		this.randomGenerator = new Random(seed);
+	}
 
 	public List<String> generateStudents() {
 		List<String> students = new ArrayList<>();

@@ -175,7 +175,7 @@ public class UserOptions {
 		return isExist;
 	}
 
-	private boolean checkIfStudentIdExists(int id) throws UIException {
+	public boolean checkIfStudentIdExists(int id) throws UIException {
 		boolean isExist = false;
 		try {
 			if (dao.checkStudentIdIfExists(id)) {

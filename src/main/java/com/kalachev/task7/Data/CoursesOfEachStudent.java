@@ -7,20 +7,32 @@ import java.util.Map;
 import java.util.Random;
 
 public class CoursesOfEachStudent {
+	Random random;
 
-	Random random = new Random();
+	public CoursesOfEachStudent() {
+		super();
+		random = new Random();
+	}
+
+	public CoursesOfEachStudent(int seed) {
+		super();
+		this.random = new Random(seed);
+	}
 
 	public Map<String, List<String>> assignStudentsIDToCourse(Map<String, String> studentsWithId,
 			List<String> courses) {
+		checkInput(studentsWithId, courses);
+		int totalCourses = courses.size();
+
 		Map<String, List<String>> coursesOfEachStudent = new HashMap<>();
 		for (String id : studentsWithId.keySet()) {
 			int amoutOfCourses = random.nextInt(3) + 1;
 			List<String> coursesTaken = new ArrayList<>();
 			List<String> coursesAlreadyEnrolled = new ArrayList<>();
 			for (int i = 0; i < amoutOfCourses; i++) {
-				String tempCourse = courses.get(random.nextInt(10));
+				String tempCourse = courses.get(random.nextInt(totalCourses));
 				while (coursesAlreadyEnrolled.contains(tempCourse)) {
-					tempCourse = courses.get(random.nextInt(10));
+					tempCourse = courses.get(random.nextInt(totalCourses));
 				}
 				coursesTaken.add(tempCourse);
 				coursesAlreadyEnrolled.add(tempCourse);
@@ -28,6 +40,15 @@ public class CoursesOfEachStudent {
 			coursesOfEachStudent.put(id, coursesTaken);
 		}
 		return coursesOfEachStudent;
+	}
+
+	private void checkInput(Map<String, String> studentsWithId, List<String> courses) {
+		if (studentsWithId == null || courses == null) {
+			throw new IllegalArgumentException();
+		}
+		if (studentsWithId.isEmpty() || courses.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 }

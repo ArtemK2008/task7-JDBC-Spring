@@ -5,7 +5,18 @@ import java.util.List;
 import java.util.Random;
 
 public class GroupCreator {
-	Random random = new Random();
+	Random random;
+	private static final String GROUPLESS = "students without groups";
+
+	public GroupCreator() {
+		super();
+		random = new Random();
+	}
+
+	public GroupCreator(int seed) {
+		super();
+		this.random = new Random(seed);
+	}
 
 	public List<String> generateGroups() {
 		List<String> groups = new ArrayList<>();
@@ -15,9 +26,10 @@ public class GroupCreator {
 			while (groupsUsed.contains(tempString)) {
 				tempString = generateGroupName();
 			}
+			groupsUsed.add(tempString);
 			groups.add(tempString);
 		}
-		groups.add("students without groups");
+		groups.add(GROUPLESS);
 		return groups;
 	}
 

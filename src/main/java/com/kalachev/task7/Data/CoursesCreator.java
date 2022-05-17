@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class CoursesCreator {
 
-	public Map<String, String> createCourses() {
+	public Map<String, String> generateCourses() {
 		Map<String, String> courses = new LinkedHashMap<>();
 		courses.put("English", "place to learn English");
 		courses.put("Mandarin", "place to learn Mandarin");
@@ -23,6 +23,9 @@ public class CoursesCreator {
 	}
 
 	public List<String> retrieveCoursesNames(Map<String, String> courses) {
+		if (courses == null || courses.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 		return courses.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
 	}
 

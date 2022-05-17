@@ -22,7 +22,7 @@ public class Initializer {
 		fillGroupsTable(groups);
 		fillStudentsTable(students, groups);
 		CoursesCreator coursesCreator = new CoursesCreator();
-		Map<String, String> courses = coursesCreator.createCourses();
+		Map<String, String> courses = coursesCreator.generateCourses();
 		fillCourseTable(courses);
 		fillTempManyToManyTable(courses);
 		createStudentsCoursesTable();

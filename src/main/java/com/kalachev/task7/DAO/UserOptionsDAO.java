@@ -15,7 +15,7 @@ public class UserOptionsDAO {
 	private static final String FIND_STUDENT = "SELECT student_id,first_name,last_name FROM studentscoursesdata WHERE course_name = (?)";
 	private static final String INSERT_STUDENT = "INSERT INTO Students(group_id,first_name,last_name) VALUES (?,?,?)";
 	private static final String DELETE_STUDENT = "DELETE FROM Students Where student_id = (?)";
-	private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,first_name,last_name FROM studentscoursesdata WHERE student_id = (?)";
+	private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,first_name,last_name FROM students WHERE student_id = (?)";
 	private static final String FIND_COURSE_DESCRIPTION = "SELECT course_name,course_description FROM Courses WHERE course_name = (?)";
 	private static final String ADD_STUDENT_TO_COURSE = "INSERT INTO studentscoursesdata(student_id,first_name,last_name,course_name,course_description) VALUES (?,?,?,?,?)";
 	private static final String DELETE_STUDENT_FROM_COURSE = "DELETE FROM studentscoursesdata WHERE student_id = (?) AND course_name = (?)";

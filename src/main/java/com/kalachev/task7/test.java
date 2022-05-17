@@ -1,10 +1,8 @@
 package com.kalachev.task7;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.kalachev.task7.DAO.DAOException;
-import com.kalachev.task7.UI.ConsoleApp;
 
 public class test {
 	private void cleanConsole() {
@@ -16,8 +14,9 @@ public class test {
 
 	public static void main(String[] args) throws DAOException, IOException {
 
-		ConsoleApp app = new ConsoleApp();
-		app.logic();
+		/*
+		 * ConsoleApp app = new ConsoleApp(); app.logic();
+		 */
 
 		/*
 		 * tablesDataDAO tablesDataDAO = new tablesDataDAO();
