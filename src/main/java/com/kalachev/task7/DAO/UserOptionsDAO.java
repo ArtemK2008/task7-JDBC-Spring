@@ -24,9 +24,9 @@ public class UserOptionsDAO {
 	private static final String CHECK_STUDENT_ID_IF_EXISTS = "SELECT * FROM Students WHERE student_id = (?)";
 	private static final String CHECK_IF_STUDENT_IN_COURSE = "SELECT * FROM studentscoursesdata WHERE student_id = (?) AND course_name = (?)";
 
-	private static final String URL = "jdbc:postgresql://localhost/task7";
-	private static final String USERNAME = "postgres";
-	private static final String PASSWORD = "2487";
+	private static final String URL = "jdbc:postgresql://localhost/comkalachevtasksqljdbc";
+	private static final String USERNAME = "kalachevartemsql";
+	private static final String PASSWORD = "1234";
 
 	public List<String> findGroupsBySize(int maxSize) throws DAOException {
 		Connection connection = null;

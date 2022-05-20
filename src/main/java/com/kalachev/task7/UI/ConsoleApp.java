@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import com.kalachev.task7.DAO.DAOException;
 import com.kalachev.task7.DAO.Initializer;
+import com.kalachev.task7.business.UIException;
+import com.kalachev.task7.business.UserOptions;
 
 public class ConsoleApp {
 	Scanner scanner = new Scanner(System.in);
@@ -16,7 +18,7 @@ public class ConsoleApp {
 			"5: Add a student to the course (from a list)", "6: Remove the student from one of his or her courses",
 			"7: Exit" };
 
-	public void logic() throws FileNotFoundException, DAOException {
+	public void runSchoolApp() throws FileNotFoundException, DAOException {
 		Initializer initializer = new Initializer();
 		initializer.initializeTables();
 		cleanConsole();

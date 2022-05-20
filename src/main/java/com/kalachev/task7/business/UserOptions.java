@@ -1,4 +1,4 @@
-package com.kalachev.task7.UI;
+package com.kalachev.task7.business;
 
 import java.util.ArrayList;
 import java.util.List;

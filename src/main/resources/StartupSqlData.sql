@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS Groups cascade;
 DROP TABLE IF EXISTS Students cascade;
 DROP TABLE IF EXISTS Courses cascade;

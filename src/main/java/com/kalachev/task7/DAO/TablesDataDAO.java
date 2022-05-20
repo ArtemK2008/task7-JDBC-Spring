@@ -23,9 +23,9 @@ public class TablesDataDAO {
 	private static final String INSERT_GROUPS = "INSERT INTO Groups (group_name) VALUES (?)";
 	private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) VALUES (?,?)";
 
-	private static final String URL = "jdbc:postgresql://localhost/task7";
-	private static final String USERNAME = "postgres";
-	private static final String PASSWORD = "2487";
+	private static final String URL = "jdbc:postgresql://localhost/comkalachevtasksqljdbc";
+	private static final String USERNAME = "kalachevartemsql";
+	private static final String PASSWORD = "1234";
 
 	public void createTables() throws FileNotFoundException, DAOException {
 		Connection connection = null;
@@ -36,6 +36,7 @@ public class TablesDataDAO {
 			File resourcesDirectory = new File("src/main/resources/StartupSqlData.sql");
 			Reader reader = new BufferedReader(new FileReader(resourcesDirectory));
 			runner.runScript(reader);
+			runner.closeConnection();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DAOException();

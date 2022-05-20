@@ -14,6 +14,7 @@ public class Initializer {
 	TablesDataDAO tablesDataDAO = new TablesDataDAO();
 
 	public void initializeTables() throws FileNotFoundException, DAOException {
+		createDatabaseAndUser();
 		InitializeStartTables();
 		GroupCreator gp = new GroupCreator();
 		StudentCreator studentCreator = new StudentCreator();
@@ -26,6 +27,12 @@ public class Initializer {
 		fillCourseTable(courses);
 		fillTempManyToManyTable(courses);
 		createStudentsCoursesTable();
+	}
+
+	private void createDatabaseAndUser() throws DAOException {
+		DatabaseCreator databaseCreator = new DatabaseCreator();
+		databaseCreator.createDatabase();
+		databaseCreator.createUser();
 	}
 
 	private void InitializeStartTables() throws FileNotFoundException, DAOException {

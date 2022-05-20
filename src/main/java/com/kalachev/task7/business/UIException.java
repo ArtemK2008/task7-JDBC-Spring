@@ -1,4 +1,4 @@
-package com.kalachev.task7.UI;
+package com.kalachev.task7.business;
 
 public class UIException extends Exception {
 

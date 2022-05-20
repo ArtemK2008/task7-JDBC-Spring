@@ -2,8 +2,8 @@ package com.kalachev.task7;
 
 import com.kalachev.task7.DAO.DAOException;
 import com.kalachev.task7.DAO.UserOptionsDAO;
-import com.kalachev.task7.UI.UIException;
-import com.kalachev.task7.UI.UserOptions;
+import com.kalachev.task7.business.UIException;
+import com.kalachev.task7.business.UserOptions;
 
 public class testUI {
 
