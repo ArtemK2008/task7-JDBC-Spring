@@ -2,21 +2,21 @@ package com.kalachev.task7;
 
 import java.io.IOException;
 
-import com.kalachev.task7.DAO.DAOException;
-import com.kalachev.task7.DAO.DatabaseCreator;
-import com.kalachev.task7.UI.ConsoleApp;
+import com.kalachev.task7.dao.DaoException;
+import com.kalachev.task7.dao.DatabaseCreator;
+import com.kalachev.task7.ui.ConsoleApp;
 
 public class test {
 
-	public static void main(String[] args) throws DAOException, IOException {
+  public static void main(String[] args) throws DaoException, IOException {
 
-		DatabaseCreator db = new DatabaseCreator();
-		db.createDatabase();
-		db.createUser();
+    DatabaseCreator db = new DatabaseCreator();
+    db.createDatabase();
+    db.createUser();
 
-		ConsoleApp app = new ConsoleApp();
-		app.runSchoolApp();
+    ConsoleApp app = new ConsoleApp();
+    app.runSchoolApp();
 
-	}
+  }
 
 }
