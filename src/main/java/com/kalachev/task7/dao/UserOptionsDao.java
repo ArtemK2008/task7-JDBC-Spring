@@ -18,32 +18,43 @@ public class UserOptionsDao {
       + "ON s.group_id = g.group_id "
       + "GROUP BY g.group_name "
       + "HAVING COUNT (s.group_id) >=(?)";
+  
   private static final String FIND_STUDENT = 
       "SELECT student_id,first_name,last_name FROM studentscoursesdata "
       + "WHERE course_name = (?)";
+  
   private static final String INSERT_STUDENT = 
       "INSERT INTO Students(group_id,first_name,last_name) VALUES (?,?,?)";
+  
   private static final String DELETE_STUDENT = 
       "DELETE FROM Students Where student_id = (?)";
+  
   private static final String FIND_STUDENTS_FULLNAME = 
       "SELECT student_id,first_name,last_name FROM students "
       + "WHERE student_id = (?)";
+  
   private static final String FIND_COURSE_DESCRIPTION = 
       "SELECT course_name,course_description FROM Courses WHERE course_name = (?)";
+  
   private static final String ADD_STUDENT_TO_COURSE = 
       "INSERT INTO studentscoursesdata"
       + "(student_id,first_name,last_name,course_name,course_description) "
       + "VALUES (?,?,?,?,?)";
+  
   private static final String DELETE_STUDENT_FROM_COURSE = 
       "DELETE FROM studentscoursesdata "
       + "WHERE student_id = (?) AND course_name = (?)";
+  
   private static final String CHECK_COURSE_IF_EXISTS = 
       "SELECT course_name FROM studentscoursesdata WHERE course_name = (?)";
+  
   private static final String CHECK_STUDENT_IF_EXISTS_IN_GROUP =
       "SELECT * FROM Students "
       + "WHERE first_name = (?) AND last_name = (?) AND group_id = (?)";
+  
   private static final String CHECK_STUDENT_ID_IF_EXISTS =
       "SELECT * FROM Students WHERE student_id = (?)";
+  
   private static final String CHECK_IF_STUDENT_IN_COURSE = 
       "SELECT * FROM studentscoursesdata WHERE student_id = (?) AND course_name = (?)";
 
