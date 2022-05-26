@@ -3,6 +3,8 @@ package com.kalachev.task7.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.OperationsException;
+
 import com.kalachev.task7.dao.DaoException;
 import com.kalachev.task7.dao.UserOptionsDao;
 
@@ -11,10 +13,9 @@ public class UserOptions {
 
   UserOptionsDao dao = new UserOptionsDao();
 
-  public void printGroupsOfSize(int maxSize) throws UiException {
+  public List<String> findGroupsBySize(int maxSize) throws UiException {
     if (maxSize < 0) {
-      System.out.println("Max size cant be negative");
-      return;
+      throw new IllegalArgumentException();
     }
     List<String> groups = new ArrayList<>();
     try {
@@ -25,16 +26,14 @@ public class UserOptions {
     }
 
     if (groups.isEmpty()) {
-      System.out.println("No such group found");
-    } else {
-      groups.forEach(System.out::println);
+      throw new UiException();
     }
+    return groups;
   }
 
-  public void printStudentsByCourse(String course) throws UiException {
+  public List<String> findStudentsByCourse(String course) throws UiException {
     if (!checkIfCourseExists(course)) {
-      System.out.println("No such course");
-      return;
+      throw new IllegalArgumentException();
     }
     List<String> studentOfThisCourse = new ArrayList<>();
     try {
@@ -43,130 +42,109 @@ public class UserOptions {
       e.printStackTrace();
       throw new UiException();
     }
-    if (studentOfThisCourse.isEmpty()) {
-      System.out.println("No users in this course");
-    } else {
-      studentOfThisCourse.forEach(System.out::println);
-    }
+    return studentOfThisCourse;
   }
 
   public void addNewStudent(String firstName, String lastName, int groupId)
-      throws UiException {
+      throws UiException, OperationsException {
     if (groupId < 1 || groupId > 11) {
-      System.out.println("Wrong groupd id");
-      return;
+      throw new IllegalArgumentException();
     }
     if (checkIfStudentAlreadyInGroup(groupId, firstName, lastName)) {
-      System.out.println("Such user exists");
-      return;
+      throw new OperationsException();
     }
 
     try {
       dao.addNewStudent(firstName, lastName, groupId);
-      System.out.println("Student " + firstName + " " + lastName
-          + " added to group " + groupId);
     } catch (DaoException e) {
       throw new UiException();
     }
   }
 
-  public void deleteStudentById(int id) throws UiException {
+  public void deleteStudentById(int id)
+      throws UiException, OperationsException {
     if (id < 1) {
-      System.out.println("Wrong student id");
-      return;
+      throw new IllegalArgumentException();
     }
     if (!checkIfStudentIdExists(id)) {
-      System.out.println(NOT_EXIST);
-      return;
+      throw new OperationsException();
     }
     try {
       dao.deleteStudentById(id);
-      System.out.println("student with id " + id + " deleted");
     } catch (DaoException e) {
       e.printStackTrace();
     }
   }
 
   public void addStudentToCourse(int studentId, String course)
-      throws UiException {
+      throws UiException, OperationsException {
     if (studentId < 0) {
-      System.out.println("Wrong id");
-      return;
+      throw new IllegalArgumentException();
     }
+
     if (!checkIfCourseExists(course)) {
-      System.out.println("no such course");
-      return;
+      throw new UiException();
     }
 
     if (!checkIfStudentIdExists(studentId)) {
-      System.out.println(NOT_EXIST);
-      return;
+      throw new UiException();
     }
     if (checkIfStudentAlreadyInCourse(studentId, course)) {
-      System.out.println("Student already in this course");
-      return;
+      throw new OperationsException();
     }
-
     try {
       dao.addStudentToCourse(studentId, course);
-      System.out.println(
-          "Student with id " + studentId + " added to course " + course);
     } catch (DaoException e) {
       e.printStackTrace();
     }
   }
 
   public void removeStudentFromCourse(int studentId, String course)
-      throws UiException {
+      throws UiException, OperationsException {
     if (studentId < 0) {
-      System.out.println("Wrong id");
-      return;
+      throw new IllegalArgumentException();
     }
     if (!checkIfCourseExists(course)) {
-      System.out.println("no such course");
-      return;
+      throw new UiException();
     }
     if (!checkIfStudentIdExists(studentId)) {
-      System.out.println(NOT_EXIST);
-      return;
+      throw new UiException();
     }
     if (!checkIfStudentAlreadyInCourse(studentId, course)) {
-      System.out.println("There is no such student in this course");
-      return;
+      throw new OperationsException();
     }
 
     try {
       dao.removeStudentFromCourse(studentId, course);
-      System.out
-          .println("Student with id " + studentId + " removed from " + course);
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
     }
   }
 
-  public void printCourseNames() throws UiException {
+  public List<String> findCourseNames() throws UiException {
+    List<String> courses = new ArrayList<>();
     try {
-      List<String> courses = dao.retrieveCoursesNames();
-      for (String c : courses) {
-        System.out.println(c);
+      courses = dao.retrieveCoursesNames();
+      if (courses.isEmpty()) {
+        throw new UiException();
       }
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
     }
+    return courses;
   }
 
-  public void printCourseNamesByID(int id) throws UiException {
+  public List<String> retrieveCourseNamesByID(int id) throws UiException {
+    List<String> courses = new ArrayList<>();
     try {
-      List<String> courses = dao.retrieveCoursesNamesById(id);
-      for (String c : courses) {
-        System.out.println(c);
-      }
+      courses = dao.retrieveCoursesNamesById(id);
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
     }
+    return courses;
   }
 
   private boolean checkIfStudentAlreadyInCourse(int id, String course)
@@ -196,7 +174,7 @@ public class UserOptions {
     return isExist;
   }
 
-  private boolean checkIfCourseExists(String course) throws UiException {
+  public boolean checkIfCourseExists(String course) throws UiException {
     boolean isExist = false;
     try {
       if (dao.checkCourseIfExists(course)) {
