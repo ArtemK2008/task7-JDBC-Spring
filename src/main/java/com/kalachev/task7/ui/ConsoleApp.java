@@ -7,10 +7,12 @@ import java.util.Scanner;
 
 import javax.management.OperationsException;
 
-import com.kalachev.task7.business.UiException;
-import com.kalachev.task7.business.UserOptions;
-import com.kalachev.task7.dao.DaoException;
-import com.kalachev.task7.dao.Initializer;
+import com.kalachev.task7.entities.Groups;
+import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.exceptions.UiException;
+import com.kalachev.task7.initialization.Initializer;
+
+import userMenu.UserOptions;
 
 public class ConsoleApp {
   static final String BAD_INPUT = "Your Input was not correct";
@@ -73,7 +75,6 @@ public class ConsoleApp {
     }
   }
 
-
   private void handleGroupSizeOption() {
     System.out.println("Choose maximal group size ");
     try {
@@ -92,13 +93,14 @@ public class ConsoleApp {
   }
 
   private List<String> findGroups(int size) {
-    List<String> groups = new ArrayList<>();
+    List<String> groupNames = new ArrayList<>();
     try {
-      groups = userOptions.findGroupsBySize(size);
+      List<Groups> groups = userOptions.findGroupsBySize(size);
+      groups.forEach(s -> groupNames.add(s.getGroupName()));
     } catch (UiException e) {
       System.out.println("no such groups");
     }
-    return groups;
+    return groupNames;
   }
 
   private void handleFindStudentsByCourseName() {
@@ -231,8 +233,7 @@ public class ConsoleApp {
     return isExist;
   }
 
-  private void handleRemoveStudentFromCourseOption()
-       {
+  private void handleRemoveStudentFromCourseOption() {
     try {
       System.out.println("Enter ID of a student you want to delete");
       int id = scanner.nextInt();

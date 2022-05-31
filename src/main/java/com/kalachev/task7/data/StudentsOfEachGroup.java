@@ -38,12 +38,15 @@ public class StudentsOfEachGroup {
       List<String> currentStudents = studentsInGroup.get(currGroup);
       if (currentStudents.size() >= MAX_GROUP_SIZE) {
         fullGroups.add(currRandom);
-        while (fullGroups.contains(currRandom)) {
-          currRandom = random.nextInt(11);
-          currentStudents = studentsInGroup.get(groups.get(currRandom));
-        }
       }
+      while (fullGroups.contains(currRandom)) {
+        currRandom = random.nextInt(11);
+      }
+      currentStudents = studentsInGroup.get(groups.get(currRandom));
       currentStudents.add(student);
+      if (currentStudents.size() == 30) {
+        fullGroups.add(currRandom);
+      }
       studentsInGroup.put(groups.get(currRandom), currentStudents);
     }
 

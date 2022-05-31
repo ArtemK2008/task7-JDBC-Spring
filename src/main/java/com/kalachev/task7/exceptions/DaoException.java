@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao;
+package com.kalachev.task7.exceptions;
 
 public class DaoException extends Exception {
 

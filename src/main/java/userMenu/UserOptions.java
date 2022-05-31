@@ -1,25 +1,30 @@
-package com.kalachev.task7.business;
+package userMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.management.OperationsException;
 
-import com.kalachev.task7.dao.DaoException;
+import com.kalachev.task7.dao.GroupsDao;
+import com.kalachev.task7.dao.GroupsDaoImpl;
 import com.kalachev.task7.dao.UserOptionsDao;
+import com.kalachev.task7.entities.Groups;
+import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.exceptions.UiException;
 
 public class UserOptions {
   static final String NOT_EXIST = "no such student id";
 
   UserOptionsDao dao = new UserOptionsDao();
 
-  public List<String> findGroupsBySize(int maxSize) throws UiException {
+  public List<Groups> findGroupsBySize(int maxSize) throws UiException {
     if (maxSize < 0) {
       throw new IllegalArgumentException();
     }
-    List<String> groups = new ArrayList<>();
+    List<Groups> groups = new ArrayList<>();
     try {
-      groups = dao.findGroupsBySize(maxSize);
+      GroupsDao groupsDaoImpl = new GroupsDaoImpl();
+      groups = groupsDaoImpl.findGroupsBySize(maxSize);
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();

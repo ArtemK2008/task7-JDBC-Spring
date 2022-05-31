@@ -1,7 +1,6 @@
 package com.kalachev.task7.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,80 +8,39 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.utilities.ConnectionMaker;
+import com.kalachev.task7.utilities.JdbcCloser;
+
 public class UserOptionsDao {
 
-  private static final String FIND_GROUP_BY_SIZE = 
-      "SELECT g.group_name FROM Students"
-      + " as s "
-      + "INNER JOIN Groups as g "
-      + "ON s.group_id = g.group_id "
-      + "GROUP BY g.group_name "
-      + "HAVING COUNT (s.group_id) >=(?)";
-  
-  private static final String FIND_STUDENT = 
-      "SELECT student_id,first_name,last_name FROM studentscoursesdata "
+  private static final String FIND_STUDENT = "SELECT student_id,first_name,last_name FROM studentscoursesdata "
       + "WHERE course_name = (?)";
-  
-  private static final String INSERT_STUDENT = 
-      "INSERT INTO Students(group_id,first_name,last_name) VALUES (?,?,?)";
-  
-  private static final String DELETE_STUDENT = 
-      "DELETE FROM Students Where student_id = (?)";
-  
-  private static final String FIND_STUDENTS_FULLNAME = 
-      "SELECT student_id,first_name,last_name FROM students "
+
+  private static final String INSERT_STUDENT = "INSERT INTO Students(group_id,first_name,last_name) VALUES (?,?,?)";
+
+  private static final String DELETE_STUDENT = "DELETE FROM Students Where student_id = (?)";
+
+  private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,first_name,last_name FROM students "
       + "WHERE student_id = (?)";
-  
-  private static final String FIND_COURSE_DESCRIPTION = 
-      "SELECT course_name,course_description FROM Courses WHERE course_name = (?)";
-  
-  private static final String ADD_STUDENT_TO_COURSE = 
-      "INSERT INTO studentscoursesdata"
+
+  private static final String FIND_COURSE_DESCRIPTION = "SELECT course_name,course_description FROM Courses WHERE course_name = (?)";
+
+  private static final String ADD_STUDENT_TO_COURSE = "INSERT INTO studentscoursesdata"
       + "(student_id,first_name,last_name,course_name,course_description) "
       + "VALUES (?,?,?,?,?)";
-  
-  private static final String DELETE_STUDENT_FROM_COURSE = 
-      "DELETE FROM studentscoursesdata "
+
+  private static final String DELETE_STUDENT_FROM_COURSE = "DELETE FROM studentscoursesdata "
       + "WHERE student_id = (?) AND course_name = (?)";
-  
-  private static final String CHECK_COURSE_IF_EXISTS = 
-      "SELECT course_name FROM studentscoursesdata WHERE course_name = (?)";
-  
-  private static final String CHECK_STUDENT_IF_EXISTS_IN_GROUP =
-      "SELECT * FROM Students "
+
+  private static final String CHECK_COURSE_IF_EXISTS = "SELECT course_name FROM studentscoursesdata WHERE course_name = (?)";
+
+  private static final String CHECK_STUDENT_IF_EXISTS_IN_GROUP = "SELECT * FROM Students "
       + "WHERE first_name = (?) AND last_name = (?) AND group_id = (?)";
-  
-  private static final String CHECK_STUDENT_ID_IF_EXISTS =
-      "SELECT * FROM Students WHERE student_id = (?)";
-  
-  private static final String CHECK_IF_STUDENT_IN_COURSE = 
-      "SELECT * FROM studentscoursesdata WHERE student_id = (?) AND course_name = (?)";
 
-  private static final String URL = "jdbc:postgresql://localhost/comkalachevtasksqljdbc";
-  private static final String USERNAME = "kalachevartemsql";
-  private static final String PASSWORD = "1234";
+  private static final String CHECK_STUDENT_ID_IF_EXISTS = "SELECT * FROM Students WHERE student_id = (?)";
 
-  public List<String> findGroupsBySize(int maxSize) throws DaoException {
-    Connection connection = null;
-    PreparedStatement statement = null;
-    ResultSet rs = null;
-    List<String> groups = new ArrayList<>();
-    try {
-      connection = getDbConnection();
-      statement = connection.prepareStatement(FIND_GROUP_BY_SIZE);
-      statement.setInt(1, maxSize);
-      rs = statement.executeQuery();
-      while (rs.next()) {
-        groups.add(rs.getString("group_name"));
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw new DaoException();
-    } finally {
-      closeAll(rs, statement, connection);
-    }
-    return groups;
-  }
+  private static final String CHECK_IF_STUDENT_IN_COURSE = "SELECT * FROM studentscoursesdata WHERE student_id = (?) AND course_name = (?)";
 
   public List<String> findStudentsByCourse(String courseName)
       throws DaoException {
@@ -91,7 +49,7 @@ public class UserOptionsDao {
     ResultSet rs = null;
     List<String> students = new ArrayList<>();
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(FIND_STUDENT);
       statement.setString(1, courseName);
       rs = statement.executeQuery();
@@ -103,7 +61,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
     return students;
   }
@@ -113,7 +71,7 @@ public class UserOptionsDao {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(INSERT_STUDENT);
       statement.setInt(1, groupId);
       statement.setString(2, firstName);
@@ -123,7 +81,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(statement, connection);
+      JdbcCloser.closeAll(statement, connection);
     }
   }
 
@@ -131,7 +89,7 @@ public class UserOptionsDao {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(DELETE_STUDENT);
       statement.setInt(1, id);
       statement.executeUpdate();
@@ -139,7 +97,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(statement, connection);
+      JdbcCloser.closeAll(statement, connection);
     }
   }
 
@@ -149,7 +107,7 @@ public class UserOptionsDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(FIND_STUDENTS_FULLNAME);
       statement.setInt(1, studentId);
       rs = statement.executeQuery();
@@ -181,7 +139,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
   }
 
@@ -191,7 +149,7 @@ public class UserOptionsDao {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(DELETE_STUDENT_FROM_COURSE);
       statement.setInt(1, studentId);
       statement.setString(2, course);
@@ -203,7 +161,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(statement, connection);
+      JdbcCloser.closeAll(statement, connection);
     }
     return isRemoved;
   }
@@ -214,7 +172,7 @@ public class UserOptionsDao {
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       String sql = "SELECT course_name FROM Courses";
       statement = connection.createStatement();
       rs = statement.executeQuery(sql);
@@ -225,7 +183,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
     return courses;
   }
@@ -237,7 +195,7 @@ public class UserOptionsDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       String findCourse = "SELECT course_name FROM StudentsCoursesData"
           + " WHERE student_id = (?)";
       statement = connection.prepareStatement(findCourse);
@@ -250,7 +208,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
     return courses;
   }
@@ -261,7 +219,7 @@ public class UserOptionsDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_COURSE_IF_EXISTS);
       statement.setString(1, course);
       rs = statement.executeQuery();
@@ -273,7 +231,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
     return isExist;
   }
@@ -285,7 +243,7 @@ public class UserOptionsDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_STUDENT_IF_EXISTS_IN_GROUP);
       statement.setString(1, firstName);
       statement.setString(2, lastName);
@@ -298,7 +256,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
     return isExists;
   }
@@ -309,7 +267,7 @@ public class UserOptionsDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_STUDENT_ID_IF_EXISTS);
       statement.setInt(1, id);
       rs = statement.executeQuery();
@@ -320,7 +278,7 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
     return isExists;
   }
@@ -332,7 +290,7 @@ public class UserOptionsDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = getDbConnection();
+      connection = ConnectionMaker.getDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_IF_STUDENT_IN_COURSE);
       statement.setInt(1, studentId);
       statement.setString(2, course);
@@ -344,72 +302,10 @@ public class UserOptionsDao {
       e.printStackTrace();
       throw new DaoException();
     } finally {
-      closeAll(rs, statement, connection);
+      JdbcCloser.closeAll(rs, statement, connection);
     }
 
     return isExists;
-  }
-
-  private void closeAll(Statement statement, Connection connection)
-      throws DaoException {
-    if (statement != null) {
-      try {
-        statement.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-        throw new DaoException();
-      }
-    }
-    if (connection != null) {
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-        throw new DaoException();
-      }
-    }
-  }
-
-  private void closeAll(ResultSet rs, Statement statement,
-      Connection connection) throws DaoException {
-    if (rs != null) {
-      try {
-        rs.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-        throw new DaoException();
-      }
-    }
-
-    if (statement != null) {
-      try {
-        statement.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-        throw new DaoException();
-      }
-    }
-    if (connection != null) {
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-        throw new DaoException();
-      }
-    }
-
-  }
-
-  private static Connection getDbConnection() throws DaoException {
-    Connection connection = null;
-    try {
-      DriverManager.registerDriver(new org.postgresql.Driver());
-      connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-      return connection;
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new DaoException();
-    }
   }
 
 }

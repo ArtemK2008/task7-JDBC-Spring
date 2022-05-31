@@ -26,18 +26,27 @@ class TestStudentsOfEachGroup {
   }
 
   @Test
-  void testAssignStudents_shouldPopulateAllGroups_whenInputIsValid() {
+  void testAssignStudents_shouldPopulateGroupsWithValidStudentNumbers_whenDataIsGeneratedLotsOfTimes() {
     StudentsOfEachGroup studentOfGroup = new StudentsOfEachGroup();
-    Map<String, List<String>> groupsWithStudentsIn = studentOfGroup
-        .assignStudentsToGroups(students, groups);
+    GroupCreator gc = new GroupCreator();
+    StudentCreator sc = new StudentCreator();
     int minInGroup = 10;
     int maxInGroup = 30;
     boolean isGroupSizeValid = true;
-    for (Entry<String, List<String>> entry : groupsWithStudentsIn.entrySet()) {
-      if (entry.getValue().size() < minInGroup
-          || entry.getValue().size() >= maxInGroup) {
-        if (!entry.getKey().equals(GROUPLESS)) {
-          isGroupSizeValid = false;
+    for (int i = 0; i < 200; i++) {
+      groups = gc.generateGroups();
+      students = sc.generateStudents();
+      Map<String, List<String>> groupsWithStudentsIn = studentOfGroup
+          .assignStudentsToGroups(students, groups);
+      for (Entry<String, List<String>> entry : groupsWithStudentsIn
+          .entrySet()) {
+        if (entry.getValue().size() < minInGroup
+            || entry.getValue().size() > maxInGroup) {
+          if (!entry.getKey().equals(GROUPLESS)) {
+            if (entry.getValue().size() != 0) {
+              isGroupSizeValid = false;
+            }
+          }
         }
       }
     }
