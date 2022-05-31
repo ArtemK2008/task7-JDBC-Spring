@@ -1,4 +1,4 @@
-package userMenu;
+package com.kalachev.task7.menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import javax.management.OperationsException;
 
 import com.kalachev.task7.dao.CoursesDaoImpl;
+import com.kalachev.task7.dao.DaoChecks;
 import com.kalachev.task7.dao.GroupsDaoImpl;
 import com.kalachev.task7.dao.StudentsDaoImpl;
-import com.kalachev.task7.dao.UserOptionsDao;
 import com.kalachev.task7.dao.daoInterfaces.CoursesDao;
 import com.kalachev.task7.dao.daoInterfaces.GroupsDao;
 import com.kalachev.task7.dao.daoInterfaces.StudentsDao;
@@ -22,7 +22,7 @@ public class UserOptions {
   static final String NOT_EXIST = "no such student id";
   static final String SPACE = " ";
 
-  UserOptionsDao dao = new UserOptionsDao();
+  DaoChecks dao = new DaoChecks();
   StudentsDao studentsDao = new StudentsDaoImpl();
   CoursesDao coursesDao = new CoursesDaoImpl();
 

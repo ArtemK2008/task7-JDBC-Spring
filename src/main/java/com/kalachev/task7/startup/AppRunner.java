@@ -1,4 +1,4 @@
-package com.kalachev.task7;
+package com.kalachev.task7.startup;
 
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.initialization.DatabaseCreator;

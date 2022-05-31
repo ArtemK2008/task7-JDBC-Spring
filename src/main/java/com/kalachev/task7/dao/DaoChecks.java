@@ -9,7 +9,7 @@ import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionMaker;
 import com.kalachev.task7.utilities.JdbcCloser;
 
-public class UserOptionsDao {
+public class DaoChecks {
 
   private static final String CHECK_COURSE_IF_EXISTS = "SELECT course_name FROM studentscoursesdata WHERE course_name = (?)";
 

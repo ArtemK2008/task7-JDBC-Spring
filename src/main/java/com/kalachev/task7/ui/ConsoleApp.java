@@ -10,8 +10,7 @@ import javax.management.OperationsException;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.Initializer;
-
-import userMenu.UserOptions;
+import com.kalachev.task7.menu.UserOptions;
 
 public class ConsoleApp {
   static final String BAD_INPUT = "Your Input was not correct";
