@@ -1,8 +1,8 @@
 package com.kalachev.task7.startup;
 
+import com.kalachev.task7.dao.initialization.DatabaseCreator;
+import com.kalachev.task7.dao.initialization.UserCreator;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.initialization.DatabaseCreator;
-import com.kalachev.task7.initialization.UserCreator;
 import com.kalachev.task7.ui.ConsoleApp;
 
 public class AppRunner {

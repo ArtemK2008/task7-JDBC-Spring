@@ -16,6 +16,8 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.service.data.CoursesOfEachStudent;
+
 class TestCoursesOfEachStudent {
 
   List<String> courses;

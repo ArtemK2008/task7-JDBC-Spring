@@ -3,17 +3,17 @@ package com.kalachev.task7.ui;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.kalachev.task7.commands.AddStudentCommand;
-import com.kalachev.task7.commands.AddToCourseCommand;
-import com.kalachev.task7.commands.Command;
-import com.kalachev.task7.commands.DeleteByIdCommand;
-import com.kalachev.task7.commands.ExitCommand;
-import com.kalachev.task7.commands.FindStudentByCourseCommand;
-import com.kalachev.task7.commands.GroupSizeCommand;
-import com.kalachev.task7.commands.RemoveFromCourseCommand;
+import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.initialization.Initializer;
-import com.kalachev.task7.menu.UserOptions;
+import com.kalachev.task7.service.UserOptions;
+import com.kalachev.task7.ui.commands.AddStudentCommand;
+import com.kalachev.task7.ui.commands.AddToCourseCommand;
+import com.kalachev.task7.ui.commands.Command;
+import com.kalachev.task7.ui.commands.DeleteByIdCommand;
+import com.kalachev.task7.ui.commands.ExitCommand;
+import com.kalachev.task7.ui.commands.FindStudentByCourseCommand;
+import com.kalachev.task7.ui.commands.GroupSizeCommand;
+import com.kalachev.task7.ui.commands.RemoveFromCourseCommand;
 
 public class ConsoleApp {
   static final String BAD_INPUT = "Your Input was not correct";

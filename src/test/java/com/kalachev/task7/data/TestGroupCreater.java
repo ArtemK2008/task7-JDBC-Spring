@@ -10,6 +10,8 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.service.data.GroupCreator;
+
 class TestGroupCreater {
 
   private static final String GROUPLESS = "students without groups";

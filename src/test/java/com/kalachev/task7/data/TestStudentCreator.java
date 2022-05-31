@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.service.data.StudentCreator;
+
 class TestStudentCreator {
   List<String> expected = Arrays.asList("Gwen Kuleshova", "Jane Ivanova",
       "Mike Sidorov", "Viktoria Lermontova", "Artem Trump", "Gomer Smith",

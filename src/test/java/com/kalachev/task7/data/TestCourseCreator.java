@@ -12,6 +12,8 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.service.data.CoursesCreator;
+
 class TestCourseCreator {
   Map<String, String> courseWithDescription;
 

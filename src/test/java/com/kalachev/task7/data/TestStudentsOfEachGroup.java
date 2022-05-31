@@ -12,6 +12,10 @@ import java.util.Map.Entry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.service.data.GroupCreator;
+import com.kalachev.task7.service.data.StudentCreator;
+import com.kalachev.task7.service.data.StudentsOfEachGroup;
+
 class TestStudentsOfEachGroup {
   static List<String> groups;
   static List<String> students;
