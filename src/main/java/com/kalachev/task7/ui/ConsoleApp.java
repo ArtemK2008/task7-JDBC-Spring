@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import javax.management.OperationsException;
 
-import com.kalachev.task7.entities.Groups;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.Initializer;
@@ -95,8 +94,7 @@ public class ConsoleApp {
   private List<String> findGroups(int size) {
     List<String> groupNames = new ArrayList<>();
     try {
-      List<Groups> groups = userOptions.findGroupsBySize(size);
-      groups.forEach(s -> groupNames.add(s.getGroupName()));
+      groupNames = userOptions.findGroupsBySize(size);
     } catch (UiException e) {
       System.out.println("no such groups");
     }

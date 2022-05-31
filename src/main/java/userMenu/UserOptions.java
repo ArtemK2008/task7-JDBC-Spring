@@ -5,35 +5,46 @@ import java.util.List;
 
 import javax.management.OperationsException;
 
-import com.kalachev.task7.dao.GroupsDao;
+import com.kalachev.task7.dao.CoursesDaoImpl;
 import com.kalachev.task7.dao.GroupsDaoImpl;
+import com.kalachev.task7.dao.StudentsDaoImpl;
 import com.kalachev.task7.dao.UserOptionsDao;
-import com.kalachev.task7.entities.Groups;
+import com.kalachev.task7.dao.daoInterfaces.CoursesDao;
+import com.kalachev.task7.dao.daoInterfaces.GroupsDao;
+import com.kalachev.task7.dao.daoInterfaces.StudentsDao;
+import com.kalachev.task7.entities.Course;
+import com.kalachev.task7.entities.Group;
+import com.kalachev.task7.entities.Student;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 
 public class UserOptions {
   static final String NOT_EXIST = "no such student id";
+  static final String SPACE = " ";
 
   UserOptionsDao dao = new UserOptionsDao();
+  StudentsDao studentsDao = new StudentsDaoImpl();
+  CoursesDao coursesDao = new CoursesDaoImpl();
 
-  public List<Groups> findGroupsBySize(int maxSize) throws UiException {
+  public List<String> findGroupsBySize(int maxSize) throws UiException {
     if (maxSize < 0) {
       throw new IllegalArgumentException();
     }
-    List<Groups> groups = new ArrayList<>();
+    List<Group> group = new ArrayList<>();
+    List<String> groupNames = new ArrayList<>();
     try {
       GroupsDao groupsDaoImpl = new GroupsDaoImpl();
-      groups = groupsDaoImpl.findGroupsBySize(maxSize);
+      group = groupsDaoImpl.findGroupsBySize(maxSize);
+      group.forEach(g -> groupNames.add(g.getGroupName()));
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
     }
 
-    if (groups.isEmpty()) {
+    if (group.isEmpty()) {
       throw new UiException();
     }
-    return groups;
+    return groupNames;
   }
 
   public List<String> findStudentsByCourse(String course) throws UiException {
@@ -42,7 +53,9 @@ public class UserOptions {
     }
     List<String> studentOfThisCourse = new ArrayList<>();
     try {
-      studentOfThisCourse = dao.findStudentsByCourse(course);
+      List<Student> student = studentsDao.findStudentsByCourse(course);
+      student.forEach(s -> studentOfThisCourse
+          .add(s.getFirstName() + SPACE + s.getLastName()));
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
@@ -60,7 +73,8 @@ public class UserOptions {
     }
 
     try {
-      dao.addNewStudent(firstName, lastName, groupId);
+
+      studentsDao.addNewStudent(firstName, lastName, groupId);
     } catch (DaoException e) {
       throw new UiException();
     }
@@ -75,7 +89,7 @@ public class UserOptions {
       throw new OperationsException();
     }
     try {
-      dao.deleteStudentById(id);
+      studentsDao.deleteStudentById(id);
     } catch (DaoException e) {
       e.printStackTrace();
     }
@@ -98,7 +112,7 @@ public class UserOptions {
       throw new OperationsException();
     }
     try {
-      dao.addStudentToCourse(studentId, course);
+      coursesDao.addStudentToCourse(studentId, course);
     } catch (DaoException e) {
       e.printStackTrace();
     }
@@ -120,7 +134,7 @@ public class UserOptions {
     }
 
     try {
-      dao.removeStudentFromCourse(studentId, course);
+      coursesDao.removeStudentFromCourse(studentId, course);
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
@@ -128,28 +142,32 @@ public class UserOptions {
   }
 
   public List<String> findCourseNames() throws UiException {
-    List<String> courses = new ArrayList<>();
+    List<Course> courses = new ArrayList<>();
+    List<String> courseNames = new ArrayList<>();
     try {
-      courses = dao.retrieveCoursesNames();
+      courses = coursesDao.retrieveCourses();
       if (courses.isEmpty()) {
         throw new UiException();
       }
+      courses.forEach(c -> courseNames.add(c.getCourseName()));
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
     }
-    return courses;
+    return courseNames;
   }
 
   public List<String> retrieveCourseNamesByID(int id) throws UiException {
-    List<String> courses = new ArrayList<>();
+    List<Course> courses = new ArrayList<>();
+    List<String> courseNames = new ArrayList<>();
     try {
-      courses = dao.retrieveCoursesNamesById(id);
+      courses = coursesDao.retrieveCoursesById(id);
+      courses.forEach(c -> courseNames.add(c.getCourseName()));
     } catch (DaoException e) {
       e.printStackTrace();
       throw new UiException();
     }
-    return courses;
+    return courseNames;
   }
 
   private boolean checkIfStudentAlreadyInCourse(int id, String course)

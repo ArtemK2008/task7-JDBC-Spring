@@ -3,8 +3,8 @@ package com.kalachev.task7.initialization;
 import java.util.List;
 import java.util.Map;
 
-import com.kalachev.task7.dao.StudentsDao;
 import com.kalachev.task7.dao.StudentsDaoImpl;
+import com.kalachev.task7.dao.daoInterfaces.StudentsDao;
 import com.kalachev.task7.data.CoursesCreator;
 import com.kalachev.task7.data.CoursesOfEachStudent;
 import com.kalachev.task7.data.GroupCreator;
