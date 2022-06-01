@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class StudentCreator {
+public class StudentInitializer {
   Random randomGenerator;
 
-  public StudentCreator() {
+  public StudentInitializer() {
     randomGenerator = new Random();
   }
 
-  public StudentCreator(int seed) {
+  public StudentInitializer(int seed) {
     super();
     this.randomGenerator = new Random(seed);
   }

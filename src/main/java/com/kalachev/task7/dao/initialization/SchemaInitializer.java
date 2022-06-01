@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
 public class SchemaInitializer {
 
@@ -21,14 +22,16 @@ public class SchemaInitializer {
           .getResource("StartupSqlData.sql");
       List<String> tableData = Files.readAllLines(Paths.get(url.toURI()));
       String sql = tableData.stream().collect(Collectors.joining());
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.createStatement();
       statement.executeUpdate(sql);
     } catch (Exception e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 }

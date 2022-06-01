@@ -2,21 +2,46 @@ package com.kalachev.task7.service.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class CoursesOfEachStudent {
+public class CoursesInitializer {
   Random random;
 
-  public CoursesOfEachStudent() {
+  public CoursesInitializer() {
     super();
     random = new Random();
   }
 
-  public CoursesOfEachStudent(int seed) {
+  public CoursesInitializer(int seed) {
     super();
     this.random = new Random(seed);
+  }
+
+  public Map<String, String> generateCourses() {
+    Map<String, String> courses = new LinkedHashMap<>();
+    courses.put("English", "place to learn English");
+    courses.put("Mandarin", "place to learn Mandarin");
+    courses.put("Hindi", "place to learn Hindi");
+    courses.put("Spanish", "place to learn Spanish");
+    courses.put("French", "place to learn French");
+    courses.put("Arabic", "place to learn Arabic");
+    courses.put("Bengali", "place to learn Bengali");
+    courses.put("Russian", "place to learn Russian");
+    courses.put("Portuguese", "place to learn Portuguese");
+    courses.put("Ukrainian", "place to learn Ukrainian");
+    return courses;
+  }
+
+  public List<String> retrieveCoursesNames(Map<String, String> courses) {
+    if (courses == null || courses.isEmpty()) {
+      throw new IllegalArgumentException();
+    }
+    return courses.entrySet().stream().map(Map.Entry::getKey)
+        .collect(Collectors.toList());
   }
 
   public Map<String, List<String>> assignStudentsIdToCourse(

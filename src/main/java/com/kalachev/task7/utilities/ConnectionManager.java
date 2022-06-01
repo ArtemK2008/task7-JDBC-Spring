@@ -9,17 +9,17 @@ import java.util.Properties;
 
 import com.kalachev.task7.exceptions.DaoException;
 
-public class ConnectionMaker {
+public class ConnectionManager {
 
   static String dbUrl;
   static String dbUsername;
   static String dbPassword;
 
-  private ConnectionMaker() {
+  private ConnectionManager() {
     super();
   }
 
-  public static Connection getDbConnection() throws DaoException {
+  public static Connection openDbConnection() throws DaoException {
     Properties properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
     if (url != null) {
@@ -39,11 +39,13 @@ public class ConnectionMaker {
       return connection;
     } catch (Exception e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     }
   }
 
-  public static Connection getDbConnectionForNewUser() throws DaoException {
+  public static Connection openDbConnectionForNewUser() throws DaoException {
     Properties properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
     if (url != null) {
@@ -64,7 +66,9 @@ public class ConnectionMaker {
       return connection;
     } catch (Exception e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     }
   }
 

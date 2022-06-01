@@ -7,10 +7,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
-public class CoursesFiller {
+public class CoursesDataDbPopulator {
 
   private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) VALUES (?,?)";
 
@@ -18,7 +19,7 @@ public class CoursesFiller {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(INSERT_COURSES);
       connection.setAutoCommit(false);
       for (Entry<String, String> entry : courses.entrySet()) {
@@ -30,10 +31,12 @@ public class CoursesFiller {
       connection.commit();
       connection.setAutoCommit(true);
     } catch (SQLException e) {
-      e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
+
 }

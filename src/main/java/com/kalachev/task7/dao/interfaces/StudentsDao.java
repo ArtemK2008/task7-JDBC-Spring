@@ -8,12 +8,12 @@ import com.kalachev.task7.exceptions.DaoException;
 
 public interface StudentsDao {
 
-  Map<String, String> retrieveStudentsId() throws DaoException;
+  Map<String, String> studentNamesById() throws DaoException;
 
-  List<Student> findStudentsByCourse(String courseName) throws DaoException;
+  List<Student> findByCourse(String courseName) throws DaoException;
 
-  void addNewStudent(String firstName, String lastName, int groupId)
+  void insert(String firstName, String lastName, int groupId)
       throws DaoException;
 
-  void deleteStudentById(int id) throws DaoException;
+  void delete(int id) throws DaoException;
 }

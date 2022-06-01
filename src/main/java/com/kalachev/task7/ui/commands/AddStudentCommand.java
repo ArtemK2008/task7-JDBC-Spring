@@ -3,16 +3,18 @@ package com.kalachev.task7.ui.commands;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import javax.management.OperationsException;
-
+import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
+import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.service.validations.Validator;
 
 public class AddStudentCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
 
-  StudentOptions options;
+  StudentsDao studentsDao = new StudentsDaoImpl();
+  StudentOptions options = new StudentOptions(studentsDao);
 
   Scanner scanner;
 
@@ -41,13 +43,14 @@ public class AddStudentCommand implements Command {
   }
 
   private void addStudent(String name, String lastname, int groupId) {
-    options = new StudentOptions();
     try {
+      if (Validator.checkIfStudentAlreadyInGroup(groupId, name, lastname)) {
+        System.out.println("User Already exists");
+        return;
+      }
       options.addNewStudent(name, lastname, groupId);
       System.out.println(
           "Student " + name + " " + lastname + " added to group " + groupId);
-    } catch (OperationsException e) {
-      System.out.println("User Already exists");
     } catch (UiException e) {
       System.out.println(BAD_INPUT);
     }

@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.classes;
+package com.kalachev.task7.dao.implementations;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,8 +11,9 @@ import java.util.List;
 import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
 public class CoursesDaoImpl implements CoursesDao {
 
@@ -20,7 +21,7 @@ public class CoursesDaoImpl implements CoursesDao {
       + "FROM Courses WHERE course_name = (?)";
 
   private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,first_name,last_name "
-      + "FROM students " + "WHERE student_id = (?)";
+      + "FROM students WHERE student_id = (?)";
 
   private static final String ADD_STUDENT_TO_COURSE = "INSERT INTO studentscoursesdata"
       + "(student_id,first_name,last_name,course_name,course_description) "
@@ -28,17 +29,16 @@ public class CoursesDaoImpl implements CoursesDao {
 
   private static final String DELETE_STUDENT_FROM_COURSE = "DELETE FROM studentscoursesdata "
       + "WHERE student_id = (?) AND course_name = (?)";
- 
+
   private static final String COURSE_DESCRIPTION = "course_description";
 
   @Override
-  public void addStudentToCourse(int studentId, String course)
-      throws DaoException {
+  public void addStudent(int studentId, String course) throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(FIND_STUDENTS_FULLNAME);
       statement.setInt(1, studentId);
       rs = statement.executeQuery();
@@ -68,39 +68,42 @@ public class CoursesDaoImpl implements CoursesDao {
       statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
   }
 
   @Override
-  public void removeStudentFromCourse(int studentId, String course)
-      throws DaoException {
+  public void removeStudent(int studentId, String course) throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(DELETE_STUDENT_FROM_COURSE);
       statement.setInt(1, studentId);
       statement.setString(2, course);
       statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 
   @Override
-  public List<Course> retrieveCourses() throws DaoException {
+  public List<Course> getAll() throws DaoException {
     List<Course> courses = new ArrayList<>();
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       String sql = "SELECT course_name, course_description FROM Courses";
       statement = connection.createStatement();
       rs = statement.executeQuery(sql);
@@ -112,21 +115,23 @@ public class CoursesDaoImpl implements CoursesDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return courses;
   }
 
   @Override
-  public List<Course> retrieveCoursesById(int studentId) throws DaoException {
+  public List<Course> getById(int studentId) throws DaoException {
     List<Course> courses = new ArrayList<>();
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       String findCourse = "SELECT course_name,course_description FROM StudentsCoursesData"
           + " WHERE student_id = (?)";
       statement = connection.prepareStatement(findCourse);
@@ -140,9 +145,11 @@ public class CoursesDaoImpl implements CoursesDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return courses;
   }

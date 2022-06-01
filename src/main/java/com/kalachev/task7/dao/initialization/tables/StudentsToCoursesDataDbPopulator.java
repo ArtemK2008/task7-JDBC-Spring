@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
-public class StudentsToCoursesFiller {
+public class StudentsToCoursesDataDbPopulator {
   public void createManyToManyTable(Map<String, List<String>> coursesOfStudent)
       throws DaoException {
 
@@ -20,7 +21,7 @@ public class StudentsToCoursesFiller {
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.createStatement();
       for (Entry<String, List<String>> entry : coursesOfStudent.entrySet()) {
         List<String> courses = entry.getValue();
@@ -39,9 +40,11 @@ public class StudentsToCoursesFiller {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
   }
 
@@ -49,7 +52,7 @@ public class StudentsToCoursesFiller {
     Connection connection = null;
     Statement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.createStatement();
       String sql = "CREATE TABLE StudentsCoursesData" + " AS "
           + "( SELECT s.student_id,s.group_id, s.first_name, s.last_name ,c.course_name,c.course_description "
@@ -59,9 +62,11 @@ public class StudentsToCoursesFiller {
       statement.executeUpdate(sql);
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 }

@@ -3,17 +3,19 @@ package com.kalachev.task7.ui.commands;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import javax.management.OperationsException;
-
+import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
+import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.service.validations.Validator;
 
 public class DeleteByIdCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
 
-  StudentOptions options = new StudentOptions();
   Scanner scanner;
+  StudentsDao studentsDao = new StudentsDaoImpl();
+  StudentOptions options = new StudentOptions(studentsDao);
 
   public DeleteByIdCommand(Scanner scanner) {
     super();
@@ -29,14 +31,16 @@ public class DeleteByIdCommand implements Command {
         System.out.println("Wrong student id");
         return;
       }
+      if (!Validator.checkIfStudentIdExists(id)) {
+        System.out.println("no such student");
+        return;
+      }
       options.deleteStudentById(id);
       System.out.println("student with id " + id + " deleted");
     } catch (UiException e) {
       e.printStackTrace();
     } catch (InputMismatchException e) {
       System.out.println(BAD_INPUT);
-    } catch (OperationsException e) {
-      System.out.println("no such student");
     }
   }
 

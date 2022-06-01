@@ -11,9 +11,9 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.service.data.StudentCreator;
+import com.kalachev.task7.service.data.StudentInitializer;
 
-class TestStudentCreator {
+class TestStudentInitializer {
   List<String> expected = Arrays.asList("Gwen Kuleshova", "Jane Ivanova",
       "Mike Sidorov", "Viktoria Lermontova", "Artem Trump", "Gomer Smith",
       "Wendy Petrova", "Gale Nosova", "Wendy Holodnaya", "Nikolay Tesla",
@@ -24,8 +24,8 @@ class TestStudentCreator {
 
   @Test
   void testGenerateStudents_shouldCreateRandomStudentsNames_whenCalledWithKnownSeed() {
-    StudentCreator studentCreator = new StudentCreator(1);
-    List<String> students = studentCreator.generateStudents();
+    StudentInitializer studentInitializer = new StudentInitializer(1);
+    List<String> students = studentInitializer.generateStudents();
     assertEquals(200, students.size());
 
     Set<String> uniqStudents = new HashSet<String>(students);
@@ -38,8 +38,8 @@ class TestStudentCreator {
 
   @Test
   void testGenerateStudents_shouldCreateRandomStudentsNames_whenCalledWithOtherSeed() {
-    StudentCreator studentCreator = new StudentCreator(2);
-    List<String> students = studentCreator.generateStudents();
+    StudentInitializer studentInitializer = new StudentInitializer(2);
+    List<String> students = studentInitializer.generateStudents();
     assertEquals(200, students.size());
 
     Set<String> uniqStudents = new HashSet<String>(students);

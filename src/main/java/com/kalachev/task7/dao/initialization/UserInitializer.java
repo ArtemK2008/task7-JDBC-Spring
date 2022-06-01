@@ -4,16 +4,17 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
-public class UserCreator {
+public class UserInitializer {
 
   public void createUser() throws DaoException {
     Connection connection = null;
     Statement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnection();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       String createUser = "DROP USER IF EXISTS kalachevartemsql;"
           + "CREATE USER kalachevartemsql WITH  PASSWORD '1234';"
@@ -21,9 +22,11 @@ public class UserCreator {
       statement.execute(createUser);
     } catch (Exception e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 

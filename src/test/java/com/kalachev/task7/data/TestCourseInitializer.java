@@ -16,15 +16,28 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.service.data.CoursesOfEachStudent;
+import com.kalachev.task7.service.data.CoursesInitializer;
 
-class TestCoursesOfEachStudent {
-
+class TestCourseInitializer {
+  Map<String, String> courseWithDescription;
   List<String> courses;
   HashMap<String, String> students;
+  CoursesInitializer coursesInitializer;
 
   @BeforeEach
-  void initialize() {
+  void fillExpexted() {
+    courseWithDescription = new LinkedHashMap<String, String>();
+    courseWithDescription.put("English", "place to learn English");
+    courseWithDescription.put("Mandarin", "place to learn Mandarin");
+    courseWithDescription.put("Hindi", "place to learn Hindi");
+    courseWithDescription.put("Spanish", "place to learn Spanish");
+    courseWithDescription.put("French", "place to learn French");
+    courseWithDescription.put("Arabic", "place to learn Arabic");
+    courseWithDescription.put("Bengali", "place to learn Bengali");
+    courseWithDescription.put("Russian", "place to learn Russian");
+    courseWithDescription.put("Portuguese", "place to learn Portuguese");
+    courseWithDescription.put("Ukrainian", "place to learn Ukrainian");
+
     courses = Arrays.asList("English", "Russian", "Mandarin", "Ukranian");
     students = new HashMap<>();
     students.put("1", "Artem");
@@ -33,51 +46,94 @@ class TestCoursesOfEachStudent {
   }
 
   @Test
+  void testGenerateCourses_shouldReturnHardcodedValues_whenMethoIsCalled() {
+    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    Map<String, String> actual = coursesInitializer.generateCourses();
+    Map<String, String> expected = courseWithDescription;
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void testRetrieveInput_shouldReturnCourseNames_whenCoursesExists() {
+    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    List<String> expected = new ArrayList<String>();
+    expected.add("English");
+    expected.add("Mandarin");
+    expected.add("Hindi");
+    expected.add("Spanish");
+    expected.add("French");
+    expected.add("Arabic");
+    expected.add("Bengali");
+    expected.add("Russian");
+    expected.add("Portuguese");
+    expected.add("Ukrainian");
+    List<String> actual = coursesInitializer
+        .retrieveCoursesNames(courseWithDescription);
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void testRetrieveInput_shouldThrowException_whenCoursesIsNull() {
+    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    assertThrows(IllegalArgumentException.class,
+        () -> coursesInitializer.retrieveCoursesNames(null));
+  }
+
+  @Test
+  void testRetrieveInput_shouldThrowException_whenCoursesIsEmpty() {
+    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    courseWithDescription = new HashMap<String, String>();
+    assertThrows(IllegalArgumentException.class,
+        () -> coursesInitializer.retrieveCoursesNames(courseWithDescription));
+  }
+
+  @Test
   void testAssignStudents_shouldThrowExcception_WhenStudentsIsNull() {
-    CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
+
+    coursesInitializer = new CoursesInitializer();
     HashMap<String, String> studentsWithId = null;
     List<String> courses = Arrays.asList("1", "2");
-    assertThrows(IllegalArgumentException.class, () -> coursesOfEachStudent
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldThrowExcception_WhencoursesIsNull() {
-    CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
+    coursesInitializer = new CoursesInitializer();
     HashMap<String, String> studentsWithId = new HashMap<String, String>();
     studentsWithId.put("1", "1");
     List<String> courses = null;
-    assertThrows(IllegalArgumentException.class, () -> coursesOfEachStudent
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldThrowExcception_WhenStudentsIsEmpty() {
-    CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
+    coursesInitializer = new CoursesInitializer();
     HashMap<String, String> studentsWithId = new HashMap<String, String>();
     List<String> courses = Arrays.asList("1", "2");
-    assertThrows(IllegalArgumentException.class, () -> coursesOfEachStudent
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldThrowExcception_WhencoursesIsEmpty() {
-    CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
+    coursesInitializer = new CoursesInitializer();
     HashMap<String, String> studentsWithId = new HashMap<String, String>();
     studentsWithId.put("1", "1");
     List<String> courses = new ArrayList<>();
-    assertThrows(IllegalArgumentException.class, () -> coursesOfEachStudent
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldAssignStudentsCorrectly_whenExpectertResultIsKnown() {
-    CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent(5);
+    coursesInitializer = new CoursesInitializer(5);
     Map<String, List<String>> expected = new LinkedHashMap<>();
     expected.put("1", Arrays.asList("English", "Mandarin", "Russian"));
     expected.put("2", Arrays.asList("Russian", "Ukranian", "Mandarin"));
     expected.put("3", Arrays.asList("Russian"));
-    Map<String, List<String>> actual = coursesOfEachStudent
+    Map<String, List<String>> actual = coursesInitializer
         .assignStudentsIdToCourse(students, courses);
     assertEquals(expected, actual);
   }
@@ -87,8 +143,8 @@ class TestCoursesOfEachStudent {
     Map<String, List<String>> actual;
     boolean isAnyRepetitions = false;
     for (int i = 0; i < 200; i++) {
-      CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
-      actual = coursesOfEachStudent.assignStudentsIdToCourse(students, courses);
+      coursesInitializer = new CoursesInitializer();
+      actual = coursesInitializer.assignStudentsIdToCourse(students, courses);
       for (String student : actual.keySet()) {
         Set<String> courseSet = new HashSet<>(actual.get(student));
         if (courseSet.size() != actual.get(student).size()) {
@@ -104,8 +160,8 @@ class TestCoursesOfEachStudent {
     Map<String, List<String>> actual;
     boolean isStudentWithoutCourse = false;
     for (int i = 0; i < 200; i++) {
-      CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
-      actual = coursesOfEachStudent.assignStudentsIdToCourse(students, courses);
+      coursesInitializer = new CoursesInitializer();
+      actual = coursesInitializer.assignStudentsIdToCourse(students, courses);
       for (String student : actual.keySet()) {
         if (actual.get(student).size() == 0) {
           isStudentWithoutCourse = true;
@@ -120,8 +176,8 @@ class TestCoursesOfEachStudent {
     Map<String, List<String>> actual;
     boolean isStudentWithMoreThenThree = false;
     for (int i = 0; i < 200; i++) {
-      CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
-      actual = coursesOfEachStudent.assignStudentsIdToCourse(students, courses);
+      coursesInitializer = new CoursesInitializer();
+      actual = coursesInitializer.assignStudentsIdToCourse(students, courses);
       for (String student : actual.keySet()) {
         if (actual.get(student).size() > 3) {
           isStudentWithMoreThenThree = true;

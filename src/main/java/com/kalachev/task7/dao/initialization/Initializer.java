@@ -3,18 +3,16 @@ package com.kalachev.task7.dao.initialization;
 import java.util.List;
 import java.util.Map;
 
-import com.kalachev.task7.dao.classes.StudentsDaoImpl;
-import com.kalachev.task7.dao.initialization.tables.CoursesFiller;
-import com.kalachev.task7.dao.initialization.tables.GroupsFiller;
-import com.kalachev.task7.dao.initialization.tables.StudentsFiller;
-import com.kalachev.task7.dao.initialization.tables.StudentsToCoursesFiller;
+import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
+import com.kalachev.task7.dao.initialization.tables.CoursesDataDbPopulator;
+import com.kalachev.task7.dao.initialization.tables.GroupsDataDbPopulator;
+import com.kalachev.task7.dao.initialization.tables.StudentsDataDbPopulator;
+import com.kalachev.task7.dao.initialization.tables.StudentsToCoursesDataDbPopulator;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.service.data.CoursesCreator;
-import com.kalachev.task7.service.data.CoursesOfEachStudent;
-import com.kalachev.task7.service.data.GroupCreator;
-import com.kalachev.task7.service.data.StudentCreator;
-import com.kalachev.task7.service.data.StudentsOfEachGroup;
+import com.kalachev.task7.service.data.CoursesInitializer;
+import com.kalachev.task7.service.data.GroupInitializer;
+import com.kalachev.task7.service.data.StudentInitializer;
 
 public class Initializer {
   List<String> groups;
@@ -34,22 +32,22 @@ public class Initializer {
   }
 
   private void generateStudentData() {
-    GroupCreator gp = new GroupCreator();
-    StudentCreator studentCreator = new StudentCreator();
-    CoursesCreator coursesCreator = new CoursesCreator();
+    GroupInitializer gp = new GroupInitializer();
+    StudentInitializer studentInitializer = new StudentInitializer();
+    CoursesInitializer coursesInitializer = new CoursesInitializer();
     groups = gp.generateGroups();
-    students = studentCreator.generateStudents();
-    courses = coursesCreator.generateCourses();
+    students = studentInitializer.generateStudents();
+    courses = coursesInitializer.generateCourses();
   }
 
   private void createDatabase() throws DaoException {
-    DatabaseCreator databaseCreator = new DatabaseCreator();
-    databaseCreator.createDatabase();
+    DatabaseInitializer databaseInitializer = new DatabaseInitializer();
+    databaseInitializer.createDatabase();
   }
 
   private void createUser() throws DaoException {
-    UserCreator userCreator = new UserCreator();
-    userCreator.createUser();
+    UserInitializer userInitializer = new UserInitializer();
+    userInitializer.createUser();
   }
 
   private void initializeStartTables() throws DaoException {
@@ -59,40 +57,39 @@ public class Initializer {
 
   private void fillStudentsTable(List<String> students, List<String> groups)
       throws DaoException {
-    StudentsOfEachGroup studentsOfEachGroup = new StudentsOfEachGroup();
-    Map<String, List<String>> studentsInEachGroup = studentsOfEachGroup
+    GroupInitializer groupInitializer = new GroupInitializer();
+    Map<String, List<String>> studentsInEachGroup = groupInitializer
         .assignStudentsToGroups(students, groups);
-    StudentsFiller filler = new StudentsFiller();
+    StudentsDataDbPopulator filler = new StudentsDataDbPopulator();
     filler.populateStudents(studentsInEachGroup);
   }
 
   private void fillGroupsTable(List<String> groups) throws DaoException {
-    GroupsFiller filler = new GroupsFiller();
+    GroupsDataDbPopulator filler = new GroupsDataDbPopulator();
     filler.populateGroups(groups);
   }
 
   private void fillCourseTable(Map<String, String> courses)
       throws DaoException {
-    CoursesFiller filler = new CoursesFiller();
+    CoursesDataDbPopulator filler = new CoursesDataDbPopulator();
     filler.populateCourses(courses);
   }
 
   private void fillTempManyToManyTable(Map<String, String> courses)
       throws DaoException {
-    CoursesCreator coursesCreator = new CoursesCreator();
-    List<String> courseList = coursesCreator.retrieveCoursesNames(courses);
-    CoursesOfEachStudent coursesOfEachStudent = new CoursesOfEachStudent();
+    CoursesInitializer coursesInitializer = new CoursesInitializer();
 
+    List<String> courseList = coursesInitializer.retrieveCoursesNames(courses);
     StudentsDao studentsDao = new StudentsDaoImpl();
-    Map<String, String> studentIds = studentsDao.retrieveStudentsId();
-    Map<String, List<String>> studentIdAndHisCourses = coursesOfEachStudent
+    Map<String, String> studentIds = studentsDao.studentNamesById();
+    Map<String, List<String>> studentIdAndHisCourses = coursesInitializer
         .assignStudentsIdToCourse(studentIds, courseList);
-    StudentsToCoursesFiller filler = new StudentsToCoursesFiller();
+    StudentsToCoursesDataDbPopulator filler = new StudentsToCoursesDataDbPopulator();
     filler.createManyToManyTable(studentIdAndHisCourses);
   }
 
   private void createStudentsCoursesTable() throws DaoException {
-    StudentsToCoursesFiller filler = new StudentsToCoursesFiller();
+    StudentsToCoursesDataDbPopulator filler = new StudentsToCoursesDataDbPopulator();
     filler.createStudentsCoursesFullTable();
   }
 

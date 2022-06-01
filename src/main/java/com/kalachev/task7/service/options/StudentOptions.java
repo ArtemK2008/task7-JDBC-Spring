@@ -3,14 +3,12 @@ package com.kalachev.task7.service.options;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.OperationsException;
-
-import com.kalachev.task7.dao.classes.StudentsDaoImpl;
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.checks.ValidationChecks;
+import com.kalachev.task7.service.validations.Validator;
+import com.kalachev.task7.utilities.ExceptionsUtil;
 
 public class StudentOptions {
 
@@ -18,54 +16,57 @@ public class StudentOptions {
 
   StudentsDao studentsDao;
 
-  public StudentOptions() {
+  public StudentOptions(StudentsDao studentsDao) {
     super();
-    this.studentsDao = new StudentsDaoImpl();
+    this.studentsDao = studentsDao;
   }
 
-  public List<String> findStudentsByCourse(String course) throws UiException {
-    if (!ValidationChecks.checkIfCourseExists(course)) {
+  public List<String> findByCourse(String course) throws UiException {
+    if (!Validator.checkIfCourseExists(course)) {
       throw new IllegalArgumentException();
     }
     List<String> studentOfThisCourse = new ArrayList<>();
     try {
-      List<Student> student = studentsDao.findStudentsByCourse(course);
+      List<Student> student = studentsDao.findByCourse(course);
       student.forEach(s -> studentOfThisCourse
           .add(s.getFirstName() + SPACE + s.getLastName()));
     } catch (DaoException e) {
       e.printStackTrace();
-      throw new UiException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
     return studentOfThisCourse;
   }
 
   public void addNewStudent(String firstName, String lastName, int groupId)
-      throws UiException, OperationsException {
+      throws UiException {
     if (groupId < 1 || groupId > 11) {
       throw new IllegalArgumentException();
     }
-    if (ValidationChecks.checkIfStudentAlreadyInGroup(groupId, firstName,
-        lastName)) {
-      throw new OperationsException();
+    if (Validator.checkIfStudentAlreadyInGroup(groupId, firstName, lastName)) {
+      throw new IllegalArgumentException();
     }
 
     try {
-      studentsDao.addNewStudent(firstName, lastName, groupId);
+      studentsDao.insert(firstName, lastName, groupId);
     } catch (DaoException e) {
-      throw new UiException();
+      e.printStackTrace();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
   }
 
-  public void deleteStudentById(int id)
-      throws UiException, OperationsException {
+  public void deleteStudentById(int id) throws UiException {
     if (id < 1) {
       throw new IllegalArgumentException();
     }
-    if (!ValidationChecks.checkIfStudentIdExists(id)) {
-      throw new OperationsException();
+    if (!Validator.checkIfStudentIdExists(id)) {
+      throw new IllegalArgumentException();
     }
     try {
-      studentsDao.deleteStudentById(id);
+      studentsDao.delete(id);
     } catch (DaoException e) {
       e.printStackTrace();
     }

@@ -3,57 +3,57 @@ package com.kalachev.task7.service.options;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.OperationsException;
-
-import com.kalachev.task7.dao.classes.CoursesDaoImpl;
 import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.checks.ValidationChecks;
+import com.kalachev.task7.service.validations.Validator;
+import com.kalachev.task7.utilities.ExceptionsUtil;
 
 public class CoursesOptions {
 
   CoursesDao coursesDao;
 
-  public CoursesOptions() {
-    this.coursesDao = new CoursesDaoImpl();
+  public CoursesOptions(CoursesDao coursesDao) {
+    this.coursesDao = coursesDao;
   }
 
   public void addStudentToCourse(int studentId, String course)
-      throws UiException, OperationsException {
+      throws UiException {
 
-    checkIfInputValid(studentId, course);
-    if (ValidationChecks.checkIfStudentAlreadyInCourse(studentId, course)) {
-      throw new OperationsException();
+    validateInput(studentId, course);
+    if (Validator.checkIfStudentAlreadyInCourse(studentId, course)) {
+      throw new IllegalArgumentException();
     }
     try {
-      coursesDao.addStudentToCourse(studentId, course);
+      coursesDao.addStudent(studentId, course);
     } catch (DaoException e) {
       e.printStackTrace();
     }
   }
 
   public void removeStudentFromCourse(int studentId, String course)
-      throws UiException, OperationsException {
+      throws UiException {
 
-    checkIfInputValid(studentId, course);
-    if (!ValidationChecks.checkIfStudentAlreadyInCourse(studentId, course)) {
-      throw new OperationsException();
+    validateInput(studentId, course);
+    if (!Validator.checkIfStudentAlreadyInCourse(studentId, course)) {
+      throw new IllegalArgumentException();
     }
     try {
-      coursesDao.removeStudentFromCourse(studentId, course);
+      coursesDao.removeStudent(studentId, course);
     } catch (DaoException e) {
       e.printStackTrace();
-      throw new UiException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
   }
 
-  public List<String> findCourseNames() throws UiException {
+  public List<String> findNames() throws UiException {
     List<Course> courses = new ArrayList<>();
     List<String> courseNames = new ArrayList<>();
     try {
-      courses = coursesDao.retrieveCourses();
+      courses = coursesDao.getAll();
       if (courses.isEmpty()) {
         throw new UiException();
       }
@@ -65,30 +65,31 @@ public class CoursesOptions {
     return courseNames;
   }
 
-  public List<String> retrieveCourseNamesByID(int id) throws UiException {
+  public List<String> findNamesByID(int id) throws UiException {
     List<Course> courses = new ArrayList<>();
     List<String> courseNames = new ArrayList<>();
     try {
-      courses = coursesDao.retrieveCoursesById(id);
+      courses = coursesDao.getById(id);
       courses.forEach(c -> courseNames.add(c.getCourseName()));
     } catch (DaoException e) {
       e.printStackTrace();
-      throw new UiException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
     return courseNames;
   }
 
-  private void checkIfInputValid(int studentId, String course)
-      throws UiException, OperationsException {
+  private void validateInput(int studentId, String course) throws UiException {
     if (studentId < 0) {
       throw new IllegalArgumentException();
     }
 
-    if (!ValidationChecks.checkIfCourseExists(course)) {
+    if (!Validator.checkIfCourseExists(course)) {
       throw new UiException();
     }
 
-    if (!ValidationChecks.checkIfStudentIdExists(studentId)) {
+    if (!Validator.checkIfStudentIdExists(studentId)) {
       throw new UiException();
     }
   }

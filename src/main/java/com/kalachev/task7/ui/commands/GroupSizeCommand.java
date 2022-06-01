@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.kalachev.task7.dao.implementations.GroupsDaoImpl;
+import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.GroupOptions;
 
@@ -13,7 +15,8 @@ public class GroupSizeCommand implements Command {
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
-  GroupOptions options = new GroupOptions();
+  GroupsDao groupsDao = new GroupsDaoImpl();
+  GroupOptions options = new GroupOptions(groupsDao);
 
   public GroupSizeCommand(Scanner scanner) {
     super();
@@ -41,7 +44,7 @@ public class GroupSizeCommand implements Command {
   private List<String> findGroups(int size) {
     List<String> groupNames = new ArrayList<>();
     try {
-      groupNames = options.findGroupsBySize(size);
+      groupNames = options.findBySize(size);
     } catch (UiException e) {
       System.out.println("no such groups");
     }

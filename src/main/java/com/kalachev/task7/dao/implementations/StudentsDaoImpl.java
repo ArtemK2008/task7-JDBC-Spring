@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.classes;
+package com.kalachev.task7.dao.implementations;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,9 @@ import java.util.Map;
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
 public class StudentsDaoImpl implements StudentsDao {
 
@@ -27,14 +28,14 @@ public class StudentsDaoImpl implements StudentsDao {
   private static final String DELETE_STUDENT = "DELETE FROM Students Where student_id = (?)";
 
   @Override
-  public List<Student> findStudentsByCourse(String courseName)
+  public List<Student> findByCourse(String courseName)
       throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
     List<Student> students = new ArrayList<>();
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(FIND_STUDENTS);
       statement.setString(1, courseName);
       rs = statement.executeQuery();
@@ -48,20 +49,22 @@ public class StudentsDaoImpl implements StudentsDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return students;
   }
 
   @Override
-  public void addNewStudent(String firstName, String lastName, int groupId)
+  public void insert(String firstName, String lastName, int groupId)
       throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(INSERT_STUDENT);
       statement.setInt(1, groupId);
       statement.setString(2, firstName);
@@ -69,37 +72,41 @@ public class StudentsDaoImpl implements StudentsDao {
       statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 
   @Override
-  public void deleteStudentById(int id) throws DaoException {
+  public void delete(int id) throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(DELETE_STUDENT);
       statement.setInt(1, id);
       statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 
   @Override
-  public Map<String, String> retrieveStudentsId() throws DaoException {
+  public Map<String, String> studentNamesById() throws DaoException {
     Map<String, String> idsOfEachStuden = new LinkedHashMap<>();
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.createStatement();
       rs = statement.executeQuery(
           "SELECT student_id,first_name,last_name  FROM Students");
@@ -109,9 +116,11 @@ public class StudentsDaoImpl implements StudentsDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return idsOfEachStuden;
   }

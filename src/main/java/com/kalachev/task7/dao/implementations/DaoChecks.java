@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.classes;
+package com.kalachev.task7.dao.implementations;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
 public class DaoChecks {
 
@@ -30,7 +31,7 @@ public class DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_COURSE_IF_EXISTS);
       statement.setString(1, course);
       rs = statement.executeQuery();
@@ -40,9 +41,11 @@ public class DaoChecks {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return isExist;
   }
@@ -54,7 +57,7 @@ public class DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_STUDENT_IF_EXISTS_IN_GROUP);
       statement.setString(1, firstName);
       statement.setString(2, lastName);
@@ -65,9 +68,11 @@ public class DaoChecks {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return isExists;
   }
@@ -78,7 +83,7 @@ public class DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_STUDENT_ID_IF_EXISTS);
       statement.setInt(1, id);
       rs = statement.executeQuery();
@@ -87,9 +92,11 @@ public class DaoChecks {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return isExists;
   }
@@ -101,7 +108,7 @@ public class DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(CHECK_IF_STUDENT_IN_COURSE);
       statement.setInt(1, studentId);
       statement.setString(2, course);
@@ -111,9 +118,11 @@ public class DaoChecks {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
 
     return isExists;

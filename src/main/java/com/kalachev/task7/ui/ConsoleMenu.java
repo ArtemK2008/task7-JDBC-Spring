@@ -1,6 +1,8 @@
 package com.kalachev.task7.ui;
 
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.kalachev.task7.dao.initialization.Initializer;
@@ -18,7 +20,7 @@ public class ConsoleMenu {
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner = new Scanner(System.in);
-  Command command;
+  Map<Integer, Command> commands;
 
   private static String[] options = {
       "1: Find all groups with less or equals student count",
@@ -30,6 +32,7 @@ public class ConsoleMenu {
   public void runSchoolApp() throws DaoException {
     Initializer initializer = new Initializer();
     initializer.initializeTables();
+    initializeCommands();
     cleanConsole();
     int option = 1;
     while (option != 7) {
@@ -51,35 +54,19 @@ public class ConsoleMenu {
     }
   }
 
+  private void initializeCommands() {
+    commands = new HashMap<>();
+    commands.put(1, new GroupSizeCommand(scanner));
+    commands.put(2, new FindStudentByCourseCommand(scanner));
+    commands.put(3, new AddStudentCommand(scanner));
+    commands.put(4, new DeleteByIdCommand(scanner));
+    commands.put(5, new AddToCourseCommand(scanner));
+    commands.put(6, new RemoveFromCourseCommand(scanner));
+    commands.put(7, new ExitCommand(scanner));
+  }
+
   private void handleOptions(int option) {
-    if (option == 1) {
-      command = new GroupSizeCommand(scanner);
-      command.execute();
-    }
-    if (option == 2) {
-      command = new FindStudentByCourseCommand(scanner);
-      command.execute();
-    }
-    if (option == 3) {
-      command = new AddStudentCommand(scanner);
-      command.execute();
-    }
-    if (option == 4) {
-      command = new DeleteByIdCommand(scanner);
-      command.execute();
-    }
-    if (option == 5) {
-      command = new AddToCourseCommand(scanner);
-      command.execute();
-    }
-    if (option == 6) {
-      command = new RemoveFromCourseCommand(scanner);
-      command.execute();
-    }
-    if (option == 7) {
-      command = new ExitCommand(scanner);
-      command.execute();
-    }
+    commands.get(option).execute();
   }
 
   private void pressEnterMessage() {

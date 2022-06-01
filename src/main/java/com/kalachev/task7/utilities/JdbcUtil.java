@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 import com.kalachev.task7.exceptions.DaoException;
 
-public class JdbcCloser {
+public class JdbcUtil {
 
-  private JdbcCloser() {
+  private JdbcUtil() {
     super();
   }
 
@@ -20,7 +20,9 @@ public class JdbcCloser {
         statement.close();
       } catch (SQLException e) {
         e.printStackTrace();
-        throw new DaoException();
+        String methodName = ExceptionsUtil.getCurrentMethodName();
+        String className = ExceptionsUtil.getCurrentClassName();
+        throw new DaoException(methodName, className);
       }
     }
     if (connection != null) {
@@ -28,7 +30,9 @@ public class JdbcCloser {
         connection.close();
       } catch (SQLException e) {
         e.printStackTrace();
-        throw new DaoException();
+        String methodName = ExceptionsUtil.getCurrentMethodName();
+        String className = ExceptionsUtil.getCurrentClassName();
+        throw new DaoException(methodName, className);
       }
     }
   }
@@ -40,7 +44,9 @@ public class JdbcCloser {
         rs.close();
       } catch (SQLException e) {
         e.printStackTrace();
-        throw new DaoException();
+        String methodName = ExceptionsUtil.getCurrentMethodName();
+        String className = ExceptionsUtil.getCurrentClassName();
+        throw new DaoException(methodName, className);
       }
     }
     if (statement != null) {
@@ -48,7 +54,9 @@ public class JdbcCloser {
         statement.close();
       } catch (SQLException e) {
         e.printStackTrace();
-        throw new DaoException();
+        String methodName = ExceptionsUtil.getCurrentMethodName();
+        String className = ExceptionsUtil.getCurrentClassName();
+        throw new DaoException(methodName, className);
       }
     }
     if (connection != null) {
@@ -56,7 +64,9 @@ public class JdbcCloser {
         connection.close();
       } catch (SQLException e) {
         e.printStackTrace();
-        throw new DaoException();
+        String methodName = ExceptionsUtil.getCurrentMethodName();
+        String className = ExceptionsUtil.getCurrentClassName();
+        throw new DaoException(methodName, className);
       }
     }
   }

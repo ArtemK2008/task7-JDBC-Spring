@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.classes;
+package com.kalachev.task7.dao.implementations;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,9 @@ import java.util.List;
 import com.kalachev.task7.dao.entities.Group;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
 public class GroupsDaoImpl implements GroupsDao {
 
@@ -20,13 +21,13 @@ public class GroupsDaoImpl implements GroupsDao {
       + "GROUP BY g.group_id,g.group_name " + "HAVING COUNT (s.group_id) >=(?)";
 
   @Override
-  public List<Group> findGroupsBySize(int maxSize) throws DaoException {
+  public List<Group> findBySize(int maxSize) throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
     List<Group> groups = new ArrayList<>();
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(FIND_GROUP_BY_SIZE);
       statement.setInt(1, maxSize);
       rs = statement.executeQuery();
@@ -38,9 +39,11 @@ public class GroupsDaoImpl implements GroupsDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
     return groups;
   }

@@ -7,12 +7,12 @@ import com.kalachev.task7.exceptions.DaoException;
 
 public interface CoursesDao {
 
-  void addStudentToCourse(int studentId, String course) throws DaoException;
+  void addStudent(int studentId, String course) throws DaoException;
 
-  void removeStudentFromCourse(int studentId, String course)
+  void removeStudent(int studentId, String course)
       throws DaoException;
 
-  List<Course> retrieveCourses() throws DaoException;
+  List<Course> getAll() throws DaoException;
 
-  List<Course> retrieveCoursesById(int studentId) throws DaoException;
+  List<Course> getById(int studentId) throws DaoException;
 }  

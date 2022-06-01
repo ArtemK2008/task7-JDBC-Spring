@@ -4,16 +4,17 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
-public class DatabaseCreator {
+public class DatabaseInitializer {
 
   public void createDatabase() throws DaoException {
     Connection connection = null;
     Statement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnection();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       String dropIfExist = "DROP DATABASE IF EXISTS comkalachevtasksqljdbc;";
       statement.execute(dropIfExist);
@@ -21,9 +22,11 @@ public class DatabaseCreator {
       statement.execute(createDb);
     } catch (Exception e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 

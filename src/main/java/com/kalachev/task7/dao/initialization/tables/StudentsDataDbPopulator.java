@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
-public class StudentsFiller {
+public class StudentsDataDbPopulator {
 
   public void populateStudents(Map<String, List<String>> groupsWithItsStudents)
       throws DaoException {
@@ -21,7 +22,7 @@ public class StudentsFiller {
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.createStatement();
       for (Entry<String, List<String>> entry : groupsWithItsStudents
           .entrySet()) {
@@ -42,9 +43,11 @@ public class StudentsFiller {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(rs, statement, connection);
+      JdbcUtil.closeAll(rs, statement, connection);
     }
   }
 

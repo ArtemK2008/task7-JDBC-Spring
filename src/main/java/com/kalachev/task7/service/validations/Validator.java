@@ -1,14 +1,15 @@
-package com.kalachev.task7.service.checks;
+package com.kalachev.task7.service.validations;
 
-import com.kalachev.task7.dao.classes.DaoChecks;
+import com.kalachev.task7.dao.implementations.DaoChecks;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
+import com.kalachev.task7.utilities.ExceptionsUtil;
 
-public class ValidationChecks {
+public class Validator {
 
   static DaoChecks dao = new DaoChecks();
 
-  private ValidationChecks() {
+  private Validator() {
     super();
   }
 
@@ -20,7 +21,9 @@ public class ValidationChecks {
       }
     } catch (DaoException e) {
       e.printStackTrace();
-      throw new UiException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
     return isExist;
   }
@@ -34,7 +37,9 @@ public class ValidationChecks {
       }
     } catch (DaoException e) {
       e.printStackTrace();
-      throw new UiException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
     return isInGroup;
   }
@@ -47,7 +52,9 @@ public class ValidationChecks {
       }
     } catch (DaoException e) {
       e.printStackTrace();
-      throw new UiException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
     return isExist;
   }
@@ -61,7 +68,9 @@ public class ValidationChecks {
       }
     } catch (DaoException e) {
       e.printStackTrace();
-      throw new UiException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
     }
     return isExist;
   }

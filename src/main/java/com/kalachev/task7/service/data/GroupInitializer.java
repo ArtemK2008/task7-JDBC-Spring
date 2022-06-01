@@ -7,22 +7,56 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-public class StudentsOfEachGroup {
+public class GroupInitializer {
   Random random;
+  private static final String GROUPLESS = "students without groups";
+  static final int MAX_GROUP_SIZE = 30;
+  static final int MIN_GROUP_SIZE = 10;
 
-  public StudentsOfEachGroup() {
+  public GroupInitializer() {
     super();
     random = new Random();
   }
 
-  public StudentsOfEachGroup(int seed) {
+  public GroupInitializer(int seed) {
     super();
     this.random = new Random(seed);
   }
 
-  static final int MAX_GROUP_SIZE = 30;
-  static final int MIN_GROUP_SIZE = 10;
-  static final String GROUPLESS = "students without groups";
+  public List<String> generateGroups() {
+    List<String> groups = new ArrayList<>();
+    List<String> groupsUsed = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      String tempString = generateGroupName();
+      while (groupsUsed.contains(tempString)) {
+        tempString = generateGroupName();
+      }
+      groupsUsed.add(tempString);
+      groups.add(tempString);
+    }
+    groups.add(GROUPLESS);
+    return groups;
+  }
+
+  private String generateCharPart() {
+    int leftLimit = 97;
+    int rightLimit = 122;
+    int targetStringLength = 2;
+    return random.ints(leftLimit, rightLimit + 1).limit(targetStringLength)
+        .collect(StringBuilder::new, StringBuilder::appendCodePoint,
+            StringBuilder::append)
+        .toString();
+  }
+
+  private String generateNumberPart() {
+    int leftLimit = 48;
+    int rightLimit = 57;
+    int targetStringLength = 2;
+    return random.ints(leftLimit, rightLimit + 1).limit(targetStringLength)
+        .collect(StringBuilder::new, StringBuilder::appendCodePoint,
+            StringBuilder::append)
+        .toString();
+  }
 
   public Map<String, List<String>> assignStudentsToGroups(List<String> students,
       List<String> groups) {
@@ -85,4 +119,9 @@ public class StudentsOfEachGroup {
     groups.stream().forEach(g -> map.put(g, new ArrayList<>()));
     return map;
   }
+
+  private String generateGroupName() {
+    return generateCharPart() + "-" + generateNumberPart();
+  }
+
 }

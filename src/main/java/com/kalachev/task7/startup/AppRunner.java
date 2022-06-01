@@ -1,16 +1,15 @@
 package com.kalachev.task7.startup;
 
-import com.kalachev.task7.dao.initialization.DatabaseCreator;
-import com.kalachev.task7.dao.initialization.UserCreator;
+import com.kalachev.task7.dao.initialization.DatabaseInitializer;
+import com.kalachev.task7.dao.initialization.UserInitializer;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.ui.ConsoleMenu;
 
 public class AppRunner {
 
   public static void main(String[] args) throws DaoException {
-
-    DatabaseCreator db = new DatabaseCreator();
-    UserCreator uc = new UserCreator();
+    DatabaseInitializer db = new DatabaseInitializer();
+    UserInitializer uc = new UserInitializer();
     db.createDatabase();
     uc.createUser();
 

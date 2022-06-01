@@ -6,10 +6,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.utilities.ConnectionMaker;
-import com.kalachev.task7.utilities.JdbcCloser;
+import com.kalachev.task7.utilities.ConnectionManager;
+import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.utilities.JdbcUtil;
 
-public class GroupsFiller {
+public class GroupsDataDbPopulator {
 
   private static final String INSERT_GROUPS = "INSERT INTO Groups (group_name) VALUES (?)";
 
@@ -17,7 +18,7 @@ public class GroupsFiller {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionMaker.getDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(INSERT_GROUPS);
       connection.setAutoCommit(false);
       for (String group : groups) {
@@ -29,9 +30,11 @@ public class GroupsFiller {
       connection.setAutoCommit(true);
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DaoException();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
     } finally {
-      JdbcCloser.closeAll(statement, connection);
+      JdbcUtil.closeAll(statement, connection);
     }
   }
 }

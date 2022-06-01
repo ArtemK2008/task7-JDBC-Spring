@@ -5,11 +5,11 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.management.OperationsException;
-
+import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
+import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.checks.ValidationChecks;
 import com.kalachev.task7.service.options.CoursesOptions;
+import com.kalachev.task7.service.validations.Validator;
 
 public class AddToCourseCommand implements Command {
 
@@ -17,7 +17,8 @@ public class AddToCourseCommand implements Command {
 
   Scanner scanner;
 
-  CoursesOptions options = new CoursesOptions();
+  CoursesDao coursesDao = new CoursesDaoImpl();
+  CoursesOptions options = new CoursesOptions(coursesDao);
 
   public AddToCourseCommand(Scanner scanner) {
     super();
@@ -32,6 +33,7 @@ public class AddToCourseCommand implements Command {
       if (!checkIfIdExists(id)) {
         return;
       }
+
       List<String> courses = retrieveCoursesNames();
       printCourses(courses);
       System.out.println("Enter a name of a course from the list");
@@ -40,6 +42,11 @@ public class AddToCourseCommand implements Command {
         System.out.println("Wrong course name");
         return;
       }
+
+      if (checkIfAlreadyInCourse(id, course)) {
+        return;
+      }
+
       options.addStudentToCourse(id, course);
       System.out
           .println("Student with id " + id + " added to course " + course);
@@ -47,8 +54,6 @@ public class AddToCourseCommand implements Command {
       e.printStackTrace();
     } catch (InputMismatchException e) {
       System.out.println(BAD_INPUT);
-    } catch (OperationsException e) {
-      System.out.println("student already in course");
     }
   }
 
@@ -65,17 +70,27 @@ public class AddToCourseCommand implements Command {
     }
     boolean isExist = true;
 
-    if (!ValidationChecks.checkIfStudentIdExists(id)) {
+    if (!Validator.checkIfStudentIdExists(id)) {
       System.out.println("There is no student with such id");
       isExist = false;
     }
     return isExist;
   }
 
+  private boolean checkIfAlreadyInCourse(int id, String course)
+      throws UiException {
+    boolean isInCourse = false;
+    if (Validator.checkIfStudentAlreadyInCourse(id, course)) {
+      System.out.println("student already in course");
+      isInCourse = true;
+    }
+    return isInCourse;
+  }
+
   private List<String> retrieveCoursesNames() {
     List<String> courses = new ArrayList<>();
     try {
-      courses = options.findCourseNames();
+      courses = options.findNames();
     } catch (UiException e) {
       System.out.println("No Courses Found");
     }
