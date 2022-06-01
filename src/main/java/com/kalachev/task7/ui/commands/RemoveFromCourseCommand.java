@@ -7,14 +7,15 @@ import java.util.Scanner;
 import javax.management.OperationsException;
 
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.UserOptions;
+import com.kalachev.task7.service.checks.ValidationChecks;
+import com.kalachev.task7.service.options.CoursesOptions;
 
 public class RemoveFromCourseCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
-  UserOptions userOptions = new UserOptions();
+  CoursesOptions options = new CoursesOptions();
 
   public RemoveFromCourseCommand(Scanner scanner) {
     super();
@@ -29,7 +30,7 @@ public class RemoveFromCourseCommand implements Command {
       if (!checkIfIdExists(id)) {
         return;
       }
-      List<String> courses = userOptions.retrieveCourseNamesByID(id);
+      List<String> courses = options.retrieveCourseNamesByID(id);
       printCourses(courses);
 
       System.out.println("Enter a name of a course from the list");
@@ -38,7 +39,7 @@ public class RemoveFromCourseCommand implements Command {
         System.out.println("Wrong course name");
         return;
       }
-      userOptions.removeStudentFromCourse(id, course);
+      options.removeStudentFromCourse(id, course);
       System.out.println("Student with id " + id + " removed from " + course);
     } catch (UiException e) {
       e.printStackTrace();
@@ -55,7 +56,7 @@ public class RemoveFromCourseCommand implements Command {
       return false;
     }
     boolean isExist = true;
-    if (!userOptions.checkIfStudentIdExists(id)) {
+    if (!ValidationChecks.checkIfStudentIdExists(id)) {
       System.out.println("There is no student with such id");
       isExist = false;
     }

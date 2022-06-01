@@ -3,7 +3,7 @@ package com.kalachev.task7.startup;
 import com.kalachev.task7.dao.initialization.DatabaseCreator;
 import com.kalachev.task7.dao.initialization.UserCreator;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.ui.ConsoleApp;
+import com.kalachev.task7.ui.ConsoleMenu;
 
 public class AppRunner {
 
@@ -14,7 +14,7 @@ public class AppRunner {
     db.createDatabase();
     uc.createUser();
 
-    ConsoleApp app = new ConsoleApp();
+    ConsoleMenu app = new ConsoleMenu();
     app.runSchoolApp();
 
   }

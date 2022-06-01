@@ -6,12 +6,13 @@ import java.util.Scanner;
 import javax.management.OperationsException;
 
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.UserOptions;
+import com.kalachev.task7.service.options.StudentOptions;
 
 public class DeleteByIdCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
 
+  StudentOptions options = new StudentOptions();
   Scanner scanner;
 
   public DeleteByIdCommand(Scanner scanner) {
@@ -28,8 +29,7 @@ public class DeleteByIdCommand implements Command {
         System.out.println("Wrong student id");
         return;
       }
-      UserOptions userOptions = new UserOptions();
-      userOptions.deleteStudentById(id);
+      options.deleteStudentById(id);
       System.out.println("student with id " + id + " deleted");
     } catch (UiException e) {
       e.printStackTrace();

@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.UserOptions;
+import com.kalachev.task7.service.options.GroupOptions;
 
 public class GroupSizeCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
+  GroupOptions options = new GroupOptions();
 
   public GroupSizeCommand(Scanner scanner) {
     super();
@@ -38,10 +39,9 @@ public class GroupSizeCommand implements Command {
   }
 
   private List<String> findGroups(int size) {
-    UserOptions userOptions = new UserOptions();
     List<String> groupNames = new ArrayList<>();
     try {
-      groupNames = userOptions.findGroupsBySize(size);
+      groupNames = options.findGroupsBySize(size);
     } catch (UiException e) {
       System.out.println("no such groups");
     }

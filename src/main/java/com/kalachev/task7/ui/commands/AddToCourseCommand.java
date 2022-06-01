@@ -8,14 +8,16 @@ import java.util.Scanner;
 import javax.management.OperationsException;
 
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.UserOptions;
+import com.kalachev.task7.service.checks.ValidationChecks;
+import com.kalachev.task7.service.options.CoursesOptions;
 
 public class AddToCourseCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
-  UserOptions userOptions = new UserOptions();
+
+  CoursesOptions options = new CoursesOptions();
 
   public AddToCourseCommand(Scanner scanner) {
     super();
@@ -38,7 +40,7 @@ public class AddToCourseCommand implements Command {
         System.out.println("Wrong course name");
         return;
       }
-      userOptions.addStudentToCourse(id, course);
+      options.addStudentToCourse(id, course);
       System.out
           .println("Student with id " + id + " added to course " + course);
     } catch (UiException e) {
@@ -62,7 +64,8 @@ public class AddToCourseCommand implements Command {
       return false;
     }
     boolean isExist = true;
-    if (!userOptions.checkIfStudentIdExists(id)) {
+
+    if (!ValidationChecks.checkIfStudentIdExists(id)) {
       System.out.println("There is no student with such id");
       isExist = false;
     }
@@ -72,7 +75,7 @@ public class AddToCourseCommand implements Command {
   private List<String> retrieveCoursesNames() {
     List<String> courses = new ArrayList<>();
     try {
-      courses = userOptions.findCourseNames();
+      courses = options.findCourseNames();
     } catch (UiException e) {
       System.out.println("No Courses Found");
     }

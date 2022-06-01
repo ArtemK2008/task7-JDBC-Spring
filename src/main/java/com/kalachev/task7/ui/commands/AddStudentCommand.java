@@ -6,11 +6,13 @@ import java.util.Scanner;
 import javax.management.OperationsException;
 
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.UserOptions;
+import com.kalachev.task7.service.options.StudentOptions;
 
 public class AddStudentCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
+
+  StudentOptions options;
 
   Scanner scanner;
 
@@ -39,7 +41,7 @@ public class AddStudentCommand implements Command {
   }
 
   private void addStudent(String name, String lastname, int groupId) {
-    UserOptions options = new UserOptions();
+    options = new StudentOptions();
     try {
       options.addNewStudent(name, lastname, groupId);
       System.out.println(

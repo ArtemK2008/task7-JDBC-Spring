@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.service.UserOptions;
 import com.kalachev.task7.ui.commands.AddStudentCommand;
 import com.kalachev.task7.ui.commands.AddToCourseCommand;
 import com.kalachev.task7.ui.commands.Command;
@@ -15,11 +14,10 @@ import com.kalachev.task7.ui.commands.FindStudentByCourseCommand;
 import com.kalachev.task7.ui.commands.GroupSizeCommand;
 import com.kalachev.task7.ui.commands.RemoveFromCourseCommand;
 
-public class ConsoleApp {
+public class ConsoleMenu {
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner = new Scanner(System.in);
-  UserOptions userOptions = new UserOptions();
   Command command;
 
   private static String[] options = {
