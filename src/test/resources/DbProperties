@@ -1,0 +1,8 @@
+URL_ORIGINAL = jdbc:postgresql://localhost/
+USERNAME_ORIGINAL = postgres
+PASSWORD_ORIGINAL = 2487
+URL_CREATED = jdbc:postgresql://localhost/comkalachevtasksqljdbc
+USERNAME_CREATED = kalachevartemsql
+PASSWORD_CREATED = 1234
+
+JDBC_DRIVER = org.postgresql.Driver

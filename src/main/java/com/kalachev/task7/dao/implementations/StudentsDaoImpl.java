@@ -28,8 +28,7 @@ public class StudentsDaoImpl implements StudentsDao {
   private static final String DELETE_STUDENT = "DELETE FROM Students Where student_id = (?)";
 
   @Override
-  public List<Student> findByCourse(String courseName)
-      throws DaoException {
+  public List<Student> findByCourse(String courseName) throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
