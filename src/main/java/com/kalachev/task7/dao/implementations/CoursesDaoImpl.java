@@ -20,12 +20,12 @@ public class CoursesDaoImpl implements CoursesDao {
   private static final String FIND_COURSE_DESCRIPTION = "SELECT course_name,course_description "
       + "FROM Courses WHERE course_name = (?)";
 
-  private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,first_name,last_name "
+  private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,group_id,first_name,last_name "
       + "FROM students WHERE student_id = (?)";
 
   private static final String ADD_STUDENT_TO_COURSE = "INSERT INTO studentscoursesdata"
-      + "(student_id,first_name,last_name,course_name,course_description) "
-      + "VALUES (?,?,?,?,?)";
+      + "(student_id,group_id,first_name,last_name,course_name,course_description) "
+      + "VALUES (?,?,?,?,?,?)";
 
   private static final String DELETE_STUDENT_FROM_COURSE = "DELETE FROM studentscoursesdata "
       + "WHERE student_id = (?) AND course_name = (?)";
@@ -44,9 +44,11 @@ public class CoursesDaoImpl implements CoursesDao {
       rs = statement.executeQuery();
       String firstName = null;
       String lastName = null;
+      int groupId = 0;
       if (rs.next()) {
         firstName = rs.getString("first_name");
         lastName = rs.getString("last_name");
+        groupId = rs.getInt("group_id");
       }
       rs.close();
       statement.close();
@@ -61,10 +63,11 @@ public class CoursesDaoImpl implements CoursesDao {
       statement.close();
       statement = connection.prepareStatement(ADD_STUDENT_TO_COURSE);
       statement.setInt(1, studentId);
-      statement.setString(2, firstName);
-      statement.setString(3, lastName);
-      statement.setString(4, course);
-      statement.setString(5, courseDesciption);
+      statement.setInt(2, groupId);
+      statement.setString(3, firstName);
+      statement.setString(4, lastName);
+      statement.setString(5, course);
+      statement.setString(6, courseDesciption);
       statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();

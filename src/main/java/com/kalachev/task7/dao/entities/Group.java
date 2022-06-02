@@ -25,7 +25,7 @@ public class Group {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(groupName, id);
   }
 
   @Override
@@ -37,7 +37,12 @@ public class Group {
     if (getClass() != obj.getClass())
       return false;
     Group other = (Group) obj;
-    return id == other.id;
+    return Objects.equals(groupName, other.groupName) && id == other.id;
+  }
+
+  @Override
+  public String toString() {
+    return "Group [id=" + id + ", groupName=" + groupName + "]";
   }
 
 }

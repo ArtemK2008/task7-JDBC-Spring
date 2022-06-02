@@ -1,13 +1,14 @@
 package com.kalachev.task7.service.validations;
 
-import com.kalachev.task7.dao.implementations.DaoChecks;
+import com.kalachev.task7.dao.implementations.DaoChecksImpl;
+import com.kalachev.task7.dao.interfaces.DaoChecks;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.utilities.ExceptionsUtil;
 
 public class Validator {
 
-  static DaoChecks dao = new DaoChecks();
+  static DaoChecks dao = new DaoChecksImpl();
 
   private Validator() {
     super();

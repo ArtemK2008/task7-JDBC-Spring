@@ -57,4 +57,10 @@ public class Student {
     return id == other.id;
   }
 
+  @Override
+  public String toString() {
+    return "Student [id=" + id + ", groupdId=" + groupdId + ", firstName="
+        + firstName + ", lastName=" + lastName + "]";
+  }
+
 }

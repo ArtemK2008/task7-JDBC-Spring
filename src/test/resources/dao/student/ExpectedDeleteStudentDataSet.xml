@@ -9,5 +9,4 @@
 <Students student_id = '7' group_id = '2' first_name = 'sveta' last_name = 'svetova'/>
 <Students student_id = '8' group_id = '3' first_name = 'liza' last_name = 'lizova'/>
 <Students student_id = '9' group_id = '4' first_name = 'marina' last_name = 'marinova'/>
-<Students student_id = '10' group_id = '5' first_name = 'lena' last_name = 'lenova'/>
 </dataset>

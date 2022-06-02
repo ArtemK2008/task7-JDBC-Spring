@@ -34,7 +34,7 @@ public class Course {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(courseName, id);
   }
 
   @Override
@@ -46,7 +46,13 @@ public class Course {
     if (getClass() != obj.getClass())
       return false;
     Course other = (Course) obj;
-    return id == other.id;
+    return Objects.equals(courseName, other.courseName) && id == other.id;
+  }
+
+  @Override
+  public String toString() {
+    return "Course [id=" + id + ", courseName=" + courseName
+        + ", courseDescription=" + courseDescription + "]";
   }
 
 }

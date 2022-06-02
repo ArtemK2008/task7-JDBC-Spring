@@ -1,90 +1,40 @@
 package com.kalachev.task7.dao;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Properties;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.dbunit.Assertion;
-import org.dbunit.DBTestCase;
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.PropertiesBasedJdbcDatabaseTester;
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class StudentDaoImplTest extends DBTestCase {
-  Properties properties;
-  IDatabaseTester databaseTester;
-  String driver;
-  String urlString;
-  String username;
-  String password;
-  IDataSet beforeData;
+import com.kalachev.task7.dao.entities.Student;
+import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
+import com.kalachev.task7.dao.interfaces.StudentsDao;
+import com.kalachev.task7.exceptions.DaoException;
 
-  public StudentDaoImplTest() {
-    properties = new Properties();
-    URL url = ClassLoader.getSystemResource("DbProperties");
-    if (url != null) {
-      try (InputStream is = url.openStream()) {
-        properties.load(is);
-        this.driver = (String) properties.get("JDBC_DRIVER");
-        this.urlString = (String) properties.get("URL_CREATED");
-        this.username = (String) properties.get("USERNAME_CREATED");
-        this.password = (String) properties.get("PASSWORD_CREATED");
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS,
-          driver);
-      System.setProperty(
-          PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, urlString);
-      System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME,
-          username);
-      System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD,
-          password);
-    }
-  }
+class StudentDaoImplTest extends DbUnitConfig {
+  StudentsDao studentsDao = new StudentsDaoImpl();
 
   @Override
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
-    databaseTester = new JdbcDatabaseTester(driver, urlString, username,
-        password);
-    String file = getClass().getClassLoader()
-        .getResource("ActualStudentDataSet.xml").getFile();
-    beforeData = new FlatXmlDataSetBuilder().build(new FileInputStream(file));
+    super.setUp();
+    beforeData = new FlatXmlDataSetBuilder()
+        .build(new FileInputStream(getClass().getClassLoader()
+            .getResource("dao/student/ActualStudentDataSet.xml").getFile()));
     databaseTester.setDataSet(beforeData);
     databaseTester.onSetup();
   }
 
-  @Override
-  protected IDataSet getDataSet()
-      throws DataSetException, FileNotFoundException {
-    String file = getClass().getClassLoader()
-        .getResource("ActualStudentDataSet.xml").getFile();
-    return new FlatXmlDataSetBuilder().build(new FileInputStream(file));
-  }
-
-  @Override
-  protected DatabaseOperation getSetUpOperation() {
-    return DatabaseOperation.REFRESH;
-  }
-
-  @Override
-  protected DatabaseOperation getTearDownOperation() {
-    return DatabaseOperation.DELETE_ALL;
-  }
-
   @Test
-  public void givenDataSetEmptySchema_whenDataSetCreated_thenTablesAreEqual()
+  void givenDataSetEmptySchema_whenDataSetCreated_thenTablesAreEqual()
       throws Exception {
     IDataSet expectedDataSet = getDataSet();
     ITable expectedTable = expectedDataSet.getTable("students");
@@ -93,4 +43,75 @@ class StudentDaoImplTest extends DBTestCase {
     Assertion.assertEquals(expectedTable, actualTable);
   }
 
+  @Test
+  void testDaoImpl_whenInsert_thenNewStudentShouldBeAdded()
+      throws SQLException, Exception {
+    studentsDao.insert("artem", "artemov", 6);
+    String[] excludedColumns = { "student_id" };
+
+    IDataSet expectedData = new FlatXmlDataSetBuilder()
+        .build(new FileInputStream(getClass().getClassLoader()
+            .getResource("dao/student/ExpectedInsertStudentDataSet.xml")
+            .getFile()));
+    ITable expectedTable = expectedData.getTable("students");
+    IDataSet actualData = databaseTester.getConnection().createDataSet();
+    ITable actualTable = actualData.getTable("students");
+    Assertion.assertEqualsIgnoreCols(expectedTable, actualTable,
+        excludedColumns);
+  }
+
+  @Test
+  void testDaoImpl_whenDelete_thenStudentNoLongerInTable()
+      throws SQLException, Exception {
+    studentsDao.delete(10);
+    IDataSet expectedData = new FlatXmlDataSetBuilder()
+        .build(new FileInputStream(getClass().getClassLoader()
+            .getResource("dao/student/ExpectedDeleteStudentDataSet.xml")
+            .getFile()));
+    ITable expectedTable = expectedData.getTable("students");
+    IDataSet actualData = databaseTester.getConnection().createDataSet();
+    ITable actualTable = actualData.getTable("students");
+    Assertion.assertEquals(expectedTable, actualTable);
+  }
+
+  @Test
+  void testStudentNamesById_shouldMapStudentsToIds_whenStudentTableExists()
+      throws DaoException {
+
+    Map<String, String> expected = new LinkedHashMap<>();
+    expected.put("1", "tom tomov");
+    expected.put("2", "ivan ivanov");
+    expected.put("3", "petr petrov");
+    expected.put("4", "sidor sidorov");
+    expected.put("5", "aleksandr aleksandrov");
+    expected.put("6", "pavel pavlov");
+    expected.put("7", "sveta svetova");
+    expected.put("8", "liza lizova");
+    expected.put("9", "marina marinova");
+    expected.put("10", "lena lenova");
+
+    Map<String, String> actual = studentsDao.studentNamesById();
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void testFindByCourse_shouldReturnAllStudentsOfChousenCourse_whenTableExists()
+      throws DaoException {
+    List<Student> expected = new ArrayList<>();
+    Student marina = new Student();
+    marina.setFirstName("marina");
+    marina.setLastName("marinova");
+    marina.setGroupdId(4);
+    marina.setId(9);
+    Student lena = new Student();
+    lena.setFirstName("lena");
+    lena.setLastName("lenova");
+    lena.setGroupdId(5);
+    lena.setId(10);
+    expected.add(marina);
+    expected.add(lena);
+
+    List<Student> actual = studentsDao.findByCourse("Mandarin");
+    assertEquals(expected, actual);
+  }
 }

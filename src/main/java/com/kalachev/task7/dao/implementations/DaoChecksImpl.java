@@ -5,12 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.kalachev.task7.dao.interfaces.DaoChecks;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
-public class DaoChecks {
+public class DaoChecksImpl implements DaoChecks {
 
   private static final String CHECK_COURSE_IF_EXISTS = "SELECT course_name "
       + "FROM studentscoursesdata " + "WHERE course_name = (?)";
@@ -25,6 +26,7 @@ public class DaoChecks {
       + "FROM studentscoursesdata " + "WHERE student_id ="
       + " (?) AND course_name = (?)";
 
+  @Override
   public boolean checkCourseIfExists(String course) throws DaoException {
     boolean isExist = false;
     Connection connection = null;
@@ -50,6 +52,7 @@ public class DaoChecks {
     return isExist;
   }
 
+  @Override
   public boolean checkStudntIfExistsInGroup(String firstName, String lastName,
       int groupId) throws DaoException {
     boolean isExists = false;
@@ -77,6 +80,7 @@ public class DaoChecks {
     return isExists;
   }
 
+  @Override
   public boolean checkStudentIdIfExists(int id) throws DaoException {
     boolean isExists = false;
     Connection connection = null;
@@ -101,6 +105,7 @@ public class DaoChecks {
     return isExists;
   }
 
+  @Override
   public boolean checkIfStudentInCourse(int studentId, String course)
       throws DaoException {
     boolean isExists = false;
