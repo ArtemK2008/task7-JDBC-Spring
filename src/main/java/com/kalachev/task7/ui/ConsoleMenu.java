@@ -5,8 +5,11 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
 import com.kalachev.task7.dao.initialization.Initializer;
+import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.service.options.StudentOptions;
 import com.kalachev.task7.ui.commands.AddStudentCommand;
 import com.kalachev.task7.ui.commands.AddToCourseCommand;
 import com.kalachev.task7.ui.commands.Command;
@@ -55,11 +58,13 @@ public class ConsoleMenu {
   }
 
   private void initializeCommands() {
+    StudentsDao studentsDao = new StudentsDaoImpl();
+    StudentOptions studentOptions = new StudentOptions(studentsDao);
     commands = new HashMap<>();
     commands.put(1, new GroupSizeCommand(scanner));
     commands.put(2, new FindStudentByCourseCommand(scanner));
-    commands.put(3, new AddStudentCommand(scanner));
-    commands.put(4, new DeleteByIdCommand(scanner));
+    commands.put(3, new AddStudentCommand(scanner, studentOptions));
+    commands.put(4, new DeleteByIdCommand(scanner, studentOptions));
     commands.put(5, new AddToCourseCommand(scanner));
     commands.put(6, new RemoveFromCourseCommand(scanner));
     commands.put(7, new ExitCommand(scanner));

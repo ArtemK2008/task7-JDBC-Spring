@@ -1,6 +1,5 @@
 package com.kalachev.task7.ui.commands;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
@@ -14,19 +13,19 @@ public class DeleteByIdCommand implements Command {
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
-  StudentsDao studentsDao = new StudentsDaoImpl();
-  StudentOptions options = new StudentOptions(studentsDao);
+  StudentOptions options;
 
-  public DeleteByIdCommand(Scanner scanner) {
+  public DeleteByIdCommand(Scanner scanner,StudentOptions options) {
     super();
     this.scanner = scanner;
+    this.options = options;
   }
 
   @Override
   public void execute() {
     System.out.println("Enter ID of a student you want to delete");
     try {
-      int id = scanner.nextInt();
+      int id = Integer.parseInt(scanner.next());
       if (id < 1) {
         System.out.println("Wrong student id");
         return;
@@ -39,7 +38,7 @@ public class DeleteByIdCommand implements Command {
       System.out.println("student with id " + id + " deleted");
     } catch (UiException e) {
       e.printStackTrace();
-    } catch (InputMismatchException e) {
+    } catch (NumberFormatException e) {
       System.out.println(BAD_INPUT);
     }
   }

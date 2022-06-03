@@ -39,8 +39,9 @@ public class StudentOptions {
     return studentOfThisCourse;
   }
 
-  public void addNewStudent(String firstName, String lastName, int groupId)
+  public boolean addNewStudent(String firstName, String lastName, int groupId)
       throws UiException {
+    boolean isAdded = false;
     if (groupId < 1 || groupId > 11) {
       throw new IllegalArgumentException();
     }
@@ -50,15 +51,18 @@ public class StudentOptions {
 
     try {
       studentsDao.insert(firstName, lastName, groupId);
+      isAdded = true;
     } catch (DaoException e) {
       e.printStackTrace();
       String methodName = ExceptionsUtil.getCurrentMethodName();
       String className = ExceptionsUtil.getCurrentClassName();
       throw new UiException(methodName, className);
     }
+    return isAdded;
   }
 
-  public void deleteStudentById(int id) throws UiException {
+  public boolean deleteStudentById(int id) throws UiException {
+    boolean isDeleted = false;
     if (id < 1) {
       throw new IllegalArgumentException();
     }
@@ -67,9 +71,11 @@ public class StudentOptions {
     }
     try {
       studentsDao.delete(id);
+      isDeleted = true;
     } catch (DaoException e) {
       e.printStackTrace();
     }
+    return isDeleted;
   }
 
 }
