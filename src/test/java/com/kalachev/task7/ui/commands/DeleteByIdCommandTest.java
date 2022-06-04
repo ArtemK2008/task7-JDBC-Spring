@@ -48,9 +48,9 @@ class DeleteByIdCommandTest {
   }
 
   @Test
-  void testAddStudent_shouldPrintThatStudentDeleted_whenAllWasValid()
+  void testDeleteStudent_shouldPrintThatStudentDeleted_whenAllWasValid()
       throws Exception {
-    String expexted = "Enter ID of a student you want to delete" + NEWLINE
+    String expected = "Enter ID of a student you want to delete" + NEWLINE
         + "student with id " + id + " deleted";
     Mockito.when(mockOptions.deleteStudentById(Integer.parseInt(id)))
         .thenReturn(true);
@@ -62,8 +62,41 @@ class DeleteByIdCommandTest {
           .thenReturn(true);
       command = new DeleteByIdCommand(mockScanner, mockOptions);
       String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expexted, actual.trim());
+      assertEquals(expected, actual.trim());
     }
-
   }
+
+  @Test
+  void testDeleteStudent_shouldPrintThatWasNotCorrect_whenIdWasNotAnInt()
+      throws Exception {
+    String expected = "Enter ID of a student you want to delete" + NEWLINE
+        + "Your Input was not correct";
+    Mockito.when(mockScanner.next()).thenReturn("not an integer id");
+    command = new DeleteByIdCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
+  }
+
+  @Test
+  void testDeleteStudent_shouldPrintNoSushStudent_whenIdWasNotInDatabase()
+      throws Exception {
+    String expected = "Enter ID of a student you want to delete" + NEWLINE
+        + "no such student";
+    Mockito.when(mockScanner.next()).thenReturn("322");
+    command = new DeleteByIdCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
+  }
+
+  @Test
+  void testDeleteStudent_shouldPrintThatWasNotCorrect_whenIdWasNegative()
+      throws Exception {
+    String expected = "Enter ID of a student you want to delete" + NEWLINE
+        + "Wrong student id";
+    Mockito.when(mockScanner.next()).thenReturn("-4");
+    command = new DeleteByIdCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
+  }
+
 }

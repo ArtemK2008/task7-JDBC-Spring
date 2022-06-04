@@ -4,22 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
-import com.kalachev.task7.dao.interfaces.CoursesDao;
-import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.options.StudentOptions;
 
-public class FindStudentByCourseCommand implements Command {
+public class FindStudentsByCourseCommand implements Command {
   Scanner scanner;
-  CoursesDao coursesDao = new CoursesDaoImpl();
-  CoursesOptions options = new CoursesOptions(coursesDao);
+  CoursesOptions courseOptions;
+  StudentOptions studentOptions;
 
-  public FindStudentByCourseCommand(Scanner scanner) {
+  public FindStudentsByCourseCommand(Scanner scanner,
+      CoursesOptions courseOptions, StudentOptions studentOptions) {
     super();
     this.scanner = scanner;
+    this.courseOptions = courseOptions;
+    this.studentOptions = studentOptions;
   }
 
   @Override
@@ -47,7 +46,7 @@ public class FindStudentByCourseCommand implements Command {
   private List<String> retrieveCoursesNames() {
     List<String> courses = new ArrayList<>();
     try {
-      courses = options.findNames();
+      courses = courseOptions.findCourseNames();
     } catch (UiException e) {
       System.out.println("No Courses Found");
     }
@@ -55,11 +54,9 @@ public class FindStudentByCourseCommand implements Command {
   }
 
   private void printAllCourseStudents(String course) throws UiException {
-    StudentsDao studentsDao = new StudentsDaoImpl();
-    StudentOptions studentOptions = new StudentOptions(studentsDao);
     List<String> students = studentOptions.findByCourse(course);
     if (students.isEmpty()) {
-      System.out.println("No users in this course");
+      System.out.println("No students in this course");
     } else {
       students.forEach(System.out::println);
     }

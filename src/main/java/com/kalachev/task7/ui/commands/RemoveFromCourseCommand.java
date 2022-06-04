@@ -1,11 +1,8 @@
 package com.kalachev.task7.ui.commands;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
-import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.validations.Validator;
@@ -15,41 +12,38 @@ public class RemoveFromCourseCommand implements Command {
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
-  CoursesDao coursesDao = new CoursesDaoImpl();
-  CoursesOptions options = new CoursesOptions(coursesDao);
+  CoursesOptions options;
 
-  public RemoveFromCourseCommand(Scanner scanner) {
+  public RemoveFromCourseCommand(Scanner scanner, CoursesOptions options) {
     super();
     this.scanner = scanner;
+    this.options = options;
   }
 
   @Override
   public void execute() {
     try {
       System.out.println("Enter ID of a student you want to delete");
-      int id = scanner.nextInt();
+      int id = Integer.parseInt(scanner.next());
       if (!checkIfIdExists(id)) {
         return;
       }
-      List<String> courses = options.findNamesByID(id);
+      List<String> courses = options.findCourseNamesByID(id);
       printCourses(courses);
-
       System.out.println("Enter a name of a course from the list");
       String course = scanner.next();
       if (!courses.contains(course)) {
         System.out.println("Wrong course name");
         return;
       }
-
       if (!checkIfCourseHaveThisStudent(id, course)) {
         return;
       }
-
       options.removeStudentFromCourse(id, course);
       System.out.println("Student with id " + id + " removed from " + course);
     } catch (UiException e) {
       e.printStackTrace();
-    } catch (InputMismatchException e) {
+    } catch (NumberFormatException e) {
       System.out.println(BAD_INPUT);
     }
   }

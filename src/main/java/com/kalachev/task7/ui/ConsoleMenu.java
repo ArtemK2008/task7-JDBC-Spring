@@ -5,17 +5,23 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
+import com.kalachev.task7.dao.implementations.GroupsDaoImpl;
 import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
 import com.kalachev.task7.dao.initialization.Initializer;
+import com.kalachev.task7.dao.interfaces.CoursesDao;
+import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.service.options.CoursesOptions;
+import com.kalachev.task7.service.options.GroupOptions;
 import com.kalachev.task7.service.options.StudentOptions;
 import com.kalachev.task7.ui.commands.AddStudentCommand;
 import com.kalachev.task7.ui.commands.AddToCourseCommand;
 import com.kalachev.task7.ui.commands.Command;
 import com.kalachev.task7.ui.commands.DeleteByIdCommand;
 import com.kalachev.task7.ui.commands.ExitCommand;
-import com.kalachev.task7.ui.commands.FindStudentByCourseCommand;
+import com.kalachev.task7.ui.commands.FindStudentsByCourseCommand;
 import com.kalachev.task7.ui.commands.GroupSizeCommand;
 import com.kalachev.task7.ui.commands.RemoveFromCourseCommand;
 
@@ -60,13 +66,18 @@ public class ConsoleMenu {
   private void initializeCommands() {
     StudentsDao studentsDao = new StudentsDaoImpl();
     StudentOptions studentOptions = new StudentOptions(studentsDao);
+    GroupsDao groupsDao = new GroupsDaoImpl();
+    GroupOptions groupOptions = new GroupOptions(groupsDao);
+    CoursesDao coursesDao = new CoursesDaoImpl();
+    CoursesOptions coursesOptions = new CoursesOptions(coursesDao);
     commands = new HashMap<>();
-    commands.put(1, new GroupSizeCommand(scanner));
-    commands.put(2, new FindStudentByCourseCommand(scanner));
+    commands.put(1, new GroupSizeCommand(scanner, groupOptions));
+    commands.put(2, new FindStudentsByCourseCommand(scanner, coursesOptions,
+        studentOptions));
     commands.put(3, new AddStudentCommand(scanner, studentOptions));
     commands.put(4, new DeleteByIdCommand(scanner, studentOptions));
-    commands.put(5, new AddToCourseCommand(scanner));
-    commands.put(6, new RemoveFromCourseCommand(scanner));
+    commands.put(5, new AddToCourseCommand(scanner, coursesOptions));
+    commands.put(6, new RemoveFromCourseCommand(scanner, coursesOptions));
     commands.put(7, new ExitCommand(scanner));
   }
 

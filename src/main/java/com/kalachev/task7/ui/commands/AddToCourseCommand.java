@@ -1,7 +1,6 @@
 package com.kalachev.task7.ui.commands;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,23 +17,26 @@ public class AddToCourseCommand implements Command {
   Scanner scanner;
 
   CoursesDao coursesDao = new CoursesDaoImpl();
-  CoursesOptions options = new CoursesOptions(coursesDao);
+  CoursesOptions options;
 
-  public AddToCourseCommand(Scanner scanner) {
+  public AddToCourseCommand(Scanner scanner, CoursesOptions options) {
     super();
     this.scanner = scanner;
+    this.options = options;
   }
 
   @Override
   public void execute() {
     try {
+      List<String> courses = retrieveCoursesNames();
+      if (courses.isEmpty()) {
+        return;
+      }
       System.out.println("Enter ID of a student you want to add");
-      int id = scanner.nextInt();
+      int id = Integer.parseInt(scanner.next());
       if (!checkIfIdExists(id)) {
         return;
       }
-
-      List<String> courses = retrieveCoursesNames();
       printCourses(courses);
       System.out.println("Enter a name of a course from the list");
       String course = scanner.next();
@@ -52,7 +54,7 @@ public class AddToCourseCommand implements Command {
           .println("Student with id " + id + " added to course " + course);
     } catch (UiException e) {
       e.printStackTrace();
-    } catch (InputMismatchException e) {
+    } catch (NumberFormatException e) {
       System.out.println(BAD_INPUT);
     }
   }
@@ -65,7 +67,7 @@ public class AddToCourseCommand implements Command {
 
   private boolean checkIfIdExists(int id) throws UiException {
     if (id < 0) {
-      System.out.println("Wrong id");
+      System.out.println("id cant be negative");
       return false;
     }
     boolean isExist = true;
@@ -90,7 +92,7 @@ public class AddToCourseCommand implements Command {
   private List<String> retrieveCoursesNames() {
     List<String> courses = new ArrayList<>();
     try {
-      courses = options.findNames();
+      courses = options.findCourseNames();
     } catch (UiException e) {
       System.out.println("No Courses Found");
     }

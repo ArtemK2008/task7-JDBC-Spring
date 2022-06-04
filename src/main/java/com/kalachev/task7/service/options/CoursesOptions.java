@@ -32,24 +32,26 @@ public class CoursesOptions {
     }
   }
 
-  public void removeStudentFromCourse(int studentId, String course)
+  public boolean removeStudentFromCourse(int studentId, String course)
       throws UiException {
-
+    boolean isRemoved = false;
     validateInput(studentId, course);
     if (!Validator.checkIfStudentAlreadyInCourse(studentId, course)) {
       throw new IllegalArgumentException();
     }
     try {
       coursesDao.removeStudent(studentId, course);
+      isRemoved = true;
     } catch (DaoException e) {
       e.printStackTrace();
       String methodName = ExceptionsUtil.getCurrentMethodName();
       String className = ExceptionsUtil.getCurrentClassName();
       throw new UiException(methodName, className);
     }
+    return isRemoved;
   }
 
-  public List<String> findNames() throws UiException {
+  public List<String> findCourseNames() throws UiException {
     List<Course> courses = new ArrayList<>();
     List<String> courseNames = new ArrayList<>();
     try {
@@ -65,7 +67,7 @@ public class CoursesOptions {
     return courseNames;
   }
 
-  public List<String> findNamesByID(int id) throws UiException {
+  public List<String> findCourseNamesByID(int id) throws UiException {
     List<Course> courses = new ArrayList<>();
     List<String> courseNames = new ArrayList<>();
     try {
