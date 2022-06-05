@@ -28,8 +28,13 @@ import com.kalachev.task7.ui.commands.RemoveFromCourseCommand;
 public class ConsoleMenu {
   static final String BAD_INPUT = "Your Input was not correct";
 
-  Scanner scanner = new Scanner(System.in);
-  Map<Integer, Command> commands;
+  Scanner scanner;
+  Map<String, Command> commands;
+
+  public ConsoleMenu(Scanner scanner) {
+    super();
+    this.scanner = scanner;
+  }
 
   private static String[] options = {
       "1: Find all groups with less or equals student count",
@@ -43,11 +48,11 @@ public class ConsoleMenu {
     initializer.initializeTables();
     initializeCommands();
     cleanConsole();
-    int option = 1;
-    while (option != 7) {
+    String option = "1";
+    while (!"7".equals(option)) {
       printMenu(options);
       try {
-        option = scanner.nextInt();
+        option = scanner.next();
         validateOption(option);
         handleOptions(option);
       } catch (InputMismatchException e) {
@@ -71,17 +76,17 @@ public class ConsoleMenu {
     CoursesDao coursesDao = new CoursesDaoImpl();
     CoursesOptions coursesOptions = new CoursesOptions(coursesDao);
     commands = new HashMap<>();
-    commands.put(1, new GroupSizeCommand(scanner, groupOptions));
-    commands.put(2, new FindStudentsByCourseCommand(scanner, coursesOptions,
+    commands.put("1", new GroupSizeCommand(scanner, groupOptions));
+    commands.put("2", new FindStudentsByCourseCommand(scanner, coursesOptions,
         studentOptions));
-    commands.put(3, new AddStudentCommand(scanner, studentOptions));
-    commands.put(4, new DeleteByIdCommand(scanner, studentOptions));
-    commands.put(5, new AddToCourseCommand(scanner, coursesOptions));
-    commands.put(6, new RemoveFromCourseCommand(scanner, coursesOptions));
-    commands.put(7, new ExitCommand(scanner));
+    commands.put("3", new AddStudentCommand(scanner, studentOptions));
+    commands.put("4", new DeleteByIdCommand(scanner, studentOptions));
+    commands.put("5", new AddToCourseCommand(scanner, coursesOptions));
+    commands.put("6", new RemoveFromCourseCommand(scanner, coursesOptions));
+    commands.put("7", new ExitCommand(scanner));
   }
 
-  private void handleOptions(int option) {
+  private void handleOptions(String option) {
     commands.get(option).execute();
   }
 
@@ -90,8 +95,8 @@ public class ConsoleMenu {
     scanner.nextLine();
   }
 
-  private void validateOption(int option) {
-    if (option < 1 || option > 7) {
+  private void validateOption(String option) {
+    if (Integer.parseInt(option) < 1 || Integer.parseInt(option) > 7) {
       throw new InputMismatchException();
     }
   }
@@ -100,10 +105,10 @@ public class ConsoleMenu {
     for (String option : options) {
       System.out.println(option);
     }
-    System.out.print("Choose your option : ");
+    System.out.println("Choose your option : ");
   }
 
-  private void cleanConsole() {
+  public void cleanConsole() {
     for (int i = 0; i < 100; i++) {
       System.out.println();
     }

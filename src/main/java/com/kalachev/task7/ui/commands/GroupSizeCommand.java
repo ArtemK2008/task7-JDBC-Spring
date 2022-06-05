@@ -1,6 +1,6 @@
 package com.kalachev.task7.ui.commands;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,7 +39,7 @@ public class GroupSizeCommand implements Command {
   }
 
   private List<String> findGroups(int size) {
-    List<String> groupNames = new ArrayList<>();
+    List<String> groupNames = new LinkedList<>();
     try {
       groupNames = options.findBySize(size);
     } catch (UiException e) {
