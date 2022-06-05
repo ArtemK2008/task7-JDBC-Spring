@@ -29,11 +29,13 @@ public class ConsoleMenu {
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
+  Initializer initializerImpl;
   Map<String, Command> commands;
 
-  public ConsoleMenu(Scanner scanner) {
+  public ConsoleMenu(Scanner scanner, Initializer initializerImpl) {
     super();
     this.scanner = scanner;
+    this.initializerImpl = initializerImpl;
   }
 
   private static String[] options = {
@@ -44,8 +46,7 @@ public class ConsoleMenu {
       "6: Remove the student from one of his or her courses", "7: Exit" };
 
   public void runSchoolApp() throws DaoException {
-    Initializer initializer = new Initializer();
-    initializer.initializeTables();
+    initializerImpl.initializeTables();
     initializeCommands();
     cleanConsole();
     String option = "1";
