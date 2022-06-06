@@ -54,7 +54,7 @@ public class RemoveFromCourseCommand implements Command {
       return false;
     }
     boolean isExist = true;
-    if (!Validator.checkIfStudentIdExists(id)) {
+    if (!options.checkIfStudentIdExists(id)) {
       System.out.println("There is no student with such id");
       isExist = false;
     }

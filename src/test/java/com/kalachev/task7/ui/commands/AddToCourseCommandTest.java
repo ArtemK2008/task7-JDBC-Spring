@@ -51,11 +51,10 @@ class AddToCourseCommandTest {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
+    Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
     try (MockedStatic<Validator> validator = Mockito
         .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentIdExists(anyInt()))
-          .thenReturn(true);
       validator.when(
           () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
           .thenReturn(false);
@@ -76,11 +75,10 @@ class AddToCourseCommandTest {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
+    Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
     try (MockedStatic<Validator> validator = Mockito
         .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentIdExists(anyInt()))
-          .thenReturn(true);
       validator.when(
           () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
           .thenReturn(false);
@@ -101,11 +99,10 @@ class AddToCourseCommandTest {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn("wrong course");
+    Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
     try (MockedStatic<Validator> validator = Mockito
         .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentIdExists(anyInt()))
-          .thenReturn(true);
       command = new AddToCourseCommand(mockScanner, mockOptions);
       String actual = tapSystemOut(() -> command.execute());
       assertEquals(expected, actual.trim());
@@ -146,11 +143,11 @@ class AddToCourseCommandTest {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn("5555");
+    Mockito.when(mockOptions.checkIfStudentIdExists(anyInt()))
+        .thenReturn(false);
 
     try (MockedStatic<Validator> validator = Mockito
         .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentIdExists(anyInt()))
-          .thenReturn(false);
       command = new AddToCourseCommand(mockScanner, mockOptions);
       String actual = tapSystemOut(() -> command.execute());
       assertEquals(expected, actual.trim());
@@ -167,11 +164,10 @@ class AddToCourseCommandTest {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
+    Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
     try (MockedStatic<Validator> validator = Mockito
         .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentIdExists(anyInt()))
-          .thenReturn(true);
       validator.when(
           () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
           .thenReturn(true);

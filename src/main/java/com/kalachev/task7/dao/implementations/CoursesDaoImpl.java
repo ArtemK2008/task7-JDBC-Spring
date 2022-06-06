@@ -32,6 +32,9 @@ public class CoursesDaoImpl implements CoursesDao {
 
   private static final String COURSE_DESCRIPTION = "course_description";
 
+  private static final String CHECK_COURSE_IF_EXISTS = "SELECT course_name "
+      + "FROM studentscoursesdata " + "WHERE course_name = (?)";
+
   @Override
   public void addStudent(int studentId, String course) throws DaoException {
     Connection connection = null;
@@ -155,6 +158,31 @@ public class CoursesDaoImpl implements CoursesDao {
       JdbcUtil.closeAll(rs, statement, connection);
     }
     return courses;
+  }
+
+  public boolean isExists(String course) throws DaoException {
+    boolean isExist = false;
+    Connection connection = null;
+    PreparedStatement statement = null;
+    ResultSet rs = null;
+    try {
+      connection = ConnectionManager.openDbConnection();
+      statement = connection.prepareStatement(CHECK_COURSE_IF_EXISTS);
+      statement.setString(1, course);
+      rs = statement.executeQuery();
+      if (rs.next()) {
+        isExist = true;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
+    } finally {
+      JdbcUtil.closeAll(rs, statement, connection);
+    }
+    return isExist;
   }
 
 }

@@ -111,4 +111,18 @@ public class CoursesDaouImplTest extends DbUnitConfig {
     List<Course> actual = coursesDao.getById(10);
     assertEquals(expected, actual);
   }
+
+  @Test
+  void testCheckCourseIfExist_shouldReturnTrue_whenCourseExists()
+      throws DaoException {
+    boolean check = coursesDao.isExists("Ukrainian");
+    assertTrue(check);
+  }
+
+  @Test
+  void testCheckCourseIfExist_shouldReturnFalse_whenCourseNotExists()
+      throws DaoException {
+    boolean check = coursesDao.isExists("Hindi");
+    assertFalse(check);
+  }
 }

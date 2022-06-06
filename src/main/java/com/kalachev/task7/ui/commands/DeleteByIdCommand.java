@@ -2,11 +2,8 @@ package com.kalachev.task7.ui.commands;
 
 import java.util.Scanner;
 
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
-import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
-import com.kalachev.task7.service.validations.Validator;
 
 public class DeleteByIdCommand implements Command {
 
@@ -15,7 +12,7 @@ public class DeleteByIdCommand implements Command {
   Scanner scanner;
   StudentOptions options;
 
-  public DeleteByIdCommand(Scanner scanner,StudentOptions options) {
+  public DeleteByIdCommand(Scanner scanner, StudentOptions options) {
     super();
     this.scanner = scanner;
     this.options = options;
@@ -30,7 +27,7 @@ public class DeleteByIdCommand implements Command {
         System.out.println("Wrong student id");
         return;
       }
-      if (!Validator.checkIfStudentIdExists(id)) {
+      if (!options.checkIfStudentIdExists(id)) {
         System.out.println("no such student");
         return;
       }

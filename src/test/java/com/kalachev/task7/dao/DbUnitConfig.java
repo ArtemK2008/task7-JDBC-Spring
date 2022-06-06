@@ -9,9 +9,7 @@ import org.dbunit.DBTestCase;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.PropertiesBasedJdbcDatabaseTester;
-import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -32,9 +30,9 @@ public class DbUnitConfig extends DBTestCase {
       try (InputStream is = url.openStream()) {
         properties.load(is);
         this.driver = (String) properties.get("JDBC_DRIVER");
-        this.urlString = (String) properties.get("URL_CREATED");
-        this.username = (String) properties.get("USERNAME_CREATED");
-        this.password = (String) properties.get("PASSWORD_CREATED");
+        this.urlString = (String) properties.get("URL");
+        this.username = (String) properties.get("USERNAME");
+        this.password = (String) properties.get("PASSWORD");
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -55,7 +53,6 @@ public class DbUnitConfig extends DBTestCase {
     databaseTester = new JdbcDatabaseTester(driver, urlString, username,
         password);
   }
-  
 
   @Override
   protected IDataSet getDataSet() throws Exception {
@@ -72,9 +69,4 @@ public class DbUnitConfig extends DBTestCase {
     return DatabaseOperation.DELETE_ALL;
   }
 
-  @Override
-  protected void setUpDatabaseConfig(DatabaseConfig config) {
-    config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-        new PostgresqlDataTypeFactory());
-  }
 }

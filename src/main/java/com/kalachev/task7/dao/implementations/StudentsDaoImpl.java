@@ -27,6 +27,12 @@ public class StudentsDaoImpl implements StudentsDao {
 
   private static final String DELETE_STUDENT = "DELETE FROM Students Where student_id = (?)";
 
+  private static final String CHECK_STUDENT_IF_EXISTS_IN_GROUP = "SELECT * FROM Students "
+      + "WHERE first_name = (?) AND last_name = (?) AND group_id = (?)";
+
+  private static final String CHECK_STUDENT_ID_IF_EXISTS = "SELECT * FROM Students "
+      + "WHERE student_id = (?)";
+
   @Override
   public List<Student> findByCourse(String courseName) throws DaoException {
     Connection connection = null;
@@ -122,5 +128,57 @@ public class StudentsDaoImpl implements StudentsDao {
       JdbcUtil.closeAll(rs, statement, connection);
     }
     return idsOfEachStuden;
+  }
+
+  @Override
+  public boolean isExistsInGroup(String firstName, String lastName, int groupId)
+      throws DaoException {
+    boolean isExists = false;
+    Connection connection = null;
+    PreparedStatement statement = null;
+    ResultSet rs = null;
+    try {
+      connection = ConnectionManager.openDbConnection();
+      statement = connection.prepareStatement(CHECK_STUDENT_IF_EXISTS_IN_GROUP);
+      statement.setString(1, firstName);
+      statement.setString(2, lastName);
+      statement.setInt(3, groupId);
+      rs = statement.executeQuery();
+      if (rs.next()) {
+        isExists = true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
+    } finally {
+      JdbcUtil.closeAll(rs, statement, connection);
+    }
+    return isExists;
+  }
+
+  public boolean isIdExists(int id) throws DaoException {
+    boolean isExists = false;
+    Connection connection = null;
+    PreparedStatement statement = null;
+    ResultSet rs = null;
+    try {
+      connection = ConnectionManager.openDbConnection();
+      statement = connection.prepareStatement(CHECK_STUDENT_ID_IF_EXISTS);
+      statement.setInt(1, id);
+      rs = statement.executeQuery();
+      if (rs.next()) {
+        isExists = true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
+    } finally {
+      JdbcUtil.closeAll(rs, statement, connection);
+    }
+    return isExists;
   }
 }

@@ -46,11 +46,10 @@ class DeleteByIdCommandTest {
     Mockito.when(mockOptions.deleteStudentById(Integer.parseInt(id)))
         .thenReturn(true);
     Mockito.when(mockScanner.next()).thenReturn(id);
+    Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
     try (MockedStatic<Validator> validator = Mockito
         .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentIdExists(anyInt()))
-          .thenReturn(true);
       command = new DeleteByIdCommand(mockScanner, mockOptions);
       command.execute();
       verify(mockOptions, times(1)).deleteStudentById(Integer.parseInt(id));
@@ -65,11 +64,10 @@ class DeleteByIdCommandTest {
     Mockito.when(mockOptions.deleteStudentById(Integer.parseInt(id)))
         .thenReturn(true);
     Mockito.when(mockScanner.next()).thenReturn(id);
+    Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
     try (MockedStatic<Validator> validator = Mockito
         .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentIdExists(anyInt()))
-          .thenReturn(true);
       command = new DeleteByIdCommand(mockScanner, mockOptions);
       String actual = tapSystemOut(() -> command.execute());
       assertEquals(expected, actual.trim());

@@ -25,9 +25,9 @@ public class ConnectionManager {
     if (url != null) {
       try (InputStream is = url.openStream()) {
         properties.load(is);
-        dbUrl = (String) properties.get("URL_CREATED");
-        dbUsername = (String) properties.get("USERNAME_CREATED");
-        dbPassword = (String) properties.get("PASSWORD_CREATED");
+        dbUrl = (String) properties.get("URL");
+        dbUsername = (String) properties.get("USERNAME");
+        dbPassword = (String) properties.get("PASSWORD");
       } catch (IOException e) {
         e.printStackTrace();
       }

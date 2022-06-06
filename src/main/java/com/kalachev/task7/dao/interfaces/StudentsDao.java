@@ -16,4 +16,9 @@ public interface StudentsDao {
       throws DaoException;
 
   void delete(int id) throws DaoException;
+
+  boolean isExistsInGroup(String firstName, String lastName, int groupId)
+      throws DaoException;
+
+  boolean isIdExists(int id) throws DaoException;
 }

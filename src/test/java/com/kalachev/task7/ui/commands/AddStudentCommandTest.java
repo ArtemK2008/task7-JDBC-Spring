@@ -12,7 +12,6 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import com.kalachev.task7.dao.initialization.Initializer;
@@ -20,7 +19,6 @@ import com.kalachev.task7.dao.initialization.InitializerImpl;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
-import com.kalachev.task7.service.validations.Validator;
 
 public class AddStudentCommandTest {
   Command command;
@@ -51,15 +49,15 @@ public class AddStudentCommandTest {
     Mockito
         .when(mockOptions.addNewStudent(name, lastname, Integer.valueOf(group)))
         .thenReturn(true);
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentAlreadyInGroup(anyInt(),
-          anyString(), anyString())).thenReturn(false);
-      command = new AddStudentCommand(mockScanner, mockOptions);
-      command.execute();
-      verify(mockOptions, times(1)).addNewStudent(name, lastname,
-          Integer.valueOf(group));
-    }
+    Mockito.when(mockOptions.checkIfStudentAlreadyInGroup(anyInt(), anyString(),
+        anyString())).thenReturn(false);
+
+    command = new AddStudentCommand(mockScanner, mockOptions);
+    command.execute();
+    verify(mockOptions, times(1)).addNewStudent(name, lastname,
+        Integer.valueOf(group));
+    verify(mockOptions, times(1))
+        .checkIfStudentAlreadyInGroup(Integer.parseInt(group), name, lastname);
   }
 
   @Test
@@ -74,15 +72,12 @@ public class AddStudentCommandTest {
     Mockito
         .when(mockOptions.addNewStudent(name, lastname, Integer.valueOf(group)))
         .thenReturn(true);
+    Mockito.when(mockOptions.checkIfStudentAlreadyInGroup(anyInt(), anyString(),
+        anyString())).thenReturn(false);
 
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(() -> Validator.checkIfStudentAlreadyInGroup(anyInt(),
-          anyString(), anyString())).thenReturn(false);
-      command = new AddStudentCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expexted, actual.trim());
-    }
+    command = new AddStudentCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expexted, actual.trim());
   }
 
   @Test

@@ -114,4 +114,32 @@ class StudentDaoImplTest extends DbUnitConfig {
     List<Student> actual = studentsDao.findByCourse("Mandarin");
     assertEquals(expected, actual);
   }
+
+  @Test
+  void testCheckStudntIfExistsInGroup_shouldReturnTrue_whenStudentIsInGroup()
+      throws DaoException {
+    boolean check = studentsDao.isExistsInGroup("tom", "tomov", 1);
+    assertTrue(check);
+  }
+
+  @Test
+  void testCheckStudntIfExistsInGroup_shouldReturnFalse_whenStudentIsNotInGroup()
+      throws DaoException {
+    boolean check = studentsDao.isExistsInGroup("tom", "tomov", 2);
+    assertFalse(check);
+  }
+
+  @Test
+  void testcheckStudentIdIfExists_shouldReturnTrue_whenIdExists()
+      throws DaoException {
+    boolean check = studentsDao.isIdExists(2);
+    assertTrue(check);
+  }
+
+  @Test
+  void testcheckStudentIdIfExists_shouldReturnFalse_whenIdNotExists()
+      throws DaoException {
+    boolean check = studentsDao.isIdExists(15);
+    assertFalse(check);
+  }
 }

@@ -14,52 +14,6 @@ public class Validator {
     super();
   }
 
-  public static boolean checkIfCourseExists(String course) throws UiException {
-    boolean isExist = false;
-    try {
-      if (dao.checkCourseIfExists(course)) {
-        isExist = true;
-      }
-    } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
-    }
-    return isExist;
-  }
-
-  public static boolean checkIfStudentAlreadyInGroup(int groupId,
-      String firstName, String lastName) throws UiException {
-    boolean isInGroup = false;
-    try {
-      if (dao.checkStudntIfExistsInGroup(firstName, lastName, groupId)) {
-        isInGroup = true;
-      }
-    } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
-    }
-    return isInGroup;
-  }
-
-  public static boolean checkIfStudentIdExists(int id) throws UiException {
-    boolean isExist = false;
-    try {
-      if (dao.checkStudentIdIfExists(id)) {
-        isExist = true;
-      }
-    } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
-    }
-    return isExist;
-  }
-
   public static boolean checkIfStudentAlreadyInCourse(int id, String course)
       throws UiException {
     boolean isExist = false;

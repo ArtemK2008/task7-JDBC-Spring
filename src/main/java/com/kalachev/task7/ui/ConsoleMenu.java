@@ -70,12 +70,12 @@ public class ConsoleMenu {
   }
 
   private void initializeCommands() {
-    StudentsDao studentsDao = new StudentsDaoImpl();
-    StudentOptions studentOptions = new StudentOptions(studentsDao);
     GroupsDao groupsDao = new GroupsDaoImpl();
-    GroupOptions groupOptions = new GroupOptions(groupsDao);
     CoursesDao coursesDao = new CoursesDaoImpl();
-    CoursesOptions coursesOptions = new CoursesOptions(coursesDao);
+    StudentsDao studentsDao = new StudentsDaoImpl();
+    GroupOptions groupOptions = new GroupOptions(groupsDao);
+    CoursesOptions coursesOptions = new CoursesOptions(coursesDao, studentsDao);
+    StudentOptions studentOptions = new StudentOptions(studentsDao, coursesDao);
     commands = new HashMap<>();
     commands.put("1", new GroupSizeCommand(scanner, groupOptions));
     commands.put("2", new FindStudentsByCourseCommand(scanner, coursesOptions,

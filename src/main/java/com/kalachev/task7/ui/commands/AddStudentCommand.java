@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
-import com.kalachev.task7.service.validations.Validator;
 
 public class AddStudentCommand implements Command {
 
@@ -42,7 +41,7 @@ public class AddStudentCommand implements Command {
   private boolean addStudent(String name, String lastname, int groupId) {
     boolean isAdded = false;
     try {
-      if (Validator.checkIfStudentAlreadyInGroup(groupId, name, lastname)) {
+      if (options.checkIfStudentAlreadyInGroup(groupId, name, lastname)) {
         System.out.println("User Already exists");
         return false;
       }
