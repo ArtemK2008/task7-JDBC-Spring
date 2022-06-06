@@ -10,10 +10,14 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.dao.initialization.Initializer;
+import com.kalachev.task7.dao.initialization.InitializerImpl;
+
 class ExitCommandTest {
 
   Scanner scanner;
   Command command;
+  static Initializer intInitializer = new InitializerImpl();
 
   private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 

@@ -10,10 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import com.kalachev.task7.dao.initialization.Initializer;
+import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.options.StudentOptions;
@@ -26,6 +30,12 @@ class FindStudentByCourseCommandTest {
   CoursesOptions mockCourseOptions;
   StudentOptions mockStudentOptions;
   String course = "Eng";
+  static Initializer intInitializer = new InitializerImpl();
+
+  @BeforeAll
+  static void startUp() throws DaoException {
+    intInitializer.initializeTables();
+  }
 
   @BeforeEach
   void setUp() {
@@ -105,7 +115,8 @@ class FindStudentByCourseCommandTest {
   void testFindNames_shouldPrintNoCourseFound_whenInputCourseTableCorrupted()
       throws Exception {
     List<String> students = Arrays.asList("a", "b", "c");
-    Mockito.when(mockCourseOptions.findCourseNames()).thenThrow(UiException.class);
+    Mockito.when(mockCourseOptions.findCourseNames())
+        .thenThrow(UiException.class);
     Mockito.when(mockScanner.next()).thenReturn(course);
     Mockito.when(mockStudentOptions.findByCourse(course)).thenReturn(students);
 

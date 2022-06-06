@@ -1,7 +1,7 @@
 package com.kalachev.task7.dao;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -31,7 +31,7 @@ public class GroupDaoImplTest extends DbUnitConfig {
   @Test
   void testFindBySize_shouldReturnGroupsWithAtLeastThreeStudent_whenCalledWithValidTables()
       throws DaoException {
-    List<Group> expected = new ArrayList<>();
+    List<Group> expected = new LinkedList<>();
     Group group = new Group();
     group.setGroupName("aa-11");
     group.setId(1);
@@ -40,8 +40,8 @@ public class GroupDaoImplTest extends DbUnitConfig {
     group.setGroupName("aa-22");
     group.setId(2);
     expected.add(group);
-
     List<Group> actual = groupsDao.findBySize(3);
-    assertEquals(expected, actual);
+    assertTrue(actual.size() == expected.size() && actual.containsAll(expected)
+        && expected.containsAll(actual));
   }
 }

@@ -9,11 +9,15 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Scanner;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import com.kalachev.task7.dao.initialization.Initializer;
+import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
 import com.kalachev.task7.service.validations.Validator;
@@ -26,6 +30,12 @@ public class AddStudentCommandTest {
   String group = "1";
   Scanner mockScanner;
   StudentOptions mockOptions;
+  static Initializer intInitializer = new InitializerImpl();
+
+  @BeforeAll
+  static void startUp() throws DaoException {
+    intInitializer.initializeTables();
+  }
 
   @BeforeEach
   void setUp() {

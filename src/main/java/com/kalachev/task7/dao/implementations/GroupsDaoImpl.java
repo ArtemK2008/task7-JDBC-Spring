@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.kalachev.task7.dao.entities.Group;
@@ -25,7 +25,7 @@ public class GroupsDaoImpl implements GroupsDao {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
-    List<Group> groups = new ArrayList<>();
+    List<Group> groups = new LinkedList<>();
     try {
       connection = ConnectionManager.openDbConnectionForNewUser();
       statement = connection.prepareStatement(FIND_GROUP_BY_SIZE);

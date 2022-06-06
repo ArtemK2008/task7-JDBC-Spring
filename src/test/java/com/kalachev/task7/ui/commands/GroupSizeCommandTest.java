@@ -9,10 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import com.kalachev.task7.dao.initialization.Initializer;
+import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.GroupOptions;
 
@@ -22,6 +26,12 @@ class GroupSizeCommandTest {
   Scanner mockScanner;
   GroupOptions mockOptions;
   String size = "3";
+  static Initializer intInitializer = new InitializerImpl();
+
+  @BeforeAll
+  static void startUp() throws DaoException {
+    intInitializer.initializeTables();
+  }
 
   @BeforeEach
   void setUp() {

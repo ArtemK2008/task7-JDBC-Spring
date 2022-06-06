@@ -11,11 +11,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import com.kalachev.task7.dao.initialization.Initializer;
+import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.validations.Validator;
@@ -28,6 +32,12 @@ class RemoveFromCourseCommandTest {
   CoursesOptions mockOptions;
   String id = "1";
   String course = "Eng";
+  static Initializer intInitializer = new InitializerImpl();
+
+  @BeforeAll
+  static void startUp() throws DaoException {
+    intInitializer.initializeTables();
+  }
 
   @BeforeEach
   void setUp() {
