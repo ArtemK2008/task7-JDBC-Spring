@@ -21,7 +21,7 @@ public class StudentsToCoursesDataDbPopulator {
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       for (Entry<String, List<String>> entry : coursesOfStudent.entrySet()) {
         List<String> courses = entry.getValue();
@@ -52,7 +52,7 @@ public class StudentsToCoursesDataDbPopulator {
     Connection connection = null;
     Statement statement = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       String sql = "CREATE TABLE StudentsCoursesData" + " AS "
           + "( SELECT s.student_id,s.group_id, s.first_name, s.last_name ,c.course_name,c.course_description "

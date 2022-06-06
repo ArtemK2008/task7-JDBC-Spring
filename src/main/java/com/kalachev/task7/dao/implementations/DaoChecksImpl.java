@@ -33,7 +33,7 @@ public class DaoChecksImpl implements DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(CHECK_COURSE_IF_EXISTS);
       statement.setString(1, course);
       rs = statement.executeQuery();
@@ -60,7 +60,7 @@ public class DaoChecksImpl implements DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(CHECK_STUDENT_IF_EXISTS_IN_GROUP);
       statement.setString(1, firstName);
       statement.setString(2, lastName);
@@ -87,7 +87,7 @@ public class DaoChecksImpl implements DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(CHECK_STUDENT_ID_IF_EXISTS);
       statement.setInt(1, id);
       rs = statement.executeQuery();
@@ -113,7 +113,7 @@ public class DaoChecksImpl implements DaoChecks {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(CHECK_IF_STUDENT_IN_COURSE);
       statement.setInt(1, studentId);
       statement.setString(2, course);

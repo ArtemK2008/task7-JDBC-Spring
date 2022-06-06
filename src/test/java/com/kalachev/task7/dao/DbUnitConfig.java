@@ -55,6 +55,7 @@ public class DbUnitConfig extends DBTestCase {
     databaseTester = new JdbcDatabaseTester(driver, urlString, username,
         password);
   }
+  
 
   @Override
   protected IDataSet getDataSet() throws Exception {

@@ -19,7 +19,7 @@ public class ConnectionManager {
     super();
   }
 
-  public static Connection openDbConnection() throws DaoException {
+  public static Connection openDbConnectionWhenDBNotExist() throws DaoException {
     Properties properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
     if (url != null) {
@@ -45,7 +45,7 @@ public class ConnectionManager {
     }
   }
 
-  public static Connection openDbConnectionForNewUser() throws DaoException {
+  public static Connection openDbConnection() throws DaoException {
     Properties properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
     if (url != null) {

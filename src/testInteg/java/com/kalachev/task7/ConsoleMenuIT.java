@@ -600,7 +600,7 @@ class ConsoleMenuIT {
     final String FIND_STUDENTS = "SELECT first_name,last_name "
         + "FROM studentscoursesdata " + "WHERE course_name = (?)";
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(FIND_STUDENTS);
       statement.setString(1, course);
       rs = statement.executeQuery();
@@ -630,7 +630,7 @@ class ConsoleMenuIT {
         + "GROUP BY g.group_id,group_name "
         + "HAVING COUNT (s.group_id) >= (?)";
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(FIND_GROUP_BY_SIZE);
       statement.setInt(1, Integer.parseInt(count));
       rs = statement.executeQuery();
@@ -662,7 +662,7 @@ class ConsoleMenuIT {
     int count = 0;
     final String COUNT_STUDENTS = "SELECT COUNT(*) FROM STUDENTS";
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       rs = statement.executeQuery(COUNT_STUDENTS);
       if (rs.next()) {
@@ -688,7 +688,7 @@ class ConsoleMenuIT {
     int count = 0;
     final String COUNT_STUDENTS = "SELECT COUNT(*) FROM STUDENTS WHERE first_name = (?) AND last_name = (?)";
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(COUNT_STUDENTS);
       statement.setString(1, name);
       statement.setString(2, lastname);
@@ -719,7 +719,7 @@ class ConsoleMenuIT {
     int count = 0;
     final String COUNT_STUDENTS = "SELECT COUNT(*) FROM STUDENTS WHERE student_id = (?)";
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(COUNT_STUDENTS);
       statement.setInt(1, Integer.parseInt(studentId));
       rs = statement.executeQuery();
@@ -747,7 +747,7 @@ class ConsoleMenuIT {
     int count = 0;
     final String COUNT_STUDENTS = "SELECT COUNT(*) FROM studentscoursesdata WHERE student_id = (?)";
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(COUNT_STUDENTS);
       statement.setInt(1, Integer.parseInt(studentId));
       rs = statement.executeQuery();
@@ -772,7 +772,7 @@ class ConsoleMenuIT {
     String course = "";
     final String FIND_COURSE = "SELECT course_name FROM studentscoursesdata WHERE student_id = (?)";
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(FIND_COURSE);
       statement.setInt(1, Integer.parseInt(studentId));
       rs = statement.executeQuery();

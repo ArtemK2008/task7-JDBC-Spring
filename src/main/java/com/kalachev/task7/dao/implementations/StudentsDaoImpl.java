@@ -34,7 +34,7 @@ public class StudentsDaoImpl implements StudentsDao {
     ResultSet rs = null;
     List<Student> students = new ArrayList<>();
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(FIND_STUDENTS);
       statement.setString(1, courseName);
       rs = statement.executeQuery();
@@ -63,7 +63,7 @@ public class StudentsDaoImpl implements StudentsDao {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(INSERT_STUDENT);
       statement.setInt(1, groupId);
       statement.setString(2, firstName);
@@ -84,7 +84,7 @@ public class StudentsDaoImpl implements StudentsDao {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(DELETE_STUDENT);
       statement.setInt(1, id);
       statement.executeUpdate();
@@ -105,7 +105,7 @@ public class StudentsDaoImpl implements StudentsDao {
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       rs = statement.executeQuery(
           "SELECT student_id,first_name,last_name  FROM Students");

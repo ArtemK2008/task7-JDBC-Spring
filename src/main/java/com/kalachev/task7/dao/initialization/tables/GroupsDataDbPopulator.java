@@ -18,7 +18,7 @@ public class GroupsDataDbPopulator {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(INSERT_GROUPS);
       connection.setAutoCommit(false);
       for (String group : groups) {

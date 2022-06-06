@@ -21,8 +21,6 @@ public class InitializerImpl implements Initializer {
 
   @Override
   public void initializeTables() throws DaoException {
-    createDatabase();
-    createUser();
     initializeStartTables();
     generateStudentData();
     fillGroupsTable(groups);
@@ -39,16 +37,6 @@ public class InitializerImpl implements Initializer {
     groups = gp.generateGroups();
     students = studentInitializer.generateStudents();
     courses = coursesInitializer.generateCourses();
-  }
-
-  private void createDatabase() throws DaoException {
-    DatabaseInitializer databaseInitializer = new DatabaseInitializer();
-    databaseInitializer.createDatabase();
-  }
-
-  private void createUser() throws DaoException {
-    UserInitializer userInitializer = new UserInitializer();
-    userInitializer.createUser();
   }
 
   private void initializeStartTables() throws DaoException {

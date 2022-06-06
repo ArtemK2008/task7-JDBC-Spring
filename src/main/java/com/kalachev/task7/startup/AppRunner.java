@@ -16,5 +16,4 @@ public class AppRunner {
     app.runSchoolApp();
 
   }
-
 }

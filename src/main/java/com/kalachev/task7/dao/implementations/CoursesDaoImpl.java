@@ -38,7 +38,7 @@ public class CoursesDaoImpl implements CoursesDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(FIND_STUDENTS_FULLNAME);
       statement.setInt(1, studentId);
       rs = statement.executeQuery();
@@ -84,7 +84,7 @@ public class CoursesDaoImpl implements CoursesDao {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(DELETE_STUDENT_FROM_COURSE);
       statement.setInt(1, studentId);
       statement.setString(2, course);
@@ -106,7 +106,7 @@ public class CoursesDaoImpl implements CoursesDao {
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       String sql = "SELECT course_name, course_description FROM Courses";
       statement = connection.createStatement();
       rs = statement.executeQuery(sql);
@@ -134,7 +134,7 @@ public class CoursesDaoImpl implements CoursesDao {
     PreparedStatement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       String findCourse = "SELECT course_name,course_description FROM StudentsCoursesData"
           + " WHERE student_id = (?)";
       statement = connection.prepareStatement(findCourse);

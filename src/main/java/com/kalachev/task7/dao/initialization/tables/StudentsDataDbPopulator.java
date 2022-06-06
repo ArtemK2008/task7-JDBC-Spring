@@ -22,7 +22,7 @@ public class StudentsDataDbPopulator {
     Statement statement = null;
     ResultSet rs = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       for (Entry<String, List<String>> entry : groupsWithItsStudents
           .entrySet()) {

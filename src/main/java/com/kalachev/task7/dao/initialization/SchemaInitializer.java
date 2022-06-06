@@ -22,7 +22,7 @@ public class SchemaInitializer {
           .getResource("StartupSqlData.sql");
       List<String> tableData = Files.readAllLines(Paths.get(url.toURI()));
       String sql = tableData.stream().collect(Collectors.joining());
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.createStatement();
       statement.executeUpdate(sql);
     } catch (Exception e) {

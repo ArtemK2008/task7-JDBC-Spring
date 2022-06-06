@@ -27,7 +27,7 @@ public class GroupsDaoImpl implements GroupsDao {
     ResultSet rs = null;
     List<Group> groups = new LinkedList<>();
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(FIND_GROUP_BY_SIZE);
       statement.setInt(1, maxSize);
       rs = statement.executeQuery();

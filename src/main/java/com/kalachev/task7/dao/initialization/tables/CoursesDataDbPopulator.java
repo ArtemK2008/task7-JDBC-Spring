@@ -19,7 +19,7 @@ public class CoursesDataDbPopulator {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
-      connection = ConnectionManager.openDbConnectionForNewUser();
+      connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(INSERT_COURSES);
       connection.setAutoCommit(false);
       for (Entry<String, String> entry : courses.entrySet()) {
