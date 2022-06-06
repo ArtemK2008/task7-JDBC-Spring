@@ -19,32 +19,6 @@ public class ConnectionManager {
     super();
   }
 
-  public static Connection openDbConnectionWhenDBNotExist() throws DaoException {
-    Properties properties = new Properties();
-    URL url = ClassLoader.getSystemResource("DbProperties");
-    if (url != null) {
-      try (InputStream is = url.openStream()) {
-        properties.load(is);
-        dbUrl = (String) properties.get("URL_ORIGINAL");
-        dbUsername = (String) properties.get("USERNAME_ORIGINAL");
-        dbPassword = (String) properties.get("PASSWORD_ORIGINAL");
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    Connection connection = null;
-    try {
-      DriverManager.registerDriver(new org.postgresql.Driver());
-      connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
-      return connection;
-    } catch (Exception e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
-    }
-  }
-
   public static Connection openDbConnection() throws DaoException {
     Properties properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
