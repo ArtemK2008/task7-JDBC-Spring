@@ -5,24 +5,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.kalachev.task7.service.data.idata.CourseInitializer;
+
 import java.util.Random;
 
-public class GroupInitializer {
+public class GroupInitializerImpl implements CourseInitializer {
   Random random;
   private static final String GROUPLESS = "students without groups";
   static final int MAX_GROUP_SIZE = 30;
   static final int MIN_GROUP_SIZE = 10;
 
-  public GroupInitializer() {
+  public GroupInitializerImpl() {
     super();
     random = new Random();
   }
 
-  public GroupInitializer(int seed) {
+  public GroupInitializerImpl(int seed) {
     super();
     this.random = new Random(seed);
   }
 
+  @Override
   public List<String> generateGroups() {
     List<String> groups = new ArrayList<>();
     List<String> groupsUsed = new ArrayList<>();
@@ -58,6 +62,7 @@ public class GroupInitializer {
         .toString();
   }
 
+  @Override
   public Map<String, List<String>> assignStudentsToGroups(List<String> students,
       List<String> groups) {
     checkInput(students, groups);

@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class GroupsDataDbPopulator {
@@ -29,10 +28,7 @@ public class GroupsDataDbPopulator {
       connection.commit();
       connection.setAutoCommit(true);
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while populating table Groups");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

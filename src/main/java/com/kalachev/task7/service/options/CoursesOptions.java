@@ -2,6 +2,7 @@ package com.kalachev.task7.service.options;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
@@ -22,7 +23,7 @@ public class CoursesOptions {
   }
 
   public void addStudentToCourse(int studentId, String course)
-      throws UiException, CourseNotFoundException, StudentNotFoundException {
+      throws CourseNotFoundException, StudentNotFoundException, UiException {
 
     validateInput(studentId, course);
     if (checkIfStudentAlreadyInCourse(studentId, course)) {
@@ -31,7 +32,8 @@ public class CoursesOptions {
     try {
       coursesDao.addStudent(studentId, course);
     } catch (DaoException e) {
-      e.printStackTrace();
+      throw new UiException(
+          "Can not add Student with ID: " + studentId + " to course " + course);
     }
   }
 
@@ -61,7 +63,8 @@ public class CoursesOptions {
       if (courses.isEmpty()) {
         throw new CourseNotFoundException();
       }
-      courses.forEach(c -> courseNames.add(c.getCourseName()));
+      courseNames = courses.stream().map(Course::getCourseName)
+          .collect(Collectors.toList());
     } catch (DaoException e) {
       throw new CourseNotFoundException();
     }
@@ -74,7 +77,8 @@ public class CoursesOptions {
     List<String> courseNames = new ArrayList<>();
     try {
       courses = coursesDao.getById(id);
-      courses.forEach(c -> courseNames.add(c.getCourseName()));
+      courseNames = courses.stream().map(Course::getCourseName)
+          .collect(Collectors.toList());
     } catch (DaoException e) {
       throw new CourseNotFoundException(id);
     }
@@ -112,7 +116,6 @@ public class CoursesOptions {
     if (studentId < 0) {
       throw new IllegalArgumentException();
     }
-
     if (!checkIfCourseExists(course)) {
       throw new CourseNotFoundException(course);
     }

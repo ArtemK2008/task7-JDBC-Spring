@@ -5,18 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class StudentInitializer {
+import com.kalachev.task7.service.data.idata.StudentInitializer;
+
+public class StudentInitializerImpl implements StudentInitializer {
   Random randomGenerator;
 
-  public StudentInitializer() {
+  public StudentInitializerImpl() {
     randomGenerator = new Random();
   }
 
-  public StudentInitializer(int seed) {
+  public StudentInitializerImpl(int seed) {
     super();
     this.randomGenerator = new Random(seed);
   }
 
+  @Override
   public List<String> generateStudents() {
     List<String> students = new ArrayList<>();
     int roll;

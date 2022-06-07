@@ -13,7 +13,7 @@ import com.kalachev.task7.dao.implementations.GroupsDaoImpl;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.exceptions.DaoException;
 
-public class GroupDaoImplTest extends DbUnitConfig {
+class GroupDaoImplTest extends DbUnitConfig {
 
   GroupsDao groupsDao = new GroupsDaoImpl();
 
@@ -31,6 +31,7 @@ public class GroupDaoImplTest extends DbUnitConfig {
   @Test
   void testFindBySize_shouldReturnGroupsWithAtLeastThreeStudent_whenCalledWithValidTables()
       throws DaoException {
+    // given
     List<Group> expected = new LinkedList<>();
     Group group = new Group();
     group.setGroupName("aa-11");
@@ -40,7 +41,9 @@ public class GroupDaoImplTest extends DbUnitConfig {
     group.setGroupName("aa-22");
     group.setId(2);
     expected.add(group);
+    // when
     List<Group> actual = groupsDao.findBySize(3);
+    // then
     assertTrue(actual.size() == expected.size() && actual.containsAll(expected)
         && expected.containsAll(actual));
   }

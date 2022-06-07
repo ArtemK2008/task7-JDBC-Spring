@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.exceptions.UiException;
+import com.kalachev.task7.exceptions.GroupNotFoundException;
 import com.kalachev.task7.service.options.GroupOptions;
 
 public class GroupSizeCommand implements Command {
@@ -40,7 +40,7 @@ public class GroupSizeCommand implements Command {
     List<String> groupNames = new LinkedList<>();
     try {
       groupNames = options.findBySize(size);
-    } catch (UiException e) {
+    } catch (GroupNotFoundException e) {
       System.out.println("no such groups");
     }
     return groupNames;

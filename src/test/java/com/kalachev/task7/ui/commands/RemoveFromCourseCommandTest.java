@@ -46,9 +46,9 @@ class RemoveFromCourseCommandTest {
   }
 
   @Test
-  void testRemoveFromCourse_shouldCallAllNeedeMethods_whenMocked()
-      throws NumberFormatException, UiException, CourseNotFoundException,
-      StudentNotFoundException {
+  void testRemoveFromCourse_shouldCallAllNeedeMethods_whenValidInput()
+      throws UiException, CourseNotFoundException, StudentNotFoundException {
+    // given
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNamesByID(Integer.parseInt(id)))
         .thenReturn(courses);
@@ -61,7 +61,9 @@ class RemoveFromCourseCommandTest {
         .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
         .thenReturn(true);
     command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    // when
     command.execute();
+    // then
     verify(mockOptions, times(1)).removeStudentFromCourse(Integer.parseInt(id),
         course);
     verify(mockOptions, times(1)).findCourseNamesByID(Integer.parseInt(id));
@@ -70,6 +72,7 @@ class RemoveFromCourseCommandTest {
   @Test
   void testRemoveFromCourse_shouldPrintRemoved_whenValidInput()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to delete" + NEWLINE
         + "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
         + "Enter a name of a course from the list" + NEWLINE
@@ -86,13 +89,16 @@ class RemoveFromCourseCommandTest {
         .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
         .thenReturn(true);
     command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testRemoveFromCourse_shouldPrintWrongName_whenCourseNotInTable()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to delete" + NEWLINE
         + "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
         + "Enter a name of a course from the list" + NEWLINE
@@ -103,50 +109,61 @@ class RemoveFromCourseCommandTest {
     Mockito.when(mockScanner.next()).thenReturn(id)
         .thenReturn("wrong course name");
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
     command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testRemoveFromCourse_shouldPrintBadInput_whenIdIsNotInt()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to delete" + NEWLINE
         + "Your Input was not correct";
     Mockito.when(mockScanner.next()).thenReturn("this is not an int");
     command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testRemoveFromCourse_shouldPrintWrongId_whenNegativeId()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to delete" + NEWLINE
         + "Wrong id";
     Mockito.when(mockScanner.next()).thenReturn("-3222");
     command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testRemoveFromCourse_shouldPrintNoStudent_whenNoStudentId()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to delete" + NEWLINE
         + "There is no student with such id";
     Mockito.when(mockScanner.next()).thenReturn(id);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt()))
         .thenReturn(false);
     command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testRemoveFromCourse_shouldPrintNotInCourse_whenNoStudentInCourse()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to delete" + NEWLINE
         + "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
         + "Enter a name of a course from the list" + NEWLINE
@@ -163,7 +180,9 @@ class RemoveFromCourseCommandTest {
         .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
         .thenReturn(false);
     command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 }

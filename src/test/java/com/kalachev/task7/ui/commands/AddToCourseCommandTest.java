@@ -46,9 +46,9 @@ class AddToCourseCommandTest {
   }
 
   @Test
-  void testAddToCourse_shouldCallAllNeedeMethods_whenMocked()
-      throws NumberFormatException, UiException, CourseNotFoundException,
-      StudentNotFoundException {
+  void testAddToCourse_shouldCallAllNeedeMethods_whenValidInput()
+      throws UiException, CourseNotFoundException, StudentNotFoundException {
+    // given
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
@@ -57,13 +57,16 @@ class AddToCourseCommandTest {
         .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
         .thenReturn(false);
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     command.execute();
+    // then
     verify(mockOptions, times(1)).addStudentToCourse(Integer.parseInt(id),
         course);
   }
 
   @Test
   void testAddToCourse_shouldPrintAdded_whenValidInput() throws Exception {
+    // given
     String expected = "Enter ID of a student you want to add" + NEWLINE + "Eng"
         + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
         + "Enter a name of a course from the list" + NEWLINE
@@ -76,13 +79,16 @@ class AddToCourseCommandTest {
         .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
         .thenReturn(false);
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testAddToCourse_shouldprintWrongName_whenNameWasNotInCourses()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to add" + NEWLINE + "Eng"
         + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
         + "Enter a name of a course from the list" + NEWLINE
@@ -91,41 +97,48 @@ class AddToCourseCommandTest {
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn("wrong course");
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testAddToCourse_shouldprintWrongInput_whenIdWasNotInt()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to add" + NEWLINE
         + "Your Input was not correct";
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn("not an int id");
-
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testAddToCourse_shouldPrintWrongId_whenNegativeId() throws Exception {
+    // given
     String expected = "Enter ID of a student you want to add" + NEWLINE
         + "id cant be negative";
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn("-322");
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testAddToCourse_shouldPrintStudentNotExist_whenIdIsNotInTable()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to add" + NEWLINE
         + "There is no student with such id";
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
@@ -133,15 +146,17 @@ class AddToCourseCommandTest {
     Mockito.when(mockScanner.next()).thenReturn("5555");
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt()))
         .thenReturn(false);
-
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testAddToCourse_shouldPrintAlreadyInCourse_whenStudentInCourse()
       throws Exception {
+    // given
     String expected = "Enter ID of a student you want to add" + NEWLINE + "Eng"
         + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
         + "Enter a name of a course from the list" + NEWLINE
@@ -154,18 +169,23 @@ class AddToCourseCommandTest {
         .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
         .thenReturn(true);
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testAddToCourse_shouldPrintNoCourses_whenCoursesCorrupted()
       throws Exception {
+    // given
     String expected = "No Courses Found";
     Mockito.when(mockOptions.findCourseNames())
         .thenThrow(CourseNotFoundException.class);
     command = new AddToCourseCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 }

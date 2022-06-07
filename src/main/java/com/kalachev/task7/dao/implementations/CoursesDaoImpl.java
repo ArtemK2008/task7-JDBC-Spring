@@ -20,7 +20,7 @@ public class CoursesDaoImpl implements CoursesDao {
       + "FROM Courses WHERE course_name = (?)";
 
   private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,group_id,first_name,last_name "
-      + "FROM students WHERE student_id = (?)";
+      + "FROM students " + "WHERE student_id = (?)";
 
   private static final String ADD_STUDENT_TO_COURSE = "INSERT INTO studentscoursesdata"
       + "(student_id,group_id,first_name,last_name,course_name,course_description) "

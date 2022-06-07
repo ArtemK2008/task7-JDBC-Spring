@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class StudentsDataDbPopulator {
@@ -42,10 +41,7 @@ public class StudentsDataDbPopulator {
         }
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while populating table Students");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

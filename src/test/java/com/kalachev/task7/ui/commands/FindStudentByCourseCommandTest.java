@@ -19,6 +19,7 @@ import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.dao.initialization.InitializerImpl;
 import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.options.StudentOptions;
@@ -46,105 +47,93 @@ class FindStudentByCourseCommandTest {
   }
 
   @Test
-  void testFindNames_shouldCallAllNeedeMethods_whenMocked()
-      throws UiException, CourseNotFoundException {
+  void testFindNames_shouldCallAllNeedeMethods_whenValidInput()
+      throws UiException, CourseNotFoundException, StudentNotFoundException {
+    // given
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     List<String> students = Arrays.asList("a", "b", "c");
     Mockito.when(mockCourseOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(course);
     Mockito.when(mockStudentOptions.findByCourse(course)).thenReturn(students);
-
     command = new FindStudentsByCourseCommand(mockScanner, mockCourseOptions,
         mockStudentOptions);
+    // when
     command.execute();
+    // then
     verify(mockCourseOptions, times(1)).findCourseNames();
     verify(mockStudentOptions, times(1)).findByCourse(course);
   }
 
   @Test
   void testFindNames_shouldPrintAllCourses_whenValidInput() throws Exception {
+    // given
+    String expected = "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
+        + "Choose a course to see its students" + NEWLINE + "a" + NEWLINE + "b"
+        + NEWLINE + "c";
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     List<String> students = Arrays.asList("a", "b", "c");
     Mockito.when(mockCourseOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(course);
     Mockito.when(mockStudentOptions.findByCourse(course)).thenReturn(students);
-
-    String expected = "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
-        + "Choose a course to see its students" + NEWLINE + "a" + NEWLINE + "b"
-        + NEWLINE + "c";
-
     command = new FindStudentsByCourseCommand(mockScanner, mockCourseOptions,
         mockStudentOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
-    assertEquals(expected, actual.trim());
-  }
-
-  @Test
-  void testFindNames_shouldPrintNoCourse_whenValidInput() throws Exception {
-    List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
-    List<String> students = Arrays.asList("a", "b", "c");
-    Mockito.when(mockCourseOptions.findCourseNames()).thenReturn(courses);
-    Mockito.when(mockScanner.next()).thenReturn(course);
-    Mockito.when(mockStudentOptions.findByCourse(course)).thenReturn(students);
-
-    String expected = "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
-        + "Choose a course to see its students" + NEWLINE + "a" + NEWLINE + "b"
-        + NEWLINE + "c";
-
-    command = new FindStudentsByCourseCommand(mockScanner, mockCourseOptions,
-        mockStudentOptions);
-    String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testFindNames_shouldPrintThatWasNotCorrect_whenInputIsNotACourseFromList()
       throws Exception {
+    // given
+    String expected = "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
+        + "Choose a course to see its students" + NEWLINE + "no such course";
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockCourseOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn("not a course");
-
-    String expected = "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
-        + "Choose a course to see its students" + NEWLINE + "no such course";
-
     command = new FindStudentsByCourseCommand(mockScanner, mockCourseOptions,
         mockStudentOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testFindNames_shouldPrintNoCourseFound_whenInputCourseTableCorrupted()
       throws Exception {
+    // given
+    String expected = "No Courses Found";
     List<String> students = Arrays.asList("a", "b", "c");
     Mockito.when(mockCourseOptions.findCourseNames())
         .thenThrow(CourseNotFoundException.class);
     Mockito.when(mockScanner.next()).thenReturn(course);
     Mockito.when(mockStudentOptions.findByCourse(course)).thenReturn(students);
-
-    String expected = "No Courses Found";
-
     command = new FindStudentsByCourseCommand(mockScanner, mockCourseOptions,
         mockStudentOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 
   @Test
   void testFindNames_shouldPrintNoStudents_whenEmptyCourse() throws Exception {
+    // given
+    String expected = "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
+        + "Choose a course to see its students" + NEWLINE
+        + "No students in this course";
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     List<String> students = new ArrayList<>();
     Mockito.when(mockCourseOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(course);
     Mockito.when(mockStudentOptions.findByCourse(course)).thenReturn(students);
-
-    String expected = "Eng" + NEWLINE + "Rus" + NEWLINE + "Uk" + NEWLINE
-        + "Choose a course to see its students" + NEWLINE
-        + "No students in this course";
-
     command = new FindStudentsByCourseCommand(mockScanner, mockCourseOptions,
         mockStudentOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expected, actual.trim());
   }
 }

@@ -19,20 +19,14 @@ public class JdbcUtil {
       try {
         statement.close();
       } catch (SQLException e) {
-        e.printStackTrace();
-        String methodName = ExceptionsUtil.getCurrentMethodName();
-        String className = ExceptionsUtil.getCurrentClassName();
-        throw new DaoException(methodName, className);
+        throw new DaoException("Error while closing Statement");
       }
     }
     if (connection != null) {
       try {
         connection.close();
       } catch (SQLException e) {
-        e.printStackTrace();
-        String methodName = ExceptionsUtil.getCurrentMethodName();
-        String className = ExceptionsUtil.getCurrentClassName();
-        throw new DaoException(methodName, className);
+        throw new DaoException("Error while closing Connection");
       }
     }
   }
@@ -43,30 +37,21 @@ public class JdbcUtil {
       try {
         rs.close();
       } catch (SQLException e) {
-        e.printStackTrace();
-        String methodName = ExceptionsUtil.getCurrentMethodName();
-        String className = ExceptionsUtil.getCurrentClassName();
-        throw new DaoException(methodName, className);
+        throw new DaoException("Error while closing Result Set");
       }
     }
     if (statement != null) {
       try {
         statement.close();
       } catch (SQLException e) {
-        e.printStackTrace();
-        String methodName = ExceptionsUtil.getCurrentMethodName();
-        String className = ExceptionsUtil.getCurrentClassName();
-        throw new DaoException(methodName, className);
+        throw new DaoException("Error while closing Statement");
       }
     }
     if (connection != null) {
       try {
         connection.close();
       } catch (SQLException e) {
-        e.printStackTrace();
-        String methodName = ExceptionsUtil.getCurrentMethodName();
-        String className = ExceptionsUtil.getCurrentClassName();
-        throw new DaoException(methodName, className);
+        throw new DaoException("Error while closing Connection");
       }
     }
   }

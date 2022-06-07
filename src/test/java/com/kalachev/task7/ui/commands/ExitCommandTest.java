@@ -30,13 +30,15 @@ class ExitCommandTest {
   @Test
   void testExit_shouldPrintMessageAndTerminate_whenCommandIsCalled()
       throws Exception {
+    // given
+    int expectedCode = 0;
     command = new ExitCommand(scanner);
-
+    // when
     int statusCode = catchSystemExit(() -> {
       command.execute();
     });
-
-    assertEquals(0, statusCode);
+    // then
+    assertEquals(expectedCode, statusCode);
     assertEquals("Have a good day!", outputStreamCaptor.toString().trim());
   }
 

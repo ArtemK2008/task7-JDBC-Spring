@@ -20,7 +20,7 @@ import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
 
-public class AddStudentCommandTest {
+class AddStudentCommandTest {
   Command command;
   final static String NEWLINE = System.lineSeparator();
   String name = "b";
@@ -42,8 +42,9 @@ public class AddStudentCommandTest {
   }
 
   @Test
-  void testAddStudent_shouldCallAllNeedeMethods_whenMocked()
-      throws NumberFormatException, UiException {
+  void testAddStudent_shouldCallAllNeedeMethods_whenGivenValidInputs()
+      throws UiException {
+    // given
     Mockito.when(mockScanner.next()).thenReturn(name).thenReturn(lastname)
         .thenReturn(group);
     Mockito
@@ -51,9 +52,10 @@ public class AddStudentCommandTest {
         .thenReturn(true);
     Mockito.when(mockOptions.checkIfStudentAlreadyInGroup(anyInt(), anyString(),
         anyString())).thenReturn(false);
-
     command = new AddStudentCommand(mockScanner, mockOptions);
+    // when
     command.execute();
+    // then
     verify(mockOptions, times(1)).addNewStudent(name, lastname,
         Integer.valueOf(group));
     verify(mockOptions, times(1))
@@ -63,10 +65,10 @@ public class AddStudentCommandTest {
   @Test
   void testAddStudent_shouldPrintThatStudentAdded_whenAllWasValid()
       throws Exception {
+    // given
     String expexted = "Enter student name" + NEWLINE + "Enter student last name"
         + NEWLINE + "Enter group id to add this student" + NEWLINE
         + "Student b b added to group 1";
-
     Mockito.when(mockScanner.next()).thenReturn(name).thenReturn(lastname)
         .thenReturn(group);
     Mockito
@@ -74,35 +76,42 @@ public class AddStudentCommandTest {
         .thenReturn(true);
     Mockito.when(mockOptions.checkIfStudentAlreadyInGroup(anyInt(), anyString(),
         anyString())).thenReturn(false);
-
     command = new AddStudentCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expexted, actual.trim());
   }
 
   @Test
-  void testAddStudent_shouldPrintThatWasNotCorrect_whenIdWasNotAnInt()
+  void testAddStudent_shouldPrintInputWasNotCorrect_whenIdWasNotAnInt()
       throws Exception {
+    // given
     String expexted = "Enter student name" + NEWLINE + "Enter student last name"
         + NEWLINE + "Enter group id to add this student" + NEWLINE
         + "Your Input was not correct";
     Mockito.when(mockScanner.next()).thenReturn(name).thenReturn(lastname)
         .thenReturn("not an integer id");
     command = new AddStudentCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expexted, actual.trim());
   }
 
   @Test
   void testAddStudent_shouldPrintWrongGroupId_whenIdWasOutOfRange()
       throws Exception {
+    // given
     String expexted = "Enter student name" + NEWLINE + "Enter student last name"
         + NEWLINE + "Enter group id to add this student" + NEWLINE
         + "Wrong groupd id";
     Mockito.when(mockScanner.next()).thenReturn(name).thenReturn(lastname)
         .thenReturn("322");
     command = new AddStudentCommand(mockScanner, mockOptions);
+    // when
     String actual = tapSystemOut(() -> command.execute());
+    // then
     assertEquals(expexted, actual.trim());
   }
 

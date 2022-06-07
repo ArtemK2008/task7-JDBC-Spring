@@ -11,7 +11,8 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.service.data.StudentInitializer;
+import com.kalachev.task7.service.data.StudentInitializerImpl;
+import com.kalachev.task7.service.data.idata.StudentInitializer;
 
 class TestStudentInitializer {
   List<String> expected = Arrays.asList("Gwen Kuleshova", "Jane Ivanova",
@@ -24,27 +25,28 @@ class TestStudentInitializer {
 
   @Test
   void testGenerateStudents_shouldCreateRandomStudentsNames_whenCalledWithKnownSeed() {
-    StudentInitializer studentInitializer = new StudentInitializer(1);
-    List<String> students = studentInitializer.generateStudents();
-    assertEquals(200, students.size());
-
+    // given
+    StudentInitializer studentInitializerImpl = new StudentInitializerImpl(1);
+    // when
+    List<String> students = studentInitializerImpl.generateStudents();
     Set<String> uniqStudents = new HashSet<String>(students);
+    // then
+    assertEquals(200, students.size());
     assertEquals(123, uniqStudents.size());
-
     assertFalse(uniqStudents.contains(MUSK));
-
     assertTrue(uniqStudents.containsAll(expected));
   }
 
   @Test
   void testGenerateStudents_shouldCreateRandomStudentsNames_whenCalledWithOtherSeed() {
-    StudentInitializer studentInitializer = new StudentInitializer(2);
-    List<String> students = studentInitializer.generateStudents();
-    assertEquals(200, students.size());
-
+    // given
+    StudentInitializer studentInitializerImpl = new StudentInitializerImpl(2);
+    // when
+    List<String> students = studentInitializerImpl.generateStudents();
     Set<String> uniqStudents = new HashSet<String>(students);
+    // then
+    assertEquals(200, students.size());
     assertEquals(126, uniqStudents.size());
-
     assertTrue(uniqStudents.contains(MUSK));
     assertFalse(uniqStudents.containsAll(expected));
   }

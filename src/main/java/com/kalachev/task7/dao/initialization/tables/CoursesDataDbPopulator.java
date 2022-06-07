@@ -8,12 +8,12 @@ import java.util.Map.Entry;
 
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class CoursesDataDbPopulator {
 
-  private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) VALUES (?,?)";
+  private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) "
+      + "VALUES (?,?)";
 
   public void populateCourses(Map<String, String> courses) throws DaoException {
     Connection connection = null;
@@ -31,9 +31,7 @@ public class CoursesDataDbPopulator {
       connection.commit();
       connection.setAutoCommit(true);
     } catch (SQLException e) {
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while populating table Courses");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

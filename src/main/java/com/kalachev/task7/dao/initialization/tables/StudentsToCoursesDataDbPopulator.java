@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class StudentsToCoursesDataDbPopulator {
@@ -39,10 +38,7 @@ public class StudentsToCoursesDataDbPopulator {
         }
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while populating many to many table");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -61,10 +57,7 @@ public class StudentsToCoursesDataDbPopulator {
           + "ON sc.course_id = c.course_id " + "ORDER BY s.student_id)";
       statement.executeUpdate(sql);
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while populating table Students_Courses");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

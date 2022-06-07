@@ -2,13 +2,15 @@ package com.kalachev.task7.service.options;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
+import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 
 public class StudentOptions {
 
@@ -23,20 +25,21 @@ public class StudentOptions {
     this.coursesDao = coursesDao;
   }
 
-  public List<String> findByCourse(String course) throws UiException {
+  public List<String> findByCourse(String course)
+      throws StudentNotFoundException, CourseNotFoundException {
     if (!checkIfCourseExists(course)) {
       throw new IllegalArgumentException();
     }
     List<String> studentOfThisCourse = new ArrayList<>();
     try {
-      List<Student> student = studentsDao.findByCourse(course);
-      student.forEach(s -> studentOfThisCourse
-          .add(s.getFirstName() + SPACE + s.getLastName()));
+      List<Student> students = studentsDao.findByCourse(course);
+      studentOfThisCourse = students.stream()
+          .map(s -> s.getFirstName() + SPACE + s.getLastName())
+          .collect(Collectors.toList());
+
     } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
+      throw new StudentNotFoundException(
+          "Cant find any students in course " + course);
     }
     return studentOfThisCourse;
   }
@@ -50,15 +53,12 @@ public class StudentOptions {
     if (checkIfStudentAlreadyInGroup(groupId, firstName, lastName)) {
       throw new IllegalArgumentException();
     }
-
     try {
       studentsDao.insert(firstName, lastName, groupId);
       isAdded = true;
     } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
+      throw new UiException("Can not add Student " + firstName + " " + lastName
+          + " to group " + groupId);
     }
     return isAdded;
   }
@@ -75,10 +75,7 @@ public class StudentOptions {
       studentsDao.delete(id);
       isDeleted = true;
     } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
+      throw new UiException("Can not delete Student with ID: " + id);
     }
     return isDeleted;
   }
@@ -91,40 +88,34 @@ public class StudentOptions {
         isInGroup = true;
       }
     } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
+      throw new UiException("Can not check if Student " + firstName + " "
+          + lastName + " exists in group " + groupId);
     }
     return isInGroup;
   }
 
-  private boolean checkIfCourseExists(String course) throws UiException {
+  private boolean checkIfCourseExists(String course)
+      throws CourseNotFoundException {
     boolean isExist = false;
     try {
       if (coursesDao.isExists(course)) {
         isExist = true;
       }
     } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
+      throw new CourseNotFoundException(course);
     }
     return isExist;
   }
 
-  public boolean checkIfStudentIdExists(int id) throws UiException {
+  public boolean checkIfStudentIdExists(int id)
+      throws StudentNotFoundException {
     boolean isExist = false;
     try {
       if (studentsDao.isIdExists(id)) {
         isExist = true;
       }
     } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
+      throw new StudentNotFoundException(id);
     }
     return isExist;
   }

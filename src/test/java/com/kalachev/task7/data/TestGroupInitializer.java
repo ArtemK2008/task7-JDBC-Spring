@@ -15,13 +15,15 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.service.data.GroupInitializer;
-import com.kalachev.task7.service.data.StudentInitializer;
+import com.kalachev.task7.service.data.GroupInitializerImpl;
+import com.kalachev.task7.service.data.StudentInitializerImpl;
+import com.kalachev.task7.service.data.idata.CourseInitializer;
+import com.kalachev.task7.service.data.idata.StudentInitializer;
 
 class TestGroupInitializer {
   static List<String> groups;
   static List<String> students;
-  GroupInitializer gc;
+  CourseInitializer gc;
   StudentInitializer sc;
 
   private static final String GROUPLESS = "students without groups";
@@ -30,23 +32,28 @@ class TestGroupInitializer {
 
   @BeforeEach
   public void createGroupsAndStudents() {
-    gc = new GroupInitializer(1);
-    sc = new StudentInitializer(1);
+    gc = new GroupInitializerImpl(1);
+    sc = new StudentInitializerImpl(1);
     groups = gc.generateGroups();
     students = sc.generateStudents();
   }
 
   @Test
   void testCreateGroups_shouldCreateElevenDifferentGroups_whenMethodIsCalled() {
-    assertEquals(11, groups.size());
+    // given
+    int groupSize = 11;
+    // then
+    assertEquals(groupSize, groups.size());
     assertTrue(groups.contains(GROUPLESS));
     assertEquals(expected, groups);
   }
 
   @Test
   void testCreateGroups_shouldCreateUniqueGroupsOnly_whenMethodIsCalledLotOfTimes() {
-    gc = new GroupInitializer();
+    // given
+    gc = new GroupInitializerImpl();
     boolean isRightSize = true;
+    // when
     for (int i = 0; i < 1000; i++) {
       List<String> groups = gc.generateGroups();
       Set<String> uniqGrousp = new HashSet<String>(groups);
@@ -54,16 +61,19 @@ class TestGroupInitializer {
         isRightSize = false;
       }
     }
+    // then
     assertTrue(isRightSize);
   }
 
   @Test
   void testAssignStudents_shouldPopulateGroupsWithValidStudentNumbers_whenDataIsGeneratedLotsOfTimes() {
-    gc = new GroupInitializer();
-    sc = new StudentInitializer();
+    // given
+    gc = new GroupInitializerImpl();
+    sc = new StudentInitializerImpl();
     int minInGroup = 10;
     int maxInGroup = 30;
     boolean isGroupSizeValid = true;
+    // when
     for (int i = 0; i < 200; i++) {
       groups = gc.generateGroups();
       students = sc.generateStudents();
@@ -81,42 +91,56 @@ class TestGroupInitializer {
         }
       }
     }
+    // then
     assertTrue(isGroupSizeValid);
   }
 
   @Test
   void testAssignStudents_shouldPopulateAllGroupsExceptSmall_whenOneGroupIsTooSmall() {
-    gc = new GroupInitializer(63);
+    // given
+    gc = new GroupInitializerImpl(63);
+    final String smallGroup = "nf-24";
+    int expectedSize = 0;
+    // when
     Map<String, List<String>> groupsWithStudentsIn = gc
         .assignStudentsToGroups(students, groups);
-    final String smallGroup = "nf-24";
     int actualSize = groupsWithStudentsIn.get(smallGroup).size();
-    int expectedSize = 0;
+    // then
     assertEquals(expectedSize, actualSize);
   }
 
   @Test
   void testAssignStudents_shouldThrowException_whenStudentsIsNull() {
+    // when
+    List<String> students = null;
+    // then
     assertThrows(IllegalArgumentException.class,
-        () -> gc.assignStudentsToGroups(null, groups));
+        () -> gc.assignStudentsToGroups(students, groups));
   }
 
   @Test
   void testAssignStudents_shouldThrowException_whenGroupsIsNull() {
+    // when
+    List<String> groups = null;
+    // then
     assertThrows(IllegalArgumentException.class,
-        () -> gc.assignStudentsToGroups(students, null));
+        () -> gc.assignStudentsToGroups(students, groups));
   }
 
   @Test
   void testAssignStudents_shouldThrowException_whenGroupsIsEmpty() {
+    // when
     groups = new ArrayList<>();
+    // then
     assertThrows(IllegalArgumentException.class,
         () -> gc.assignStudentsToGroups(students, groups));
   }
 
   @Test
   void testAssignStudents_shouldThrowException_whenStudentsIsEmpty() {
+    // when
     students = new ArrayList<>();
+    // then
     assertThrows(IllegalArgumentException.class,
         () -> gc.assignStudentsToGroups(students, groups));
   }

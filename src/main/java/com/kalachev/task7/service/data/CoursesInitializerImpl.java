@@ -8,19 +8,22 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class CoursesInitializer {
+import com.kalachev.task7.service.data.idata.CoursesInitializer;
+
+public class CoursesInitializerImpl implements CoursesInitializer {
   Random random;
 
-  public CoursesInitializer() {
+  public CoursesInitializerImpl() {
     super();
     random = new Random();
   }
 
-  public CoursesInitializer(int seed) {
+  public CoursesInitializerImpl(int seed) {
     super();
     this.random = new Random(seed);
   }
 
+  @Override
   public Map<String, String> generateCourses() {
     Map<String, String> courses = new LinkedHashMap<>();
     courses.put("English", "place to learn English");
@@ -36,6 +39,7 @@ public class CoursesInitializer {
     return courses;
   }
 
+  @Override
   public List<String> retrieveCoursesNames(Map<String, String> courses) {
     if (courses == null || courses.isEmpty()) {
       throw new IllegalArgumentException();
@@ -44,6 +48,7 @@ public class CoursesInitializer {
         .collect(Collectors.toList());
   }
 
+  @Override
   public Map<String, List<String>> assignStudentsIdToCourse(
       Map<String, String> studentsWithId, List<String> courses) {
     checkInput(studentsWithId, courses);

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class SchemaInitializer {
@@ -26,10 +25,7 @@ public class SchemaInitializer {
       statement = connection.createStatement();
       statement.executeUpdate(sql);
     } catch (Exception e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while creating schema");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

@@ -16,13 +16,14 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.service.data.CoursesInitializer;
+import com.kalachev.task7.service.data.CoursesInitializerImpl;
+import com.kalachev.task7.service.data.idata.CoursesInitializer;
 
 class TestCourseInitializer {
   Map<String, String> courseWithDescription;
   List<String> courses;
   HashMap<String, String> students;
-  CoursesInitializer coursesInitializer;
+  CoursesInitializer coursesInitializerImpl;
 
   @BeforeEach
   void fillExpexted() {
@@ -47,15 +48,19 @@ class TestCourseInitializer {
 
   @Test
   void testGenerateCourses_shouldReturnHardcodedValues_whenMethoIsCalled() {
-    CoursesInitializer coursesInitializer = new CoursesInitializer();
-    Map<String, String> actual = coursesInitializer.generateCourses();
+    // given
     Map<String, String> expected = courseWithDescription;
+    CoursesInitializer coursesInitializerImpl = new CoursesInitializerImpl();
+    // when
+    Map<String, String> actual = coursesInitializerImpl.generateCourses();
+    // then
     assertEquals(expected, actual);
   }
 
   @Test
   void testRetrieveInput_shouldReturnCourseNames_whenCoursesExists() {
-    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    // given
+    CoursesInitializer coursesInitializerImpl = new CoursesInitializerImpl();
     List<String> expected = new ArrayList<String>();
     expected.add("English");
     expected.add("Mandarin");
@@ -67,84 +72,110 @@ class TestCourseInitializer {
     expected.add("Russian");
     expected.add("Portuguese");
     expected.add("Ukrainian");
-    List<String> actual = coursesInitializer
+    // when
+    List<String> actual = coursesInitializerImpl
         .retrieveCoursesNames(courseWithDescription);
+    // then
     assertEquals(expected, actual);
   }
 
   @Test
   void testRetrieveInput_shouldThrowException_whenCoursesIsNull() {
-    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    // given
+    CoursesInitializer coursesInitializerImpl = new CoursesInitializerImpl();
+    // when
+    Map<String, String> course = null;
+    // then
     assertThrows(IllegalArgumentException.class,
-        () -> coursesInitializer.retrieveCoursesNames(null));
+        () -> coursesInitializerImpl.retrieveCoursesNames(course));
   }
 
   @Test
   void testRetrieveInput_shouldThrowException_whenCoursesIsEmpty() {
-    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    // given
+    CoursesInitializer coursesInitializerImpl = new CoursesInitializerImpl();
+    // when
     courseWithDescription = new HashMap<String, String>();
-    assertThrows(IllegalArgumentException.class,
-        () -> coursesInitializer.retrieveCoursesNames(courseWithDescription));
+    // then
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializerImpl
+        .retrieveCoursesNames(courseWithDescription));
   }
 
   @Test
   void testAssignStudents_shouldThrowExcception_WhenStudentsIsNull() {
-
-    coursesInitializer = new CoursesInitializer();
+    // given
+    coursesInitializerImpl = new CoursesInitializerImpl();
+    // when
     HashMap<String, String> studentsWithId = null;
     List<String> courses = Arrays.asList("1", "2");
-    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
+    // then
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializerImpl
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldThrowExcception_WhencoursesIsNull() {
-    coursesInitializer = new CoursesInitializer();
+    // given
+    coursesInitializerImpl = new CoursesInitializerImpl();
+    // when
     HashMap<String, String> studentsWithId = new HashMap<String, String>();
     studentsWithId.put("1", "1");
     List<String> courses = null;
-    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
+    // then
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializerImpl
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldThrowExcception_WhenStudentsIsEmpty() {
-    coursesInitializer = new CoursesInitializer();
+    // given
+    coursesInitializerImpl = new CoursesInitializerImpl();
+    // when
     HashMap<String, String> studentsWithId = new HashMap<String, String>();
     List<String> courses = Arrays.asList("1", "2");
-    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
+    // then
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializerImpl
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldThrowExcception_WhencoursesIsEmpty() {
-    coursesInitializer = new CoursesInitializer();
+    // given
+    coursesInitializerImpl = new CoursesInitializerImpl();
+    // when
     HashMap<String, String> studentsWithId = new HashMap<String, String>();
     studentsWithId.put("1", "1");
     List<String> courses = new ArrayList<>();
-    assertThrows(IllegalArgumentException.class, () -> coursesInitializer
+    // then
+    assertThrows(IllegalArgumentException.class, () -> coursesInitializerImpl
         .assignStudentsIdToCourse(studentsWithId, courses));
   }
 
   @Test
   void testAssignStudents_shouldAssignStudentsCorrectly_whenExpectertResultIsKnown() {
-    coursesInitializer = new CoursesInitializer(5);
+    // given
+    coursesInitializerImpl = new CoursesInitializerImpl(5);
     Map<String, List<String>> expected = new LinkedHashMap<>();
     expected.put("1", Arrays.asList("English", "Mandarin", "Russian"));
     expected.put("2", Arrays.asList("Russian", "Ukranian", "Mandarin"));
     expected.put("3", Arrays.asList("Russian"));
-    Map<String, List<String>> actual = coursesInitializer
+    // when
+    Map<String, List<String>> actual = coursesInitializerImpl
         .assignStudentsIdToCourse(students, courses);
+    // then
     assertEquals(expected, actual);
   }
 
   @Test
   void testAssignStudents_shouldNotAssignToSameCourse_whenLotsOfTriesWereTaken() {
+    // given
     Map<String, List<String>> actual;
     boolean isAnyRepetitions = false;
+    // when
     for (int i = 0; i < 200; i++) {
-      coursesInitializer = new CoursesInitializer();
-      actual = coursesInitializer.assignStudentsIdToCourse(students, courses);
+      coursesInitializerImpl = new CoursesInitializerImpl();
+      actual = coursesInitializerImpl.assignStudentsIdToCourse(students,
+          courses);
       for (String student : actual.keySet()) {
         Set<String> courseSet = new HashSet<>(actual.get(student));
         if (courseSet.size() != actual.get(student).size()) {
@@ -152,38 +183,47 @@ class TestCourseInitializer {
         }
       }
     }
+    // then
     assertFalse(isAnyRepetitions);
   }
 
   @Test
   void testAssignStudents_shouldAssignToAtLeastOne_whenLotsOfTriesWereTaken() {
+    // given
     Map<String, List<String>> actual;
     boolean isStudentWithoutCourse = false;
+    // when
     for (int i = 0; i < 200; i++) {
-      coursesInitializer = new CoursesInitializer();
-      actual = coursesInitializer.assignStudentsIdToCourse(students, courses);
+      coursesInitializerImpl = new CoursesInitializerImpl();
+      actual = coursesInitializerImpl.assignStudentsIdToCourse(students,
+          courses);
       for (String student : actual.keySet()) {
         if (actual.get(student).size() == 0) {
           isStudentWithoutCourse = true;
         }
       }
     }
+    // then
     assertFalse(isStudentWithoutCourse);
   }
 
   @Test
   void testAssignStudents_shouldAssignToAtMaxThree_whenLotsOfTriesWereTaken() {
+    // given
     Map<String, List<String>> actual;
     boolean isStudentWithMoreThenThree = false;
+    // when
     for (int i = 0; i < 200; i++) {
-      coursesInitializer = new CoursesInitializer();
-      actual = coursesInitializer.assignStudentsIdToCourse(students, courses);
+      coursesInitializerImpl = new CoursesInitializerImpl();
+      actual = coursesInitializerImpl.assignStudentsIdToCourse(students,
+          courses);
       for (String student : actual.keySet()) {
         if (actual.get(student).size() > 3) {
           isStudentWithMoreThenThree = true;
         }
       }
     }
+    // then
     assertFalse(isStudentWithMoreThenThree);
   }
 

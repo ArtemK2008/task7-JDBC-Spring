@@ -2,12 +2,12 @@ package com.kalachev.task7.service.options;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.kalachev.task7.dao.entities.Group;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.utilities.ExceptionsUtil;
+import com.kalachev.task7.exceptions.GroupNotFoundException;
 
 public class GroupOptions {
   GroupsDao groupsDao;
@@ -17,7 +17,7 @@ public class GroupOptions {
     this.groupsDao = groupsDao;
   }
 
-  public List<String> findBySize(int maxSize) throws UiException {
+  public List<String> findBySize(int maxSize) throws GroupNotFoundException {
     if (maxSize < 0) {
       throw new IllegalArgumentException();
     }
@@ -25,15 +25,14 @@ public class GroupOptions {
     List<String> groupNames = new ArrayList<>();
     try {
       group = groupsDao.findBySize(maxSize);
-      group.forEach(g -> groupNames.add(g.getGroupName()));
+      groupNames = group.stream().map(Group::getGroupName)
+          .collect(Collectors.toList());
     } catch (DaoException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new UiException(methodName, className);
+      throw new GroupNotFoundException(
+          "Can not find groups with size less then " + maxSize);
     }
     if (group.isEmpty()) {
-      throw new UiException();
+      throw new GroupNotFoundException();
     }
     return groupNames;
   }

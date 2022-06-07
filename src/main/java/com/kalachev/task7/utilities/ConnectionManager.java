@@ -39,10 +39,7 @@ public class ConnectionManager {
       connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
       return connection;
     } catch (Exception e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while opening Connection");
     }
   }
 

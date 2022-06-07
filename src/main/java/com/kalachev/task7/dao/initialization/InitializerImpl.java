@@ -10,9 +10,12 @@ import com.kalachev.task7.dao.initialization.tables.StudentsDataDbPopulator;
 import com.kalachev.task7.dao.initialization.tables.StudentsToCoursesDataDbPopulator;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.service.data.CoursesInitializer;
-import com.kalachev.task7.service.data.GroupInitializer;
-import com.kalachev.task7.service.data.StudentInitializer;
+import com.kalachev.task7.service.data.CoursesInitializerImpl;
+import com.kalachev.task7.service.data.GroupInitializerImpl;
+import com.kalachev.task7.service.data.StudentInitializerImpl;
+import com.kalachev.task7.service.data.idata.CourseInitializer;
+import com.kalachev.task7.service.data.idata.CoursesInitializer;
+import com.kalachev.task7.service.data.idata.StudentInitializer;
 
 public class InitializerImpl implements Initializer {
   List<String> groups;
@@ -31,12 +34,12 @@ public class InitializerImpl implements Initializer {
   }
 
   private void generateStudentData() {
-    GroupInitializer gp = new GroupInitializer();
-    StudentInitializer studentInitializer = new StudentInitializer();
-    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    CourseInitializer gp = new GroupInitializerImpl();
+    StudentInitializer studentInitializerImpl = new StudentInitializerImpl();
+    CoursesInitializer coursesInitializerImpl = new CoursesInitializerImpl();
     groups = gp.generateGroups();
-    students = studentInitializer.generateStudents();
-    courses = coursesInitializer.generateCourses();
+    students = studentInitializerImpl.generateStudents();
+    courses = coursesInitializerImpl.generateCourses();
   }
 
   private void initializeStartTables() throws DaoException {
@@ -46,8 +49,8 @@ public class InitializerImpl implements Initializer {
 
   private void fillStudentsTable(List<String> students, List<String> groups)
       throws DaoException {
-    GroupInitializer groupInitializer = new GroupInitializer();
-    Map<String, List<String>> studentsInEachGroup = groupInitializer
+    CourseInitializer groupInitializerImpl = new GroupInitializerImpl();
+    Map<String, List<String>> studentsInEachGroup = groupInitializerImpl
         .assignStudentsToGroups(students, groups);
     StudentsDataDbPopulator filler = new StudentsDataDbPopulator();
     filler.populateStudents(studentsInEachGroup);
@@ -66,12 +69,12 @@ public class InitializerImpl implements Initializer {
 
   private void fillTempManyToManyTable(Map<String, String> courses)
       throws DaoException {
-    CoursesInitializer coursesInitializer = new CoursesInitializer();
+    CoursesInitializer coursesInitializerImpl = new CoursesInitializerImpl();
 
-    List<String> courseList = coursesInitializer.retrieveCoursesNames(courses);
+    List<String> courseList = coursesInitializerImpl.retrieveCoursesNames(courses);
     StudentsDao studentsDao = new StudentsDaoImpl();
     Map<String, String> studentIds = studentsDao.studentNamesById();
-    Map<String, List<String>> studentIdAndHisCourses = coursesInitializer
+    Map<String, List<String>> studentIdAndHisCourses = coursesInitializerImpl
         .assignStudentsIdToCourse(studentIds, courseList);
     StudentsToCoursesDataDbPopulator filler = new StudentsToCoursesDataDbPopulator();
     filler.createManyToManyTable(studentIdAndHisCourses);
