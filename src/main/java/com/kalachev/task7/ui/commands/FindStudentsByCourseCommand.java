@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.options.StudentOptions;
@@ -41,7 +42,7 @@ public class FindStudentsByCourseCommand implements Command {
     List<String> courses = new ArrayList<>();
     try {
       courses = courseOptions.findCourseNames();
-    } catch (UiException e) {
+    } catch (CourseNotFoundException e) {
       System.out.println("No Courses Found");
     }
     return courses;

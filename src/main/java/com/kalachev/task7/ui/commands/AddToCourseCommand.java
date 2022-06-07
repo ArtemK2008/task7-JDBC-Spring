@@ -8,6 +8,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
+import com.kalachev.task7.exceptions.CourseNotFoundException;
+import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 
@@ -74,7 +76,7 @@ public class AddToCourseCommand implements Command {
         System.out.println("There is no student with such id");
         isExist = false;
       }
-    } catch (UiException e) {
+    } catch (StudentNotFoundException e) {
       e.printStackTrace();
     }
     return isExist;
@@ -82,13 +84,9 @@ public class AddToCourseCommand implements Command {
 
   private boolean checkIfAlreadyInCourse(int id, String course) {
     boolean isInCourse = false;
-    try {
-      if (options.checkIfStudentAlreadyInCourse(id, course)) {
-        System.out.println("student already in course");
-        isInCourse = true;
-      }
-    } catch (UiException e) {
-      e.printStackTrace();
+    if (options.checkIfStudentAlreadyInCourse(id, course)) {
+      System.out.println("student already in course");
+      isInCourse = true;
     }
     return isInCourse;
   }
@@ -97,7 +95,7 @@ public class AddToCourseCommand implements Command {
     List<String> courses = new ArrayList<>();
     try {
       courses = options.findCourseNames();
-    } catch (UiException e) {
+    } catch (CourseNotFoundException e) {
       System.out.println("No Courses Found");
     }
     return courses;
@@ -108,7 +106,8 @@ public class AddToCourseCommand implements Command {
       options.addStudentToCourse(id, course);
       System.out
           .println("Student with id " + id + " added to course " + course);
-    } catch (UiException e) {
+    } catch (UiException | CourseNotFoundException
+        | StudentNotFoundException e) {
       e.printStackTrace();
     }
   }

@@ -11,4 +11,8 @@ public class StudentNotFoundException extends Exception {
     System.out.println("Student with id " + id + " was not found!");
   }
 
+  public StudentNotFoundException(String name, String lastname) {
+    System.out.println("Student " + name + " " + lastname + " was not found!");
+  }
+
 }

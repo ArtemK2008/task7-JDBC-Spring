@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
@@ -45,7 +46,8 @@ class FindStudentByCourseCommandTest {
   }
 
   @Test
-  void testFindNames_shouldCallAllNeedeMethods_whenMocked() throws UiException {
+  void testFindNames_shouldCallAllNeedeMethods_whenMocked()
+      throws UiException, CourseNotFoundException {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     List<String> students = Arrays.asList("a", "b", "c");
     Mockito.when(mockCourseOptions.findCourseNames()).thenReturn(courses);
@@ -116,7 +118,7 @@ class FindStudentByCourseCommandTest {
       throws Exception {
     List<String> students = Arrays.asList("a", "b", "c");
     Mockito.when(mockCourseOptions.findCourseNames())
-        .thenThrow(UiException.class);
+        .thenThrow(CourseNotFoundException.class);
     Mockito.when(mockScanner.next()).thenReturn(course);
     Mockito.when(mockStudentOptions.findByCourse(course)).thenReturn(students);
 

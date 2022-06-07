@@ -18,7 +18,9 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 
@@ -45,7 +47,8 @@ class AddToCourseCommandTest {
 
   @Test
   void testAddToCourse_shouldCallAllNeedeMethods_whenMocked()
-      throws NumberFormatException, UiException {
+      throws NumberFormatException, UiException, CourseNotFoundException,
+      StudentNotFoundException {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
@@ -159,7 +162,8 @@ class AddToCourseCommandTest {
   void testAddToCourse_shouldPrintNoCourses_whenCoursesCorrupted()
       throws Exception {
     String expected = "No Courses Found";
-    Mockito.when(mockOptions.findCourseNames()).thenThrow(UiException.class);
+    Mockito.when(mockOptions.findCourseNames())
+        .thenThrow(CourseNotFoundException.class);
     command = new AddToCourseCommand(mockScanner, mockOptions);
     String actual = tapSystemOut(() -> command.execute());
     assertEquals(expected, actual.trim());

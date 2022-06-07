@@ -14,7 +14,6 @@ import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class StudentsDaoImpl implements StudentsDao {
@@ -57,10 +56,8 @@ public class StudentsDaoImpl implements StudentsDao {
         students.add(student);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException(
+          "Error while geting Students of " + courseName + " course");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -80,8 +77,7 @@ public class StudentsDaoImpl implements StudentsDao {
       statement.setString(3, lastName);
       statement.executeUpdate();
     } catch (SQLException e) {
-      e.printStackTrace();
-      throw new DaoException("Could not insert Student " + firstName + " "
+      throw new DaoException("Error while inserting Student " + firstName + " "
           + lastName + " to group " + groupId);
     } finally {
       JdbcUtil.closeAll(statement, connection);
@@ -98,10 +94,7 @@ public class StudentsDaoImpl implements StudentsDao {
       statement.setInt(1, id);
       statement.executeUpdate();
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while Deleting Student with ID: " + id);
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }
@@ -123,10 +116,7 @@ public class StudentsDaoImpl implements StudentsDao {
             rs.getString("first_name") + " " + rs.getString("last_name"));
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while maping student names to their IDs");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -151,10 +141,8 @@ public class StudentsDaoImpl implements StudentsDao {
         isExists = true;
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while checking Student" + firstName + " "
+          + lastName + " existance in group " + groupId);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -176,10 +164,8 @@ public class StudentsDaoImpl implements StudentsDao {
         isExists = true;
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException(
+          "Error while checking existance of student with ID: " + id);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -203,10 +189,9 @@ public class StudentsDaoImpl implements StudentsDao {
         isExists = true;
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException(
+          "Error while checking existance of student with ID: " + studentId
+              + " in coure " + course);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

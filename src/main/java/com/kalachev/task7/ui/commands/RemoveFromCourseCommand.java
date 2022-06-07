@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import com.kalachev.task7.exceptions.CourseNotFoundException;
+import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 
@@ -59,7 +61,7 @@ public class RemoveFromCourseCommand implements Command {
         System.out.println("There is no student with such id");
         isExist = false;
       }
-    } catch (UiException e) {
+    } catch (StudentNotFoundException e) {
       e.printStackTrace();
     }
     return isExist;
@@ -69,7 +71,7 @@ public class RemoveFromCourseCommand implements Command {
     List<String> courses = new ArrayList<>();
     try {
       courses = options.findCourseNamesByID(id);
-    } catch (UiException e) {
+    } catch (CourseNotFoundException e) {
       e.printStackTrace();
     }
     return courses;
@@ -77,13 +79,9 @@ public class RemoveFromCourseCommand implements Command {
 
   private boolean checkIfCourseHaveThisStudent(int id, String course) {
     boolean isInCourse = true;
-    try {
-      if (!options.checkIfStudentAlreadyInCourse(id, course)) {
-        System.out.println("no such student in this course");
-        isInCourse = false;
-      }
-    } catch (UiException e) {
-      e.printStackTrace();
+    if (!options.checkIfStudentAlreadyInCourse(id, course)) {
+      System.out.println("no such student in this course");
+      isInCourse = false;
     }
     return isInCourse;
   }
@@ -92,7 +90,8 @@ public class RemoveFromCourseCommand implements Command {
     try {
       options.removeStudentFromCourse(id, course);
       System.out.println("Student with id " + id + " removed from " + course);
-    } catch (UiException e) {
+    } catch (StudentNotFoundException | CourseNotFoundException
+        | UiException e) {
       e.printStackTrace();
     }
   }

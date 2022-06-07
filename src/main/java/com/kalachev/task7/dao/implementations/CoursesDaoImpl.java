@@ -12,7 +12,6 @@ import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class CoursesDaoImpl implements CoursesDao {
@@ -73,10 +72,8 @@ public class CoursesDaoImpl implements CoursesDao {
       statement.setString(6, courseDesciption);
       statement.executeUpdate();
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while adding Student with id " + studentId
+          + " to course " + course);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -93,10 +90,8 @@ public class CoursesDaoImpl implements CoursesDao {
       statement.setString(2, course);
       statement.executeUpdate();
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while removing student with ID: "
+          + studentId + " from course " + course);
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }
@@ -120,10 +115,7 @@ public class CoursesDaoImpl implements CoursesDao {
         courses.add(course);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Error while getting all existing courses");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -150,16 +142,16 @@ public class CoursesDaoImpl implements CoursesDao {
         courses.add(course);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException(
+          "Error while getting all assigned courses of a Student with ID: "
+              + studentId);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
     return courses;
   }
 
+  @Override
   public boolean isExists(String course) throws DaoException {
     boolean isExist = false;
     Connection connection = null;
@@ -173,12 +165,9 @@ public class CoursesDaoImpl implements CoursesDao {
       if (rs.next()) {
         isExist = true;
       }
-
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException(
+          "Error while checking if course" + course + " exists");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

@@ -11,7 +11,6 @@ import com.kalachev.task7.dao.entities.Group;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
-import com.kalachev.task7.utilities.ExceptionsUtil;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class GroupsDaoImpl implements GroupsDao {
@@ -38,10 +37,8 @@ public class GroupsDaoImpl implements GroupsDao {
         groups.add(group);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException(
+          "Error while getting groups with size less then " + size);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

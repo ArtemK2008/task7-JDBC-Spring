@@ -18,7 +18,9 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 
@@ -45,7 +47,8 @@ class RemoveFromCourseCommandTest {
 
   @Test
   void testRemoveFromCourse_shouldCallAllNeedeMethods_whenMocked()
-      throws NumberFormatException, UiException {
+      throws NumberFormatException, UiException, CourseNotFoundException,
+      StudentNotFoundException {
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNamesByID(Integer.parseInt(id)))
         .thenReturn(courses);
