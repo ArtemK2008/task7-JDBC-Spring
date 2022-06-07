@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.initialization;
+package com.kalachev.task7.initialization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.kalachev.task7.dao.initialization_interfaces.CoursesInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.CoursesInitializer;
 
 public class CoursesInitializerImpl implements CoursesInitializer {
   Random random;

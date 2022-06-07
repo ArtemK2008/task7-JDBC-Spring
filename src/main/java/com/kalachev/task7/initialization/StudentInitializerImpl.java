@@ -1,11 +1,11 @@
-package com.kalachev.task7.dao.initialization;
+package com.kalachev.task7.initialization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import com.kalachev.task7.dao.initialization_interfaces.StudentInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.StudentInitializer;
 
 public class StudentInitializerImpl implements StudentInitializer {
   Random randomGenerator;

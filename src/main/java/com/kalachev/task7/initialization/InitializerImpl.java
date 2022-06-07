@@ -1,20 +1,20 @@
-package com.kalachev.task7.dao.initialization;
+package com.kalachev.task7.initialization;
 
 import java.util.List;
 import java.util.Map;
 
 import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
-import com.kalachev.task7.dao.initialization.tables.CoursesDataDbPopulator;
-import com.kalachev.task7.dao.initialization.tables.GroupsDataDbPopulator;
-import com.kalachev.task7.dao.initialization.tables.StudentsDataDbPopulator;
-import com.kalachev.task7.dao.initialization.tables.StudentsToCoursesDataDbPopulator;
-import com.kalachev.task7.dao.initialization_interfaces.CoursesInitializer;
-import com.kalachev.task7.dao.initialization_interfaces.GroupInitializer;
-import com.kalachev.task7.dao.initialization_interfaces.Initializer;
-import com.kalachev.task7.dao.initialization_interfaces.SchemaInitializer;
-import com.kalachev.task7.dao.initialization_interfaces.StudentInitializer;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.initialization.initialization_interfaces.CoursesInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.GroupInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
+import com.kalachev.task7.initialization.initialization_interfaces.SchemaInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.StudentInitializer;
+import com.kalachev.task7.initialization.tables.CoursesDataDbPopulator;
+import com.kalachev.task7.initialization.tables.GroupsDataDbPopulator;
+import com.kalachev.task7.initialization.tables.StudentsDataDbPopulator;
+import com.kalachev.task7.initialization.tables.StudentsToCoursesDataDbPopulator;
 
 public class InitializerImpl implements Initializer {
   List<String> groups;

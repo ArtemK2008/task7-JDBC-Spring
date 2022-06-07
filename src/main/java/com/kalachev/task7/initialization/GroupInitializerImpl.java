@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.initialization;
+package com.kalachev.task7.initialization;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.kalachev.task7.dao.initialization_interfaces.GroupInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.GroupInitializer;
 
 import java.util.Random;
 

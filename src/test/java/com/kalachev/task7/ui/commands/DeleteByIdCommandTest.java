@@ -13,11 +13,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.dao.initialization.InitializerImpl;
-import com.kalachev.task7.dao.initialization_interfaces.Initializer;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
+import com.kalachev.task7.initialization.InitializerImpl;
+import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.service.options.StudentOptions;
 
 class DeleteByIdCommandTest {

@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.initialization.tables;
+package com.kalachev.task7.initialization.tables;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

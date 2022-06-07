@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.initialization;
+package com.kalachev.task7.initialization;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,8 +7,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.kalachev.task7.dao.initialization_interfaces.SchemaInitializer;
 import com.kalachev.task7.exceptions.DaoException;
+import com.kalachev.task7.initialization.initialization_interfaces.SchemaInitializer;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 

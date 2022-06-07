@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.initialization_interfaces;
+package com.kalachev.task7.initialization.initialization_interfaces;
 
 import java.util.List;
 import java.util.Map;

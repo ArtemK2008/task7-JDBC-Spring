@@ -15,10 +15,10 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.dao.initialization.GroupInitializerImpl;
-import com.kalachev.task7.dao.initialization.StudentInitializerImpl;
-import com.kalachev.task7.dao.initialization_interfaces.GroupInitializer;
-import com.kalachev.task7.dao.initialization_interfaces.StudentInitializer;
+import com.kalachev.task7.initialization.GroupInitializerImpl;
+import com.kalachev.task7.initialization.StudentInitializerImpl;
+import com.kalachev.task7.initialization.initialization_interfaces.GroupInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.StudentInitializer;
 
 class TestGroupInitializer {
   static List<String> groups;

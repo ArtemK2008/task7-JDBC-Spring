@@ -1,40 +1,36 @@
-package com.kalachev.task7.dao.initialization.tables;
+package com.kalachev.task7.initialization.tables;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
-public class CoursesDataDbPopulator {
+public class GroupsDataDbPopulator {
 
-  private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) "
-      + "VALUES (?,?)";
+  private static final String INSERT_GROUPS = "INSERT INTO Groups (group_name) VALUES (?)";
 
-  public void populateCourses(Map<String, String> courses) throws DaoException {
+  public void populateGroups(List<String> groups) throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
       connection = ConnectionManager.openDbConnection();
-      statement = connection.prepareStatement(INSERT_COURSES);
+      statement = connection.prepareStatement(INSERT_GROUPS);
       connection.setAutoCommit(false);
-      for (Entry<String, String> entry : courses.entrySet()) {
-        statement.setString(1, entry.getKey());
-        statement.setString(2, entry.getValue());
+      for (String group : groups) {
+        statement.setString(1, group);
         statement.addBatch();
       }
       statement.executeBatch();
       connection.commit();
       connection.setAutoCommit(true);
     } catch (SQLException e) {
-      throw new DaoException("Error while populating table Courses");
+      throw new DaoException("Error while populating table Groups");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }
   }
-
 }
