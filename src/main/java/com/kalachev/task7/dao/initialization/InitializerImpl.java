@@ -8,14 +8,13 @@ import com.kalachev.task7.dao.initialization.tables.CoursesDataDbPopulator;
 import com.kalachev.task7.dao.initialization.tables.GroupsDataDbPopulator;
 import com.kalachev.task7.dao.initialization.tables.StudentsDataDbPopulator;
 import com.kalachev.task7.dao.initialization.tables.StudentsToCoursesDataDbPopulator;
+import com.kalachev.task7.dao.initialization_interfaces.CoursesInitializer;
+import com.kalachev.task7.dao.initialization_interfaces.GroupInitializer;
+import com.kalachev.task7.dao.initialization_interfaces.Initializer;
+import com.kalachev.task7.dao.initialization_interfaces.SchemaInitializer;
+import com.kalachev.task7.dao.initialization_interfaces.StudentInitializer;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.service.data.CoursesInitializerImpl;
-import com.kalachev.task7.service.data.GroupInitializerImpl;
-import com.kalachev.task7.service.data.StudentInitializerImpl;
-import com.kalachev.task7.service.data.idata.CourseInitializer;
-import com.kalachev.task7.service.data.idata.CoursesInitializer;
-import com.kalachev.task7.service.data.idata.StudentInitializer;
 
 public class InitializerImpl implements Initializer {
   List<String> groups;
@@ -34,7 +33,7 @@ public class InitializerImpl implements Initializer {
   }
 
   private void generateStudentData() {
-    CourseInitializer gp = new GroupInitializerImpl();
+    GroupInitializer gp = new GroupInitializerImpl();
     StudentInitializer studentInitializerImpl = new StudentInitializerImpl();
     CoursesInitializer coursesInitializerImpl = new CoursesInitializerImpl();
     groups = gp.generateGroups();
@@ -43,13 +42,13 @@ public class InitializerImpl implements Initializer {
   }
 
   private void initializeStartTables() throws DaoException {
-    SchemaInitializer schema = new SchemaInitializer();
+    SchemaInitializer schema = new SchemaInitializerImpl();
     schema.createSchema();
   }
 
   private void fillStudentsTable(List<String> students, List<String> groups)
       throws DaoException {
-    CourseInitializer groupInitializerImpl = new GroupInitializerImpl();
+    GroupInitializer groupInitializerImpl = new GroupInitializerImpl();
     Map<String, List<String>> studentsInEachGroup = groupInitializerImpl
         .assignStudentsToGroups(students, groups);
     StudentsDataDbPopulator filler = new StudentsDataDbPopulator();

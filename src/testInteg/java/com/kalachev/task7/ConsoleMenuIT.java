@@ -26,8 +26,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.dao.initialization_interfaces.Initializer;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.ui.ConsoleMenu;
 import com.kalachev.task7.utilities.ConnectionManager;

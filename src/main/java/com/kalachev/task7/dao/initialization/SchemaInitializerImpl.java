@@ -7,17 +7,19 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.kalachev.task7.dao.initialization_interfaces.SchemaInitializer;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
-public class SchemaInitializer {
+public class SchemaInitializerImpl implements SchemaInitializer {
 
+  @Override
   public void createSchema() throws DaoException {
     Connection connection = null;
     Statement statement = null;
     try {
-      java.net.URL url = SchemaInitializer.class.getClassLoader()
+      java.net.URL url = SchemaInitializerImpl.class.getClassLoader()
           .getResource("StartupSqlData.sql");
       List<String> tableData = Files.readAllLines(Paths.get(url.toURI()));
       String sql = tableData.stream().collect(Collectors.joining());

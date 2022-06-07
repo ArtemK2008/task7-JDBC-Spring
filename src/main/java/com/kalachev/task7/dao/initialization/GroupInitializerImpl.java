@@ -1,4 +1,4 @@
-package com.kalachev.task7.service.data;
+package com.kalachev.task7.dao.initialization;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.kalachev.task7.service.data.idata.CourseInitializer;
+import com.kalachev.task7.dao.initialization_interfaces.GroupInitializer;
 
 import java.util.Random;
 
-public class GroupInitializerImpl implements CourseInitializer {
+public class GroupInitializerImpl implements GroupInitializer {
   Random random;
   private static final String GROUPLESS = "students without groups";
   static final int MAX_GROUP_SIZE = 30;

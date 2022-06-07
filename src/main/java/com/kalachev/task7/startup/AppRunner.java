@@ -2,8 +2,8 @@ package com.kalachev.task7.startup;
 
 import java.util.Scanner;
 
-import com.kalachev.task7.dao.initialization.Initializer;
 import com.kalachev.task7.dao.initialization.InitializerImpl;
+import com.kalachev.task7.dao.initialization_interfaces.Initializer;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.ui.ConsoleMenu;
 

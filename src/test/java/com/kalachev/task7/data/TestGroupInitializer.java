@@ -15,15 +15,15 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.service.data.GroupInitializerImpl;
-import com.kalachev.task7.service.data.StudentInitializerImpl;
-import com.kalachev.task7.service.data.idata.CourseInitializer;
-import com.kalachev.task7.service.data.idata.StudentInitializer;
+import com.kalachev.task7.dao.initialization.GroupInitializerImpl;
+import com.kalachev.task7.dao.initialization.StudentInitializerImpl;
+import com.kalachev.task7.dao.initialization_interfaces.GroupInitializer;
+import com.kalachev.task7.dao.initialization_interfaces.StudentInitializer;
 
 class TestGroupInitializer {
   static List<String> groups;
   static List<String> students;
-  CourseInitializer gc;
+  GroupInitializer gc;
   StudentInitializer sc;
 
   private static final String GROUPLESS = "students without groups";

@@ -1,4 +1,4 @@
-package com.kalachev.task7.service.data.idata;
+package com.kalachev.task7.dao.initialization_interfaces;
 
 import java.util.List;
 
