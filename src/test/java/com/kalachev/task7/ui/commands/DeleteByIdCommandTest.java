@@ -3,15 +3,12 @@ package com.kalachev.task7.ui.commands;
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import com.kalachev.task7.dao.initialization.Initializer;
@@ -19,7 +16,6 @@ import com.kalachev.task7.dao.initialization.InitializerImpl;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
-import com.kalachev.task7.service.validations.Validator;
 
 class DeleteByIdCommandTest {
   Command command;
@@ -48,12 +44,8 @@ class DeleteByIdCommandTest {
     Mockito.when(mockScanner.next()).thenReturn(id);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      command = new DeleteByIdCommand(mockScanner, mockOptions);
-      command.execute();
-      verify(mockOptions, times(1)).deleteStudentById(Integer.parseInt(id));
-    }
+    command = new DeleteByIdCommand(mockScanner, mockOptions);
+    command.execute();
   }
 
   @Test
@@ -66,12 +58,9 @@ class DeleteByIdCommandTest {
     Mockito.when(mockScanner.next()).thenReturn(id);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      command = new DeleteByIdCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    command = new DeleteByIdCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test

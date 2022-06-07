@@ -21,4 +21,7 @@ public interface StudentsDao {
       throws DaoException;
 
   boolean isIdExists(int id) throws DaoException;
+
+  boolean checkIfStudentInCourse(int studentId, String course)
+      throws DaoException;
 }

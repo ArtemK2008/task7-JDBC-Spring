@@ -21,7 +21,7 @@ public class GroupsDaoImpl implements GroupsDao {
       + "GROUP BY g.group_id,g.group_name " + "HAVING COUNT (s.group_id) >=(?)";
 
   @Override
-  public List<Group> findBySize(int maxSize) throws DaoException {
+  public List<Group> findBySize(int size) throws DaoException {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -29,7 +29,7 @@ public class GroupsDaoImpl implements GroupsDao {
     try {
       connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(FIND_GROUP_BY_SIZE);
-      statement.setInt(1, maxSize);
+      statement.setInt(1, size);
       rs = statement.executeQuery();
       while (rs.next()) {
         Group group = new Group();

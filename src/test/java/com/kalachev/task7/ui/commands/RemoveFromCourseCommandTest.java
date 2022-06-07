@@ -14,7 +14,6 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import com.kalachev.task7.dao.initialization.Initializer;
@@ -22,7 +21,6 @@ import com.kalachev.task7.dao.initialization.InitializerImpl;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
-import com.kalachev.task7.service.validations.Validator;
 
 class RemoveFromCourseCommandTest {
 
@@ -56,19 +54,14 @@ class RemoveFromCourseCommandTest {
         .thenReturn(true);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(
-          () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
-          .thenReturn(true);
-
-      command = new RemoveFromCourseCommand(mockScanner, mockOptions);
-      command.execute();
-      verify(mockOptions, times(1))
-          .removeStudentFromCourse(Integer.parseInt(id), course);
-      verify(mockOptions, times(1)).findCourseNamesByID(Integer.parseInt(id));
-    }
+    Mockito
+        .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
+        .thenReturn(true);
+    command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    command.execute();
+    verify(mockOptions, times(1)).removeStudentFromCourse(Integer.parseInt(id),
+        course);
+    verify(mockOptions, times(1)).findCourseNamesByID(Integer.parseInt(id));
   }
 
   @Test
@@ -86,17 +79,12 @@ class RemoveFromCourseCommandTest {
         .thenReturn(true);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(
-          () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
-          .thenReturn(true);
-
-      command = new RemoveFromCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    Mockito
+        .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
+        .thenReturn(true);
+    command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test
@@ -113,12 +101,9 @@ class RemoveFromCourseCommandTest {
         .thenReturn("wrong course name");
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      command = new RemoveFromCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test
@@ -151,13 +136,9 @@ class RemoveFromCourseCommandTest {
     Mockito.when(mockScanner.next()).thenReturn(id);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt()))
         .thenReturn(false);
-
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      command = new RemoveFromCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test
@@ -175,15 +156,11 @@ class RemoveFromCourseCommandTest {
         .thenReturn(true);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(
-          () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
-          .thenReturn(false);
-      command = new RemoveFromCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    Mockito
+        .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
+        .thenReturn(false);
+    command = new RemoveFromCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 }

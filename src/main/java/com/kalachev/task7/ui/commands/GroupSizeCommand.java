@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.GroupOptions;
 
@@ -23,18 +25,14 @@ public class GroupSizeCommand implements Command {
   @Override
   public void execute() {
     System.out.println("Choose maximal group size");
-    try {
-      int size = Integer.parseInt(scanner.next());
-      if (size < 0) {
-        System.out.println("Max size cant be negative");
-        return;
-      }
-      List<String> groups = findGroups(size);
+    String inputedGroupSize = scanner.next();
+    if (!validateSize(inputedGroupSize)) {
+      return;
+    }
+    int size = Integer.parseInt(inputedGroupSize);
+    List<String> groups = findGroups(size);
+    if (!groups.isEmpty()) {
       groups.forEach(System.out::println);
-    } catch (NumberFormatException e) {
-      System.out.println(BAD_INPUT);
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -46,6 +44,19 @@ public class GroupSizeCommand implements Command {
       System.out.println("no such groups");
     }
     return groupNames;
+  }
+
+  private boolean validateSize(String size) {
+    boolean isValid = true;
+    if (!NumberUtils.isParsable(size)) {
+      System.out.println(BAD_INPUT);
+      return false;
+    }
+    if (Integer.parseInt(size) < 0) {
+      System.out.println("Max size cant be negative");
+      isValid = false;
+    }
+    return isValid;
   }
 
 }

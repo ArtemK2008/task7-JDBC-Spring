@@ -142,4 +142,18 @@ class StudentDaoImplTest extends DbUnitConfig {
     boolean check = studentsDao.isIdExists(15);
     assertFalse(check);
   }
+
+  @Test
+  void testcheckIfStudentInCourse_shouldReturnTrue_whenStudentInCourse()
+      throws DaoException {
+    boolean check = studentsDao.checkIfStudentInCourse(1, "Russian");
+    assertTrue(check);
+  }
+
+  @Test
+  void testcheckIfStudentInCourse_shouldReturnFalse_whenStudentNotInCourse()
+      throws DaoException {
+    boolean check = studentsDao.checkIfStudentInCourse(1, "Hindi");
+    assertFalse(check);
+  }
 }

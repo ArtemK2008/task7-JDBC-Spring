@@ -8,7 +8,6 @@ import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
-import com.kalachev.task7.service.validations.Validator;
 import com.kalachev.task7.utilities.ExceptionsUtil;
 
 public class CoursesOptions {
@@ -25,7 +24,7 @@ public class CoursesOptions {
       throws UiException {
 
     validateInput(studentId, course);
-    if (Validator.checkIfStudentAlreadyInCourse(studentId, course)) {
+    if (checkIfStudentAlreadyInCourse(studentId, course)) {
       throw new IllegalArgumentException();
     }
     try {
@@ -39,7 +38,7 @@ public class CoursesOptions {
       throws UiException {
     boolean isRemoved = false;
     validateInput(studentId, course);
-    if (!Validator.checkIfStudentAlreadyInCourse(studentId, course)) {
+    if (!checkIfStudentAlreadyInCourse(studentId, course)) {
       throw new IllegalArgumentException();
     }
     try {
@@ -132,6 +131,22 @@ public class CoursesOptions {
       String className = ExceptionsUtil.getCurrentClassName();
       throw new UiException(methodName, className);
     }
+  }
+
+  public boolean checkIfStudentAlreadyInCourse(int id, String course)
+      throws UiException {
+    boolean isExist = false;
+    try {
+      if (studentsDao.checkIfStudentInCourse(id, course)) {
+        isExist = true;
+      }
+    } catch (DaoException e) {
+      e.printStackTrace();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new UiException(methodName, className);
+    }
+    return isExist;
   }
 
 }

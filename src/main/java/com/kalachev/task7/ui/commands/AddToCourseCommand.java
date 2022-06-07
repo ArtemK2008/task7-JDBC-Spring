@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
-import com.kalachev.task7.service.validations.Validator;
 
 public class AddToCourseCommand implements Command {
 
@@ -27,36 +28,27 @@ public class AddToCourseCommand implements Command {
 
   @Override
   public void execute() {
-    try {
-      List<String> courses = retrieveCoursesNames();
-      if (courses.isEmpty()) {
-        return;
-      }
-      System.out.println("Enter ID of a student you want to add");
-      int id = Integer.parseInt(scanner.next());
-      if (!checkIfIdExists(id)) {
-        return;
-      }
-      printCourses(courses);
-      System.out.println("Enter a name of a course from the list");
-      String course = scanner.next();
-      if (!courses.contains(course)) {
-        System.out.println("Wrong course name");
-        return;
-      }
-
-      if (checkIfAlreadyInCourse(id, course)) {
-        return;
-      }
-
-      options.addStudentToCourse(id, course);
-      System.out
-          .println("Student with id " + id + " added to course " + course);
-    } catch (UiException e) {
-      e.printStackTrace();
-    } catch (NumberFormatException e) {
-      System.out.println(BAD_INPUT);
+    List<String> courses = retrieveCoursesNames();
+    if (courses.isEmpty()) {
+      return;
     }
+    System.out.println("Enter ID of a student you want to add");
+    String idInputed = scanner.next();
+    if (!checkIfIdValid(idInputed)) {
+      return;
+    }
+    int id = Integer.parseInt(idInputed);
+    printCourses(courses);
+    System.out.println("Enter a name of a course from the list");
+    String course = scanner.next();
+    if (!courses.contains(course)) {
+      System.out.println("Wrong course name");
+      return;
+    }
+    if (checkIfAlreadyInCourse(id, course)) {
+      return;
+    }
+    addStudent(id, course);
   }
 
   private void printCourses(List<String> courses) {
@@ -65,26 +57,38 @@ public class AddToCourseCommand implements Command {
     }
   }
 
-  private boolean checkIfIdExists(int id) throws UiException {
-    if (id < 0) {
+  private boolean checkIfIdValid(String id) {
+    if (!NumberUtils.isParsable(id)) {
+      System.out.println(BAD_INPUT);
+      return false;
+    }
+
+    if (Integer.parseInt(id) < 0) {
       System.out.println("id cant be negative");
       return false;
     }
     boolean isExist = true;
 
-    if (!options.checkIfStudentIdExists(id)) {
-      System.out.println("There is no student with such id");
-      isExist = false;
+    try {
+      if (!options.checkIfStudentIdExists(Integer.parseInt(id))) {
+        System.out.println("There is no student with such id");
+        isExist = false;
+      }
+    } catch (UiException e) {
+      e.printStackTrace();
     }
     return isExist;
   }
 
-  private boolean checkIfAlreadyInCourse(int id, String course)
-      throws UiException {
+  private boolean checkIfAlreadyInCourse(int id, String course) {
     boolean isInCourse = false;
-    if (Validator.checkIfStudentAlreadyInCourse(id, course)) {
-      System.out.println("student already in course");
-      isInCourse = true;
+    try {
+      if (options.checkIfStudentAlreadyInCourse(id, course)) {
+        System.out.println("student already in course");
+        isInCourse = true;
+      }
+    } catch (UiException e) {
+      e.printStackTrace();
     }
     return isInCourse;
   }
@@ -97,5 +101,15 @@ public class AddToCourseCommand implements Command {
       System.out.println("No Courses Found");
     }
     return courses;
+  }
+
+  private void addStudent(int id, String course) {
+    try {
+      options.addStudentToCourse(id, course);
+      System.out
+          .println("Student with id " + id + " added to course " + course);
+    } catch (UiException e) {
+      e.printStackTrace();
+    }
   }
 }

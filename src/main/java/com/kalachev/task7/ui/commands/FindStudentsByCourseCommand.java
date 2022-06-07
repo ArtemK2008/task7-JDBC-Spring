@@ -23,24 +23,18 @@ public class FindStudentsByCourseCommand implements Command {
 
   @Override
   public void execute() {
-    List<String> courses = new ArrayList<>();
-    try {
-      courses = retrieveCoursesNames();
-      printCourses(courses);
-      if (courses.isEmpty()) {
-        return;
-      }
-      System.out.println("Choose a course to see its students");
-      String course = scanner.next();
-
-      if (!courses.contains(course)) {
-        System.out.println("no such course");
-        return;
-      }
-      printAllCourseStudents(course);
-    } catch (UiException e) {
-      e.printStackTrace();
+    List<String> courses = retrieveCoursesNames();
+    printCourses(courses);
+    if (courses.isEmpty()) {
+      return;
     }
+    System.out.println("Choose a course to see its students");
+    String course = scanner.next();
+    if (!courses.contains(course)) {
+      System.out.println("no such course");
+      return;
+    }
+    printAllCourseStudents(course);
   }
 
   private List<String> retrieveCoursesNames() {
@@ -53,8 +47,14 @@ public class FindStudentsByCourseCommand implements Command {
     return courses;
   }
 
-  private void printAllCourseStudents(String course) throws UiException {
-    List<String> students = studentOptions.findByCourse(course);
+  private void printAllCourseStudents(String course) {
+    List<String> students = new ArrayList<>();
+    try {
+      students = studentOptions.findByCourse(course);
+    } catch (UiException e) {
+      e.printStackTrace();
+    }
+
     if (students.isEmpty()) {
       System.out.println("No students in this course");
     } else {

@@ -14,7 +14,6 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import com.kalachev.task7.dao.initialization.Initializer;
@@ -22,7 +21,6 @@ import com.kalachev.task7.dao.initialization.InitializerImpl;
 import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
-import com.kalachev.task7.service.validations.Validator;
 
 class AddToCourseCommandTest {
 
@@ -52,18 +50,13 @@ class AddToCourseCommandTest {
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(
-          () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
-          .thenReturn(false);
-
-      command = new AddToCourseCommand(mockScanner, mockOptions);
-      command.execute();
-      verify(mockOptions, times(1)).addStudentToCourse(Integer.parseInt(id),
-          course);
-    }
+    Mockito
+        .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
+        .thenReturn(false);
+    command = new AddToCourseCommand(mockScanner, mockOptions);
+    command.execute();
+    verify(mockOptions, times(1)).addStudentToCourse(Integer.parseInt(id),
+        course);
   }
 
   @Test
@@ -76,17 +69,12 @@ class AddToCourseCommandTest {
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(
-          () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
-          .thenReturn(false);
-
-      command = new AddToCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    Mockito
+        .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
+        .thenReturn(false);
+    command = new AddToCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test
@@ -101,12 +89,9 @@ class AddToCourseCommandTest {
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn("wrong course");
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
 
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      command = new AddToCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    command = new AddToCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test
@@ -146,12 +131,9 @@ class AddToCourseCommandTest {
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt()))
         .thenReturn(false);
 
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      command = new AddToCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    command = new AddToCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test
@@ -165,16 +147,12 @@ class AddToCourseCommandTest {
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
     Mockito.when(mockScanner.next()).thenReturn(id).thenReturn(course);
     Mockito.when(mockOptions.checkIfStudentIdExists(anyInt())).thenReturn(true);
-
-    try (MockedStatic<Validator> validator = Mockito
-        .mockStatic(Validator.class)) {
-      validator.when(
-          () -> Validator.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
-          .thenReturn(true);
-      command = new AddToCourseCommand(mockScanner, mockOptions);
-      String actual = tapSystemOut(() -> command.execute());
-      assertEquals(expected, actual.trim());
-    }
+    Mockito
+        .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
+        .thenReturn(true);
+    command = new AddToCourseCommand(mockScanner, mockOptions);
+    String actual = tapSystemOut(() -> command.execute());
+    assertEquals(expected, actual.trim());
   }
 
   @Test

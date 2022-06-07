@@ -2,6 +2,8 @@ package com.kalachev.task7.ui.commands;
 
 import java.util.Scanner;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
 
@@ -21,21 +23,22 @@ public class AddStudentCommand implements Command {
 
   @Override
   public void execute() {
-    try {
-      System.out.println("Enter student name");
-      String name = scanner.next();
-      System.out.println("Enter student last name");
-      String lastname = scanner.next();
-      System.out.println("Enter group id to add this student");
-      int groupId = Integer.parseInt(scanner.next());
-      if (groupId < 1 || groupId > 11) {
-        System.out.println("Wrong groupd id");
-        return;
-      }
-      addStudent(name, lastname, groupId);
-    } catch (NumberFormatException e) {
+    System.out.println("Enter student name");
+    String name = scanner.next();
+    System.out.println("Enter student last name");
+    String lastname = scanner.next();
+    System.out.println("Enter group id to add this student");
+    String groupInput = scanner.next();
+    if (!NumberUtils.isParsable(groupInput)) {
       System.out.println(BAD_INPUT);
+      return;
     }
+    int groupId = Integer.parseInt(groupInput);
+    if (groupId < 1 || groupId > 11) {
+      System.out.println("Wrong groupd id");
+      return;
+    }
+    addStudent(name, lastname, groupId);
   }
 
   private boolean addStudent(String name, String lastname, int groupId) {

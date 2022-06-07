@@ -33,6 +33,10 @@ public class StudentsDaoImpl implements StudentsDao {
   private static final String CHECK_STUDENT_ID_IF_EXISTS = "SELECT * FROM Students "
       + "WHERE student_id = (?)";
 
+  private static final String CHECK_IF_STUDENT_IN_COURSE = "SELECT * "
+      + "FROM studentscoursesdata " + "WHERE student_id ="
+      + " (?) AND course_name = (?)";
+
   @Override
   public List<Student> findByCourse(String courseName) throws DaoException {
     Connection connection = null;
@@ -77,9 +81,8 @@ public class StudentsDaoImpl implements StudentsDao {
       statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      String methodName = ExceptionsUtil.getCurrentMethodName();
-      String className = ExceptionsUtil.getCurrentClassName();
-      throw new DaoException(methodName, className);
+      throw new DaoException("Could not insert Student " + firstName + " "
+          + lastName + " to group " + groupId);
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }
@@ -158,6 +161,7 @@ public class StudentsDaoImpl implements StudentsDao {
     return isExists;
   }
 
+  @Override
   public boolean isIdExists(int id) throws DaoException {
     boolean isExists = false;
     Connection connection = null;
@@ -167,6 +171,33 @@ public class StudentsDaoImpl implements StudentsDao {
       connection = ConnectionManager.openDbConnection();
       statement = connection.prepareStatement(CHECK_STUDENT_ID_IF_EXISTS);
       statement.setInt(1, id);
+      rs = statement.executeQuery();
+      if (rs.next()) {
+        isExists = true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      String methodName = ExceptionsUtil.getCurrentMethodName();
+      String className = ExceptionsUtil.getCurrentClassName();
+      throw new DaoException(methodName, className);
+    } finally {
+      JdbcUtil.closeAll(rs, statement, connection);
+    }
+    return isExists;
+  }
+
+  @Override
+  public boolean checkIfStudentInCourse(int studentId, String course)
+      throws DaoException {
+    boolean isExists = false;
+    Connection connection = null;
+    PreparedStatement statement = null;
+    ResultSet rs = null;
+    try {
+      connection = ConnectionManager.openDbConnection();
+      statement = connection.prepareStatement(CHECK_IF_STUDENT_IN_COURSE);
+      statement.setInt(1, studentId);
+      statement.setString(2, course);
       rs = statement.executeQuery();
       if (rs.next()) {
         isExists = true;
