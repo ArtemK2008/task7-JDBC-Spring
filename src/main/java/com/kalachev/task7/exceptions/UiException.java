@@ -11,11 +11,6 @@ public class UiException extends Exception {
     super();
   }
 
-  public UiException(String methodName, String className) {
-    System.out.println("UI error " + System.lineSeparator() + "Method "
-        + methodName + " in class " + className + " failed");
-  }
-
   public UiException(String message) {
     System.out.println(message);
   }
