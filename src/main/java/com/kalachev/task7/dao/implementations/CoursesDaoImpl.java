@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
@@ -35,7 +34,7 @@ public class CoursesDaoImpl implements CoursesDao {
       + "FROM studentscoursesdata " + "WHERE course_name = (?)";
 
   @Override
-  public void addStudent(int studentId, String course) throws DaoException {
+  public void addStudent(int studentId, String course) {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -72,7 +71,7 @@ public class CoursesDaoImpl implements CoursesDao {
       statement.setString(6, courseDesciption);
       statement.executeUpdate();
     } catch (SQLException e) {
-      throw new DaoException("Error while adding Student with id " + studentId
+      System.out.println("Error while adding Student with id " + studentId
           + " to course " + course);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
@@ -80,7 +79,8 @@ public class CoursesDaoImpl implements CoursesDao {
   }
 
   @Override
-  public void removeStudent(int studentId, String course) throws DaoException {
+  public boolean removeStudent(int studentId, String course) {
+    boolean isdeleted = false;
     Connection connection = null;
     PreparedStatement statement = null;
     try {
@@ -89,16 +89,18 @@ public class CoursesDaoImpl implements CoursesDao {
       statement.setInt(1, studentId);
       statement.setString(2, course);
       statement.executeUpdate();
+      isdeleted = true;
     } catch (SQLException e) {
-      throw new DaoException("Error while removing student with ID: "
-          + studentId + " from course " + course);
+      System.out.println("Error while removing student with ID: " + studentId
+          + " from course " + course);
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }
+    return isdeleted;
   }
 
   @Override
-  public List<Course> getAll() throws DaoException {
+  public List<Course> getAll() {
     List<Course> courses = new ArrayList<>();
     Connection connection = null;
     Statement statement = null;
@@ -115,7 +117,7 @@ public class CoursesDaoImpl implements CoursesDao {
         courses.add(course);
       }
     } catch (SQLException e) {
-      throw new DaoException("Error while getting all existing courses");
+      System.out.println("Error while getting all existing courses");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -123,7 +125,7 @@ public class CoursesDaoImpl implements CoursesDao {
   }
 
   @Override
-  public List<Course> getById(int studentId) throws DaoException {
+  public List<Course> getById(int studentId) {
     List<Course> courses = new ArrayList<>();
     Connection connection = null;
     PreparedStatement statement = null;
@@ -142,7 +144,7 @@ public class CoursesDaoImpl implements CoursesDao {
         courses.add(course);
       }
     } catch (SQLException e) {
-      throw new DaoException(
+      System.out.println(
           "Error while getting all assigned courses of a Student with ID: "
               + studentId);
     } finally {
@@ -152,7 +154,7 @@ public class CoursesDaoImpl implements CoursesDao {
   }
 
   @Override
-  public boolean isExists(String course) throws DaoException {
+  public boolean isExists(String course) {
     boolean isExist = false;
     Connection connection = null;
     PreparedStatement statement = null;
@@ -166,8 +168,7 @@ public class CoursesDaoImpl implements CoursesDao {
         isExist = true;
       }
     } catch (SQLException e) {
-      throw new DaoException(
-          "Error while checking if course" + course + " exists");
+      System.out.println("Error while checking if course" + course + " exists");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

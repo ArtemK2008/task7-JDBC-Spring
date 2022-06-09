@@ -4,24 +4,20 @@ import java.util.List;
 import java.util.Map;
 
 import com.kalachev.task7.dao.entities.Student;
-import com.kalachev.task7.exceptions.DaoException;
 
 public interface StudentsDao {
 
-  Map<String, String> studentNamesById() throws DaoException;
+  Map<String, String> studentNamesById();
 
-  List<Student> findByCourse(String courseName) throws DaoException;
+  List<Student> findByCourse(String courseName);
 
-  void insert(String firstName, String lastName, int groupId)
-      throws DaoException;
+  boolean insert(String firstName, String lastName, int groupId);
 
-  void delete(int id) throws DaoException;
+  boolean delete(int id);
 
-  boolean isExistsInGroup(String firstName, String lastName, int groupId)
-      throws DaoException;
+  boolean isExistsInGroup(String firstName, String lastName, int groupId);
 
-  boolean isIdExists(int id) throws DaoException;
+  boolean isIdExists(int id);
 
-  boolean checkIfStudentInCourse(int studentId, String course)
-      throws DaoException;
+  boolean checkIfStudentInCourse(int studentId, String course);
 }

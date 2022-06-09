@@ -1,6 +1,5 @@
 package com.kalachev.task7.service.options;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,9 +7,6 @@ import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.exceptions.CourseNotFoundException;
-import com.kalachev.task7.exceptions.DaoException;
-import com.kalachev.task7.exceptions.StudentNotFoundException;
-import com.kalachev.task7.exceptions.UiException;
 
 public class CoursesOptions {
 
@@ -22,120 +18,81 @@ public class CoursesOptions {
     this.studentsDao = studentsDao;
   }
 
-  public void addStudentToCourse(int studentId, String course)
-      throws CourseNotFoundException, StudentNotFoundException, UiException {
-
-    validateInput(studentId, course);
+  public boolean addStudentToCourse(int studentId, String course) {
+    boolean isAdded = true;
+    if (!validateInput(studentId, course)) {
+      return false;
+    }
     if (checkIfStudentAlreadyInCourse(studentId, course)) {
-      throw new IllegalArgumentException();
+      return false;
     }
-    try {
-      coursesDao.addStudent(studentId, course);
-    } catch (DaoException e) {
-      throw new UiException(
-          "Can not add Student with ID: " + studentId + " to course " + course);
-    }
+    coursesDao.addStudent(studentId, course);
+    return isAdded;
   }
 
-  public boolean removeStudentFromCourse(int studentId, String course)
-      throws CourseNotFoundException, StudentNotFoundException, UiException {
+  public boolean removeStudentFromCourse(int studentId, String course) {
+
     boolean isRemoved = false;
-    validateInput(studentId, course);
+    if (!validateInput(studentId, course)) {
+      return false;
+    }
     if (!checkIfStudentAlreadyInCourse(studentId, course)) {
-      throw new IllegalArgumentException();
+      return false;
     }
-    try {
-      coursesDao.removeStudent(studentId, course);
-      isRemoved = true;
-    } catch (DaoException e) {
-      e.printStackTrace();
-      throw new UiException("Can not remove Student with ID: " + studentId
-          + " from course " + course);
-    }
+    coursesDao.removeStudent(studentId, course);
+    isRemoved = true;
     return isRemoved;
   }
 
   public List<String> findCourseNames() throws CourseNotFoundException {
-    List<Course> courses = new ArrayList<>();
-    List<String> courseNames = new ArrayList<>();
-    try {
-      courses = coursesDao.getAll();
-      if (courses.isEmpty()) {
-        throw new CourseNotFoundException();
-      }
-      courseNames = courses.stream().map(Course::getCourseName)
-          .collect(Collectors.toList());
-    } catch (DaoException e) {
+    List<Course> courses = coursesDao.getAll();
+    if (courses.isEmpty()) {
       throw new CourseNotFoundException();
     }
-    return courseNames;
+    return courses.stream().map(Course::getCourseName)
+        .collect(Collectors.toList());
   }
 
-  public List<String> findCourseNamesByID(int id)
-      throws CourseNotFoundException {
-    List<Course> courses = new ArrayList<>();
-    List<String> courseNames = new ArrayList<>();
-    try {
-      courses = coursesDao.getById(id);
-      courseNames = courses.stream().map(Course::getCourseName)
-          .collect(Collectors.toList());
-    } catch (DaoException e) {
-      throw new CourseNotFoundException(id);
-    }
-    return courseNames;
+  public List<String> findCourseNamesByID(int id) {
+    List<Course> courses = coursesDao.getById(id);
+    return courses.stream().map(Course::getCourseName)
+        .collect(Collectors.toList());
   }
 
-  public boolean checkIfStudentIdExists(int id)
-      throws StudentNotFoundException {
+  public boolean checkIfStudentIdExists(int id) {
     boolean isExist = false;
-    try {
-      if (studentsDao.isIdExists(id)) {
-        isExist = true;
-      }
-    } catch (DaoException e) {
-      throw new StudentNotFoundException(id);
+    if (studentsDao.isIdExists(id)) {
+      isExist = true;
     }
     return isExist;
   }
 
-  private boolean checkIfCourseExists(String course)
-      throws CourseNotFoundException {
+  private boolean checkIfCourseExists(String course) {
     boolean isExist = false;
-    try {
-      if (coursesDao.isExists(course)) {
-        isExist = true;
-      }
-    } catch (DaoException e) {
-      throw new CourseNotFoundException(course);
+    if (coursesDao.isExists(course)) {
+      isExist = true;
     }
     return isExist;
   }
 
-  private void validateInput(int studentId, String course)
-      throws CourseNotFoundException, StudentNotFoundException {
+  private boolean validateInput(int studentId, String course) {
+    boolean isExist = true;
     if (studentId < 0) {
-      throw new IllegalArgumentException();
+      isExist = false;
     }
     if (!checkIfCourseExists(course)) {
-      throw new CourseNotFoundException(course);
+      isExist = false;
     }
-    try {
-      if (!studentsDao.isIdExists(studentId)) {
-        throw new StudentNotFoundException(studentId);
-      }
-    } catch (DaoException e) {
-      throw new IllegalArgumentException();
+    if (!studentsDao.isIdExists(studentId)) {
+      isExist = false;
     }
+    return isExist;
   }
 
   public boolean checkIfStudentAlreadyInCourse(int id, String course) {
     boolean isExist = false;
-    try {
-      if (studentsDao.checkIfStudentInCourse(id, course)) {
-        isExist = true;
-      }
-    } catch (DaoException e) {
-      throw new IllegalArgumentException();
+    if (studentsDao.checkIfStudentInCourse(id, course)) {
+      isExist = true;
     }
     return isExist;
   }

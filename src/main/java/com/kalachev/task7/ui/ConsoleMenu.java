@@ -11,7 +11,6 @@ import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.options.GroupOptions;
@@ -45,7 +44,7 @@ public class ConsoleMenu {
       "5: Add a student to the course (from a list)",
       "6: Remove the student from one of his or her courses", "7: Exit" };
 
-  public void runSchoolApp() throws DaoException {
+  public void runSchoolApp() {
     initializerImpl.initializeTables();
     initializeCommands();
     cleanConsole();

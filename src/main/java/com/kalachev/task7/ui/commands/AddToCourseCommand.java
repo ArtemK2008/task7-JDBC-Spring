@@ -9,8 +9,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.exceptions.CourseNotFoundException;
-import com.kalachev.task7.exceptions.StudentNotFoundException;
-import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 
 public class AddToCourseCommand implements Command {
@@ -71,13 +69,9 @@ public class AddToCourseCommand implements Command {
     }
     boolean isExist = true;
 
-    try {
-      if (!options.checkIfStudentIdExists(Integer.parseInt(id))) {
-        System.out.println("There is no student with such id");
-        isExist = false;
-      }
-    } catch (StudentNotFoundException e) {
-      e.printStackTrace();
+    if (!options.checkIfStudentIdExists(Integer.parseInt(id))) {
+      System.out.println("There is no student with such id");
+      isExist = false;
     }
     return isExist;
   }
@@ -102,13 +96,9 @@ public class AddToCourseCommand implements Command {
   }
 
   private void addStudent(int id, String course) {
-    try {
-      options.addStudentToCourse(id, course);
+    if (options.addStudentToCourse(id, course)) {
       System.out
           .println("Student with id " + id + " added to course " + course);
-    } catch (UiException | CourseNotFoundException
-        | StudentNotFoundException e) {
-      e.printStackTrace();
     }
   }
 }

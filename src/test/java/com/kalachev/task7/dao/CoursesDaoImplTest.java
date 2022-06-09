@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
-import com.kalachev.task7.exceptions.DaoException;
 
 class CoursesDaoImplTest extends DbUnitConfig {
   CoursesDao coursesDao = new CoursesDaoImpl();
@@ -66,8 +65,7 @@ class CoursesDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testGetAll_shouldReturnAllCoursesinList_whenCalledWithValidData()
-      throws DaoException {
+  void testGetAll_shouldReturnAllCoursesinList_whenCalledWithValidData() {
     // given
     List<Course> expected = new ArrayList<>();
     Course course = new Course();
@@ -97,8 +95,7 @@ class CoursesDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testGetById_shouldReturnAllCoursesOfChosenStudent_WhenCalledOnExistingStudent()
-      throws DaoException {
+  void testGetById_shouldReturnAllCoursesOfChosenStudent_WhenCalledOnExistingStudent() {
     // given
     List<Course> expected = new ArrayList<>();
     Course course = new Course();
@@ -120,8 +117,7 @@ class CoursesDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testCheckCourseIfExist_shouldReturnTrue_whenCourseExists()
-      throws DaoException {
+  void testCheckCourseIfExist_shouldReturnTrue_whenCourseExists() {
     // when
     boolean check = coursesDao.isExists("Ukrainian");
     // then
@@ -129,8 +125,7 @@ class CoursesDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testCheckCourseIfExist_shouldReturnFalse_whenCourseNotExists()
-      throws DaoException {
+  void testCheckCourseIfExist_shouldReturnFalse_whenCourseNotExists() {
     // when
     boolean check = coursesDao.isExists("Hindi");
     // then

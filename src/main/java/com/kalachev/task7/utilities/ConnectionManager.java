@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-import com.kalachev.task7.exceptions.DaoException;
-
 public class ConnectionManager {
 
   static String dbUrl;
@@ -19,7 +17,7 @@ public class ConnectionManager {
     super();
   }
 
-  public static Connection openDbConnection() throws DaoException {
+  public static Connection openDbConnection() {
     Properties properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
     if (url != null) {
@@ -37,10 +35,10 @@ public class ConnectionManager {
     try {
       DriverManager.registerDriver(new org.postgresql.Driver());
       connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
-      return connection;
     } catch (Exception e) {
-      throw new DaoException("Error while opening Connection");
+      System.out.println("Error while opening Connection");
     }
+    return connection;
   }
 
 }

@@ -12,7 +12,6 @@ import java.util.Map;
 
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
@@ -37,7 +36,7 @@ public class StudentsDaoImpl implements StudentsDao {
       + " (?) AND course_name = (?)";
 
   @Override
-  public List<Student> findByCourse(String courseName) throws DaoException {
+  public List<Student> findByCourse(String courseName) {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -56,8 +55,8 @@ public class StudentsDaoImpl implements StudentsDao {
         students.add(student);
       }
     } catch (SQLException e) {
-      throw new DaoException(
-          "Error while geting Students of " + courseName + " course");
+      System.out
+          .println("Error while geting Students of " + courseName + " course");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -65,8 +64,8 @@ public class StudentsDaoImpl implements StudentsDao {
   }
 
   @Override
-  public void insert(String firstName, String lastName, int groupId)
-      throws DaoException {
+  public boolean insert(String firstName, String lastName, int groupId) {
+    boolean isInserted = false;
     Connection connection = null;
     PreparedStatement statement = null;
     try {
@@ -76,16 +75,19 @@ public class StudentsDaoImpl implements StudentsDao {
       statement.setString(2, firstName);
       statement.setString(3, lastName);
       statement.executeUpdate();
+      isInserted = true;
     } catch (SQLException e) {
-      throw new DaoException("Error while inserting Student " + firstName + " "
+      System.out.println("Error while inserting Student " + firstName + " "
           + lastName + " to group " + groupId);
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }
+    return isInserted;
   }
 
   @Override
-  public void delete(int id) throws DaoException {
+  public boolean delete(int id) {
+    boolean isDeleted = false;
     Connection connection = null;
     PreparedStatement statement = null;
     try {
@@ -93,15 +95,17 @@ public class StudentsDaoImpl implements StudentsDao {
       statement = connection.prepareStatement(DELETE_STUDENT);
       statement.setInt(1, id);
       statement.executeUpdate();
+      isDeleted = true;
     } catch (SQLException e) {
-      throw new DaoException("Error while Deleting Student with ID: " + id);
+      System.out.println("Error while Deleting Student with ID: " + id);
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }
+    return isDeleted;
   }
 
   @Override
-  public Map<String, String> studentNamesById() throws DaoException {
+  public Map<String, String> studentNamesById() {
     Map<String, String> idsOfEachStuden = new LinkedHashMap<>();
     Connection connection = null;
     Statement statement = null;
@@ -116,7 +120,7 @@ public class StudentsDaoImpl implements StudentsDao {
             rs.getString("first_name") + " " + rs.getString("last_name"));
       }
     } catch (SQLException e) {
-      throw new DaoException("Error while maping student names to their IDs");
+      System.out.println("Error while maping student names to their IDs");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -124,8 +128,8 @@ public class StudentsDaoImpl implements StudentsDao {
   }
 
   @Override
-  public boolean isExistsInGroup(String firstName, String lastName, int groupId)
-      throws DaoException {
+  public boolean isExistsInGroup(String firstName, String lastName,
+      int groupId) {
     boolean isExists = false;
     Connection connection = null;
     PreparedStatement statement = null;
@@ -141,7 +145,7 @@ public class StudentsDaoImpl implements StudentsDao {
         isExists = true;
       }
     } catch (SQLException e) {
-      throw new DaoException("Error while checking Student" + firstName + " "
+      System.out.println("Error while checking Student" + firstName + " "
           + lastName + " existance in group " + groupId);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
@@ -150,7 +154,7 @@ public class StudentsDaoImpl implements StudentsDao {
   }
 
   @Override
-  public boolean isIdExists(int id) throws DaoException {
+  public boolean isIdExists(int id) {
     boolean isExists = false;
     Connection connection = null;
     PreparedStatement statement = null;
@@ -164,8 +168,8 @@ public class StudentsDaoImpl implements StudentsDao {
         isExists = true;
       }
     } catch (SQLException e) {
-      throw new DaoException(
-          "Error while checking existance of student with ID: " + id);
+      System.out
+          .println("Error while checking existance of student with ID: " + id);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
@@ -173,8 +177,7 @@ public class StudentsDaoImpl implements StudentsDao {
   }
 
   @Override
-  public boolean checkIfStudentInCourse(int studentId, String course)
-      throws DaoException {
+  public boolean checkIfStudentInCourse(int studentId, String course) {
     boolean isExists = false;
     Connection connection = null;
     PreparedStatement statement = null;
@@ -189,9 +192,8 @@ public class StudentsDaoImpl implements StudentsDao {
         isExists = true;
       }
     } catch (SQLException e) {
-      throw new DaoException(
-          "Error while checking existance of student with ID: " + studentId
-              + " in coure " + course);
+      System.out.println("Error while checking existance of student with ID: "
+          + studentId + " in coure " + course);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.kalachev.task7.exceptions.CourseNotFoundException;
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.InitializerImpl;
@@ -35,7 +34,7 @@ class AddToCourseCommandTest {
   static Initializer intInitializer = new InitializerImpl();
 
   @BeforeAll
-  static void startUp() throws DaoException {
+  static void startUp() {
     intInitializer.initializeTables();
   }
 
@@ -78,6 +77,8 @@ class AddToCourseCommandTest {
     Mockito
         .when(mockOptions.checkIfStudentAlreadyInCourse(anyInt(), anyString()))
         .thenReturn(false);
+    Mockito.when(mockOptions.addStudentToCourse(Integer.parseInt(id), course))
+        .thenReturn(true);
     command = new AddToCourseCommand(mockScanner, mockOptions);
     // when
     String actual = tapSystemOut(() -> command.execute());

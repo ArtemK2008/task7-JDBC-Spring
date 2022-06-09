@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
@@ -15,7 +14,7 @@ public class CoursesDataDbPopulator {
   private static final String INSERT_COURSES = "INSERT INTO Courses (course_name,course_description) "
       + "VALUES (?,?)";
 
-  public void populateCourses(Map<String, String> courses) throws DaoException {
+  public void populateCourses(Map<String, String> courses) {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
@@ -31,7 +30,7 @@ public class CoursesDataDbPopulator {
       connection.commit();
       connection.setAutoCommit(true);
     } catch (SQLException e) {
-      throw new DaoException("Error while populating table Courses");
+      System.out.println("Error while populating table Courses");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

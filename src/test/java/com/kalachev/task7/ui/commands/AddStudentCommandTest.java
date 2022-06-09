@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
@@ -31,7 +30,7 @@ class AddStudentCommandTest {
   static Initializer intInitializer = new InitializerImpl();
 
   @BeforeAll
-  static void startUp() throws DaoException {
+  static void startUp() {
     intInitializer.initializeTables();
   }
 

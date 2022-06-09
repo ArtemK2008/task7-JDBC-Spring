@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
-import com.kalachev.task7.exceptions.DaoException;
 
 class StudentDaoImplTest extends DbUnitConfig {
   StudentsDao studentsDao = new StudentsDaoImpl();
@@ -83,8 +82,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testStudentNamesById_shouldMapStudentsToIds_whenStudentTableExists()
-      throws DaoException {
+  void testStudentNamesById_shouldMapStudentsToIds_whenStudentTableExists() {
     // given
     Map<String, String> expected = new LinkedHashMap<>();
     expected.put("1", "tom tomov");
@@ -104,8 +102,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testFindByCourse_shouldReturnAllStudentsOfChousenCourse_whenTableExists()
-      throws DaoException {
+  void testFindByCourse_shouldReturnAllStudentsOfChousenCourse_whenTableExists() {
     // given
     List<Student> expected = new ArrayList<>();
     Student marina = new Student();
@@ -127,8 +124,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testCheckStudntIfExistsInGroup_shouldReturnTrue_whenStudentIsInGroup()
-      throws DaoException {
+  void testCheckStudntIfExistsInGroup_shouldReturnTrue_whenStudentIsInGroup() {
     // when
     boolean check = studentsDao.isExistsInGroup("tom", "tomov", 1);
     // then
@@ -136,8 +132,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testCheckStudntIfExistsInGroup_shouldReturnFalse_whenStudentIsNotInGroup()
-      throws DaoException {
+  void testCheckStudntIfExistsInGroup_shouldReturnFalse_whenStudentIsNotInGroup() {
     // when
     boolean check = studentsDao.isExistsInGroup("tom", "tomov", 2);
     // then
@@ -145,8 +140,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testcheckStudentIdIfExists_shouldReturnTrue_whenIdExists()
-      throws DaoException {
+  void testcheckStudentIdIfExists_shouldReturnTrue_whenIdExists() {
     // when
     boolean check = studentsDao.isIdExists(2);
     // then
@@ -154,8 +148,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testcheckStudentIdIfExists_shouldReturnFalse_whenIdNotExists()
-      throws DaoException {
+  void testcheckStudentIdIfExists_shouldReturnFalse_whenIdNotExists() {
     // when
     boolean check = studentsDao.isIdExists(15);
     // then
@@ -163,8 +156,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testcheckIfStudentInCourse_shouldReturnTrue_whenStudentInCourse()
-      throws DaoException {
+  void testcheckIfStudentInCourse_shouldReturnTrue_whenStudentInCourse() {
     // when
     boolean check = studentsDao.checkIfStudentInCourse(1, "Russian");
     // then
@@ -172,8 +164,7 @@ class StudentDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testcheckIfStudentInCourse_shouldReturnFalse_whenStudentNotInCourse()
-      throws DaoException {
+  void testcheckIfStudentInCourse_shouldReturnFalse_whenStudentNotInCourse() {
     // when
     boolean check = studentsDao.checkIfStudentInCourse(1, "Hindi");
     // then

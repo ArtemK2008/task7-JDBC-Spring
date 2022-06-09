@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.kalachev.task7.dao.entities.Group;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
@@ -20,7 +19,7 @@ public class GroupsDaoImpl implements GroupsDao {
       + "GROUP BY g.group_id,g.group_name " + "HAVING COUNT (s.group_id) >=(?)";
 
   @Override
-  public List<Group> findBySize(int size) throws DaoException {
+  public List<Group> findBySize(int size) {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -37,8 +36,8 @@ public class GroupsDaoImpl implements GroupsDao {
         groups.add(group);
       }
     } catch (SQLException e) {
-      throw new DaoException(
-          "Error while getting groups with size less then " + size);
+      System.out
+          .println("Error while getting groups with size less then " + size);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

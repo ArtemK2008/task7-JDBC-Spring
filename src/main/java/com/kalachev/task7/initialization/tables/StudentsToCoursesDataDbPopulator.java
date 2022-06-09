@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class StudentsToCoursesDataDbPopulator {
-  public void createManyToManyTable(Map<String, List<String>> coursesOfStudent)
-      throws DaoException {
+  public void createManyToManyTable(
+      Map<String, List<String>> coursesOfStudent) {
 
     Connection connection = null;
     Statement statement = null;
@@ -38,13 +37,13 @@ public class StudentsToCoursesDataDbPopulator {
         }
       }
     } catch (SQLException e) {
-      throw new DaoException("Error while populating many to many table");
+      System.out.println("Error while populating many to many table");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
   }
 
-  public void createStudentsCoursesFullTable() throws DaoException {
+  public void createStudentsCoursesFullTable() {
     Connection connection = null;
     Statement statement = null;
     try {
@@ -57,7 +56,7 @@ public class StudentsToCoursesDataDbPopulator {
           + "ON sc.course_id = c.course_id " + "ORDER BY s.student_id)";
       statement.executeUpdate(sql);
     } catch (SQLException e) {
-      throw new DaoException("Error while populating table Students_Courses");
+      System.out.println("Error while populating table Students_Courses");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

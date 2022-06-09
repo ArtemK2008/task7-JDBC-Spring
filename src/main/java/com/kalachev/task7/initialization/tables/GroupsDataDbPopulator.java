@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
@@ -13,7 +12,7 @@ public class GroupsDataDbPopulator {
 
   private static final String INSERT_GROUPS = "INSERT INTO Groups (group_name) VALUES (?)";
 
-  public void populateGroups(List<String> groups) throws DaoException {
+  public void populateGroups(List<String> groups) {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
@@ -28,7 +27,7 @@ public class GroupsDataDbPopulator {
       connection.commit();
       connection.setAutoCommit(true);
     } catch (SQLException e) {
-      throw new DaoException("Error while populating table Groups");
+      System.out.println("Error while populating table Groups");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

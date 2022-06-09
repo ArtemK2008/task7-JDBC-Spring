@@ -26,7 +26,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.ui.ConsoleMenu;
@@ -55,7 +54,7 @@ class ConsoleMenuIT {
   private static final String BAD_INPUT = "Your Input was not correct";
 
   @BeforeAll
-  static void initializeTables() throws DaoException {
+  static void initializeTables() {
     final Initializer initializer = new InitializerImpl();
     initializer.initializeTables();
   }
@@ -649,8 +648,7 @@ class ConsoleMenuIT {
     return removedLinesAfter;
   }
 
-  private List<String> retrieveRealStudentNames(String course)
-      throws DaoException {
+  private List<String> retrieveRealStudentNames(String course) {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -667,16 +665,14 @@ class ConsoleMenuIT {
             .add(rs.getString("first_name") + " " + rs.getString("last_name"));
       }
     } catch (SQLException e) {
-      throw new DaoException(
-          "Error while getting Student names from " + course);
+      System.out.println("Error while getting Student names from " + course);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
     return students;
   }
 
-  private List<String> retrieveGroupNamesWithCondition(String count)
-      throws DaoException {
+  private List<String> retrieveGroupNamesWithCondition(String count) {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -694,7 +690,7 @@ class ConsoleMenuIT {
         groups.add(rs.getString("group_name"));
       }
     } catch (SQLException e) {
-      throw new DaoException("Error while getting Group names with less then "
+      System.out.println("Error while getting Group names with less then "
           + count + " students");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
@@ -709,7 +705,7 @@ class ConsoleMenuIT {
     });
   }
 
-  private int countStudentsInDatabase() throws DaoException {
+  private int countStudentsInDatabase() {
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
@@ -723,15 +719,14 @@ class ConsoleMenuIT {
         count = rs.getInt(1);
       }
     } catch (SQLException e) {
-      throw new DaoException("Error while counting Students");
+      System.out.println("Error while counting Students");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
     return count;
   }
 
-  private boolean checkIfStudentExistsInDatabase(String name, String lastname)
-      throws DaoException {
+  private boolean checkIfStudentExistsInDatabase(String name, String lastname) {
     boolean isExist = false;
     Connection connection = null;
     PreparedStatement statement = null;
@@ -751,7 +746,7 @@ class ConsoleMenuIT {
         isExist = true;
       }
     } catch (SQLException e) {
-      throw new DaoException(
+      System.out.println(
           "Error while checking existance of Student " + name + " " + lastname);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
@@ -759,8 +754,7 @@ class ConsoleMenuIT {
     return isExist;
   }
 
-  private boolean checkIfStudentExistsInDatabase(String studentId)
-      throws DaoException {
+  private boolean checkIfStudentExistsInDatabase(String studentId) {
     boolean isExist = false;
     Connection connection = null;
     PreparedStatement statement = null;
@@ -779,7 +773,7 @@ class ConsoleMenuIT {
         isExist = true;
       }
     } catch (SQLException e) {
-      throw new DaoException(
+      System.out.println(
           "Error while checking existance of Student with ID: " + studentId);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
@@ -787,7 +781,7 @@ class ConsoleMenuIT {
     return isExist;
   }
 
-  private int countStudentCourses(String studentId) throws DaoException {
+  private int countStudentCourses(String studentId) {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -802,7 +796,7 @@ class ConsoleMenuIT {
         count = rs.getInt(1);
       }
     } catch (SQLException e) {
-      throw new DaoException(
+      System.out.println(
           "Error while counting courses for Student with ID: " + studentId);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
@@ -810,7 +804,7 @@ class ConsoleMenuIT {
     return count;
   }
 
-  private String findStudentCourse(String studentId) throws DaoException {
+  private String findStudentCourse(String studentId) {
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -825,7 +819,7 @@ class ConsoleMenuIT {
         course = rs.getString(1);
       }
     } catch (SQLException e) {
-      throw new DaoException(
+      System.out.println(
           "Error while finding any course of Student with id " + studentId);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);

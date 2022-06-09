@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.GroupNotFoundException;
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
@@ -29,7 +28,7 @@ class GroupSizeCommandTest {
   static Initializer intInitializer = new InitializerImpl();
 
   @BeforeAll
-  static void startUp() throws DaoException {
+  static void startUp() {
     intInitializer.initializeTables();
   }
 

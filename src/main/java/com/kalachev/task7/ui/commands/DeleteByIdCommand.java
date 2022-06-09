@@ -4,8 +4,6 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.exceptions.StudentNotFoundException;
-import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
 
 public class DeleteByIdCommand implements Command {
@@ -34,16 +32,12 @@ public class DeleteByIdCommand implements Command {
       System.out.println("Wrong student id");
       return;
     }
-    try {
-      if (!options.checkIfStudentIdExists(id)) {
-        System.out.println("no such student");
-        return;
-      }
-      options.deleteStudentById(id);
+    if (!options.checkIfStudentIdExists(id)) {
+      System.out.println("no such student");
+      return;
+    }
+    if (options.deleteStudentById(id)) {
       System.out.println("student with id " + id + " deleted");
-    } catch (StudentNotFoundException | UiException e) {
-      e.printStackTrace();
     }
   }
-
 }

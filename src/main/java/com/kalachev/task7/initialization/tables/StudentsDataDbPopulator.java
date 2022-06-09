@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
 public class StudentsDataDbPopulator {
 
-  public void populateStudents(Map<String, List<String>> groupsWithItsStudents)
-      throws DaoException {
+  public void populateStudents(
+      Map<String, List<String>> groupsWithItsStudents) {
 
     Connection connection = null;
     Statement statement = null;
@@ -41,7 +40,7 @@ public class StudentsDataDbPopulator {
         }
       }
     } catch (SQLException e) {
-      throw new DaoException("Error while populating table Students");
+      System.out.println("Error while populating table Students");
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }

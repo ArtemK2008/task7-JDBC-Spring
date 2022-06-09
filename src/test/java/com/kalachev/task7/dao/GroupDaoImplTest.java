@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import com.kalachev.task7.dao.entities.Group;
 import com.kalachev.task7.dao.implementations.GroupsDaoImpl;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
-import com.kalachev.task7.exceptions.DaoException;
 
 class GroupDaoImplTest extends DbUnitConfig {
 
@@ -29,8 +28,7 @@ class GroupDaoImplTest extends DbUnitConfig {
   }
 
   @Test
-  void testFindBySize_shouldReturnGroupsWithAtLeastThreeStudent_whenCalledWithValidTables()
-      throws DaoException {
+  void testFindBySize_shouldReturnGroupsWithAtLeastThreeStudent_whenCalledWithValidTables() {
     // given
     List<Group> expected = new LinkedList<>();
     Group group = new Group();

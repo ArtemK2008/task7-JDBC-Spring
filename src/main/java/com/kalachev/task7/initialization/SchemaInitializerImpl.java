@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.initialization.initialization_interfaces.SchemaInitializer;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
@@ -15,7 +14,7 @@ import com.kalachev.task7.utilities.JdbcUtil;
 public class SchemaInitializerImpl implements SchemaInitializer {
 
   @Override
-  public void createSchema() throws DaoException {
+  public void createSchema() {
     Connection connection = null;
     Statement statement = null;
     try {
@@ -27,7 +26,7 @@ public class SchemaInitializerImpl implements SchemaInitializer {
       statement = connection.createStatement();
       statement.executeUpdate(sql);
     } catch (Exception e) {
-      throw new DaoException("Error while creating schema");
+      System.out.println("Error while creating schema");
     } finally {
       JdbcUtil.closeAll(statement, connection);
     }

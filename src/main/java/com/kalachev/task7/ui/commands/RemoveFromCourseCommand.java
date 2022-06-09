@@ -1,14 +1,10 @@
 package com.kalachev.task7.ui.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.exceptions.CourseNotFoundException;
-import com.kalachev.task7.exceptions.StudentNotFoundException;
-import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.CoursesOptions;
 
 public class RemoveFromCourseCommand implements Command {
@@ -56,25 +52,16 @@ public class RemoveFromCourseCommand implements Command {
       return false;
     }
     boolean isExist = true;
-    try {
-      if (!options.checkIfStudentIdExists(Integer.valueOf(id))) {
-        System.out.println("There is no student with such id");
-        isExist = false;
-      }
-    } catch (StudentNotFoundException e) {
-      e.printStackTrace();
+
+    if (!options.checkIfStudentIdExists(Integer.valueOf(id))) {
+      System.out.println("There is no student with such id");
+      isExist = false;
     }
     return isExist;
   }
 
   private List<String> findCourseNames(int id) {
-    List<String> courses = new ArrayList<>();
-    try {
-      courses = options.findCourseNamesByID(id);
-    } catch (CourseNotFoundException e) {
-      e.printStackTrace();
-    }
-    return courses;
+    return options.findCourseNamesByID(id);
   }
 
   private boolean checkIfCourseHaveThisStudent(int id, String course) {
@@ -87,12 +74,9 @@ public class RemoveFromCourseCommand implements Command {
   }
 
   private void removeStudentFromCourse(int id, String course) {
-    try {
-      options.removeStudentFromCourse(id, course);
+
+    if (options.removeStudentFromCourse(id, course)) {
       System.out.println("Student with id " + id + " removed from " + course);
-    } catch (StudentNotFoundException | CourseNotFoundException
-        | UiException e) {
-      e.printStackTrace();
     }
   }
 

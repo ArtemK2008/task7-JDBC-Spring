@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.service.options.StudentOptions;
 
 public class AddStudentCommand implements Command {
@@ -43,16 +42,16 @@ public class AddStudentCommand implements Command {
 
   private boolean addStudent(String name, String lastname, int groupId) {
     boolean isAdded = false;
-    try {
-      if (options.checkIfStudentAlreadyInGroup(groupId, name, lastname)) {
-        System.out.println("User Already exists");
-        return false;
-      }
-      options.addNewStudent(name, lastname, groupId);
+    if (options.checkIfStudentAlreadyInGroup(groupId, name, lastname)) {
+      System.out.println("User Already exists");
+      return false;
+    }
+
+    if (options.addNewStudent(name, lastname, groupId)) {
       System.out.println(
           "Student " + name + " " + lastname + " added to group " + groupId);
       isAdded = true;
-    } catch (UiException e) {
+    } else {
       System.out.println(BAD_INPUT);
     }
     return isAdded;

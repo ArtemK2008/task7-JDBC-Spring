@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.kalachev.task7.exceptions.CourseNotFoundException;
-import com.kalachev.task7.exceptions.DaoException;
 import com.kalachev.task7.exceptions.StudentNotFoundException;
 import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.InitializerImpl;
@@ -35,7 +34,7 @@ class RemoveFromCourseCommandTest {
   static Initializer intInitializer = new InitializerImpl();
 
   @BeforeAll
-  static void startUp() throws DaoException {
+  static void startUp() {
     intInitializer.initializeTables();
   }
 
