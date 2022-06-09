@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.service.options.CoursesOptions;
 import com.kalachev.task7.service.options.StudentOptions;
 
@@ -24,10 +23,11 @@ public class FindStudentsByCourseCommand implements Command {
   @Override
   public void execute() {
     List<String> courses = retrieveCoursesNames();
-    printCourses(courses);
     if (courses.isEmpty()) {
+      System.out.println("No Courses Found");
       return;
     }
+    printCourses(courses);
     System.out.println("Choose a course to see its students");
     String course = scanner.next();
     if (!courses.contains(course)) {
@@ -39,11 +39,7 @@ public class FindStudentsByCourseCommand implements Command {
 
   private List<String> retrieveCoursesNames() {
     List<String> courses = new ArrayList<>();
-    try {
-      courses = courseOptions.findCourseNames();
-    } catch (CourseNotFoundException e) {
-      System.out.println("No Courses Found");
-    }
+    courses = courseOptions.findCourseNames();
     return courses;
   }
 

@@ -1,12 +1,10 @@
 package com.kalachev.task7.ui.commands;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.exceptions.GroupNotFoundException;
 import com.kalachev.task7.service.options.GroupOptions;
 
 public class GroupSizeCommand implements Command {
@@ -33,16 +31,13 @@ public class GroupSizeCommand implements Command {
     List<String> groups = findGroups(size);
     if (!groups.isEmpty()) {
       groups.forEach(System.out::println);
+    } else {
+      System.out.println("no such groups");
     }
   }
 
   private List<String> findGroups(int size) {
-    List<String> groupNames = new LinkedList<>();
-    try {
-      groupNames = options.findBySize(size);
-    } catch (GroupNotFoundException e) {
-      System.out.println("no such groups");
-    }
+    List<String> groupNames = options.findBySize(size);
     return groupNames;
   }
 

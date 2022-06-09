@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.exceptions.GroupNotFoundException;
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.service.options.GroupOptions;
@@ -39,8 +39,7 @@ class GroupSizeCommandTest {
   }
 
   @Test
-  void testFindGroup_shouldCallAllNeedeMethods_whenValidInput()
-      throws GroupNotFoundException {
+  void testFindGroup_shouldCallAllNeedeMethods_whenValidInput() {
     // given
     List<String> groups = Arrays.asList("11-aa", "22-bb");
     Mockito.when(mockOptions.findBySize(Integer.parseInt(size)))
@@ -103,9 +102,10 @@ class GroupSizeCommandTest {
       throws Exception {
     // given
     String expected = "Choose maximal group size" + NEWLINE + "no such groups";
+    List<String> emptyList = new ArrayList<String>();
     Mockito.when(mockScanner.next()).thenReturn("322");
     Mockito.when(mockOptions.findBySize(Integer.parseInt("322")))
-        .thenThrow(GroupNotFoundException.class);
+        .thenReturn(emptyList);
     command = new GroupSizeCommand(mockScanner, mockOptions);
     // when
     String actual = tapSystemOut(() -> command.execute());

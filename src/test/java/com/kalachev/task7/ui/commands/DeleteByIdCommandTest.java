@@ -13,8 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.exceptions.StudentNotFoundException;
-import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.service.options.StudentOptions;
@@ -39,8 +37,7 @@ class DeleteByIdCommandTest {
   }
 
   @Test
-  void testDeleteStudent_shouldCallAllNeedeMethods_whenValidInput()
-      throws UiException, StudentNotFoundException {
+  void testDeleteStudent_shouldCallAllNeedeMethods_whenValidInput() {
     // given
     Mockito.when(mockOptions.deleteStudentById(Integer.parseInt(id)))
         .thenReturn(true);

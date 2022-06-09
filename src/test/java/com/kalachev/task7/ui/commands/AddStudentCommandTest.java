@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.service.options.StudentOptions;
@@ -41,8 +40,7 @@ class AddStudentCommandTest {
   }
 
   @Test
-  void testAddStudent_shouldCallAllNeedeMethods_whenGivenValidInputs()
-      throws UiException {
+  void testAddStudent_shouldCallAllNeedeMethods_whenGivenValidInputs() {
     // given
     Mockito.when(mockScanner.next()).thenReturn(name).thenReturn(lastname)
         .thenReturn(group);

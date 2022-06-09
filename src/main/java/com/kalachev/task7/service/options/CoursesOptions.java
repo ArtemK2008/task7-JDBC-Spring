@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import com.kalachev.task7.dao.entities.Course;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
-import com.kalachev.task7.exceptions.CourseNotFoundException;
 
 public class CoursesOptions {
 
@@ -44,11 +43,8 @@ public class CoursesOptions {
     return isRemoved;
   }
 
-  public List<String> findCourseNames() throws CourseNotFoundException {
+  public List<String> findCourseNames() {
     List<Course> courses = coursesDao.getAll();
-    if (courses.isEmpty()) {
-      throw new CourseNotFoundException();
-    }
     return courses.stream().map(Course::getCourseName)
         .collect(Collectors.toList());
   }

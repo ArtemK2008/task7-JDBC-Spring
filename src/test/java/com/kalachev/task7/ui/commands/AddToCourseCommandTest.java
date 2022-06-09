@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -16,9 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.exceptions.CourseNotFoundException;
-import com.kalachev.task7.exceptions.StudentNotFoundException;
-import com.kalachev.task7.exceptions.UiException;
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.service.options.CoursesOptions;
@@ -45,8 +43,7 @@ class AddToCourseCommandTest {
   }
 
   @Test
-  void testAddToCourse_shouldCallAllNeedeMethods_whenValidInput()
-      throws UiException, CourseNotFoundException, StudentNotFoundException {
+  void testAddToCourse_shouldCallAllNeedeMethods_whenValidInput() {
     // given
     List<String> courses = Arrays.asList("Eng", "Rus", "Uk");
     Mockito.when(mockOptions.findCourseNames()).thenReturn(courses);
@@ -181,8 +178,8 @@ class AddToCourseCommandTest {
       throws Exception {
     // given
     String expected = "No Courses Found";
-    Mockito.when(mockOptions.findCourseNames())
-        .thenThrow(CourseNotFoundException.class);
+    List<String> emptyList = new ArrayList<>();
+    Mockito.when(mockOptions.findCourseNames()).thenReturn(emptyList);
     command = new AddToCourseCommand(mockScanner, mockOptions);
     // when
     String actual = tapSystemOut(() -> command.execute());

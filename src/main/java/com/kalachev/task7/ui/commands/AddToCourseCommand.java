@@ -8,7 +8,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
-import com.kalachev.task7.exceptions.CourseNotFoundException;
 import com.kalachev.task7.service.options.CoursesOptions;
 
 public class AddToCourseCommand implements Command {
@@ -30,6 +29,7 @@ public class AddToCourseCommand implements Command {
   public void execute() {
     List<String> courses = retrieveCoursesNames();
     if (courses.isEmpty()) {
+      System.out.println("No Courses Found");
       return;
     }
     System.out.println("Enter ID of a student you want to add");
@@ -87,11 +87,7 @@ public class AddToCourseCommand implements Command {
 
   private List<String> retrieveCoursesNames() {
     List<String> courses = new ArrayList<>();
-    try {
-      courses = options.findCourseNames();
-    } catch (CourseNotFoundException e) {
-      System.out.println("No Courses Found");
-    }
+    courses = options.findCourseNames();
     return courses;
   }
 
