@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.initialization.InitializerImpl;
+import com.kalachev.task7.initialization.core.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.service.options.CoursesOptionsImpl;
 import com.kalachev.task7.service.options.StudentOptionsImpl;

@@ -5,9 +5,9 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
-import com.kalachev.task7.dao.implementations.GroupsDaoImpl;
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
+import com.kalachev.task7.dao.implementations.core.CoursesDaoImpl;
+import com.kalachev.task7.dao.implementations.core.GroupsDaoImpl;
+import com.kalachev.task7.dao.implementations.core.StudentsDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;

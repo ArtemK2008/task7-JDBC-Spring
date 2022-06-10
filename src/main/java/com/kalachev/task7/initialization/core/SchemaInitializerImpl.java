@@ -1,4 +1,4 @@
-package com.kalachev.task7.initialization;
+package com.kalachev.task7.initialization.core;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

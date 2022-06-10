@@ -15,8 +15,8 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.initialization.GroupInitializerImpl;
-import com.kalachev.task7.initialization.StudentInitializerImpl;
+import com.kalachev.task7.initialization.core.GroupInitializerImpl;
+import com.kalachev.task7.initialization.core.StudentInitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.GroupInitializer;
 import com.kalachev.task7.initialization.initialization_interfaces.StudentInitializer;
 

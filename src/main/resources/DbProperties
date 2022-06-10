@@ -1,5 +1,4 @@
 URL = jdbc:postgresql://localhost/comkalachevtasksqljdbc
-USERNAME = kalachevartemsql
+NAME = kalachevartemsql
 PASSWORD = 1234
-
-JDBC_DRIVER_ORIGINAL = org.postgresql.Driver
+JDBC_DRIVER = org.postgresql.Driver

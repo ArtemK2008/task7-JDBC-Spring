@@ -10,7 +10,7 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.initialization.InitializerImpl;
+import com.kalachev.task7.initialization.core.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 
 class ExitCommandTest {

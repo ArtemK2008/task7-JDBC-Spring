@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao;
+package com.kalachev.task7.dao.spring;
 
 import java.io.FileInputStream;
 import java.sql.SQLException;
@@ -15,16 +15,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.kalachev.task7.dao.entities.Student;
-import com.kalachev.task7.dao.implementations.core.StudentsDaoImpl;
+import com.kalachev.task7.dao.implementations.spring.StudentDaoSpring;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 
-class StudentDaoImplTest extends DbUnitConfig {
-  StudentsDao studentsDao = new StudentsDaoImpl();
+class StudentDaoSpringTest extends DbUnitConfigSpring {
+  StudentsDao studentsDao;
 
   @Override
   @BeforeEach
   public void setUp() throws Exception {
     super.setUp();
+    studentsDao = new StudentDaoSpring(template);
     beforeData = new FlatXmlDataSetBuilder()
         .build(new FileInputStream(getClass().getClassLoader()
             .getResource("dao/student/ActualStudentDataSet.xml").getFile()));

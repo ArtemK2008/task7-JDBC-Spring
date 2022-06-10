@@ -6,7 +6,7 @@ import com.kalachev.task7.dao.entities.Course;
 
 public interface CoursesDao {
 
-  void addStudent(int studentId, String course);
+  boolean addStudent(int studentId, String course);
 
   boolean removeStudent(int studentId, String course);
 

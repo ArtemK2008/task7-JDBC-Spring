@@ -1,9 +1,9 @@
-package com.kalachev.task7.initialization;
+package com.kalachev.task7.initialization.core;
 
 import java.util.List;
 import java.util.Map;
 
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
+import com.kalachev.task7.dao.implementations.core.StudentsDaoImpl;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.initialization.initialization_interfaces.CoursesInitializer;
 import com.kalachev.task7.initialization.initialization_interfaces.GroupInitializer;

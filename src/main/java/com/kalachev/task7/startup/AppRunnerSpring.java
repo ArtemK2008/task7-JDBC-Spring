@@ -1,5 +1,6 @@
 package com.kalachev.task7.startup;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,6 +15,10 @@ public class AppRunnerSpring {
         ConsoleAppConfig.class);
     ConsoleMenuForSpring obj = (ConsoleMenuForSpring) context
         .getBean("consoleMenu");
+
+    BasicDataSource dataSourse = (BasicDataSource) context
+        .getBean("dataSource");
+
     obj.runSchoolApp();
     ((ConfigurableApplicationContext) context).close();
 

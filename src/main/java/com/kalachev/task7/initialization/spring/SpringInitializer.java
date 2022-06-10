@@ -3,10 +3,10 @@ package com.kalachev.task7.initialization.spring;
 import java.util.List;
 import java.util.Map;
 
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
+import com.kalachev.task7.dao.implementations.core.StudentsDaoImpl;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
-import com.kalachev.task7.initialization.GroupInitializerImpl;
-import com.kalachev.task7.initialization.SchemaInitializerImpl;
+import com.kalachev.task7.initialization.core.GroupInitializerImpl;
+import com.kalachev.task7.initialization.core.SchemaInitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.CoursesInitializer;
 import com.kalachev.task7.initialization.initialization_interfaces.GroupInitializer;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;

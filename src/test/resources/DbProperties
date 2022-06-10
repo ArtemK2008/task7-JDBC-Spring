@@ -1,4 +1,4 @@
 URL = jdbc:h2:~/test
-USERNAME = sa
+NAME = sa
 PASSWORD = 
 JDBC_DRIVER = org.h2.Driver

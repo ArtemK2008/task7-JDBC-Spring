@@ -2,7 +2,7 @@ package com.kalachev.task7.startup;
 
 import java.util.Scanner;
 
-import com.kalachev.task7.initialization.InitializerImpl;
+import com.kalachev.task7.initialization.core.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.ui.ConsoleMenuForCore;
 
