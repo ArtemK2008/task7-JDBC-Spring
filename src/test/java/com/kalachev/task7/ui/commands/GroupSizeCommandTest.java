@@ -17,13 +17,13 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.GroupOptions;
+import com.kalachev.task7.service.options.GroupOptionsImpl;
 
 class GroupSizeCommandTest {
   Command command;
   final static String NEWLINE = System.lineSeparator();
   Scanner mockScanner;
-  GroupOptions mockOptions;
+  GroupOptionsImpl mockOptions;
   String size = "3";
   static Initializer intInitializer = new InitializerImpl();
 
@@ -35,7 +35,7 @@ class GroupSizeCommandTest {
   @BeforeEach
   void setUp() {
     mockScanner = Mockito.mock(Scanner.class);
-    mockOptions = Mockito.mock(GroupOptions.class);
+    mockOptions = Mockito.mock(GroupOptionsImpl.class);
   }
 
   @Test

@@ -4,14 +4,13 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.service.options_interfaces.StudentOptions;
 
 public class AddStudentCommand implements Command {
 
   static final String BAD_INPUT = "Your Input was not correct";
 
   StudentOptions options;
-
   Scanner scanner;
 
   public AddStudentCommand(Scanner scanner, StudentOptions options) {

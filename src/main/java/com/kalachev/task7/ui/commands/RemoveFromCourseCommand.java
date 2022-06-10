@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.service.options.CoursesOptions;
+import com.kalachev.task7.service.options_interfaces.CoursesOptions;
 
 public class RemoveFromCourseCommand implements Command {
 

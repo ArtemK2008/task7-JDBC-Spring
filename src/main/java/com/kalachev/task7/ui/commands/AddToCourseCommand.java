@@ -8,7 +8,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
-import com.kalachev.task7.service.options.CoursesOptions;
+import com.kalachev.task7.service.options_interfaces.CoursesOptions;
 
 public class AddToCourseCommand implements Command {
 

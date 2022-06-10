@@ -5,36 +5,24 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
-import com.kalachev.task7.dao.implementations.GroupsDaoImpl;
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
-import com.kalachev.task7.dao.interfaces.CoursesDao;
-import com.kalachev.task7.dao.interfaces.GroupsDao;
-import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.CoursesOptions;
-import com.kalachev.task7.service.options.GroupOptions;
-import com.kalachev.task7.service.options.StudentOptions;
-import com.kalachev.task7.ui.commands.AddStudentCommand;
-import com.kalachev.task7.ui.commands.AddToCourseCommand;
 import com.kalachev.task7.ui.commands.Command;
-import com.kalachev.task7.ui.commands.DeleteByIdCommand;
-import com.kalachev.task7.ui.commands.ExitCommand;
-import com.kalachev.task7.ui.commands.FindStudentsByCourseCommand;
-import com.kalachev.task7.ui.commands.GroupSizeCommand;
-import com.kalachev.task7.ui.commands.RemoveFromCourseCommand;
+import com.kalachev.task7.ui.dispatcher.CommandDispatcher;
 
-public class ConsoleMenu {
+public class ConsoleMenuForSpring {
   static final String BAD_INPUT = "Your Input was not correct";
 
   Scanner scanner;
   Initializer initializerImpl;
   Map<String, Command> commands;
+  CommandDispatcher commandDispatcher;
 
-  public ConsoleMenu(Scanner scanner, Initializer initializerImpl) {
+  public ConsoleMenuForSpring(Scanner scanner, Initializer initializerImpl,
+      CommandDispatcher commandDispatcher) {
     super();
     this.scanner = scanner;
     this.initializerImpl = initializerImpl;
+    this.commandDispatcher = commandDispatcher;
   }
 
   private static String[] options = {
@@ -69,21 +57,14 @@ public class ConsoleMenu {
   }
 
   private void initializeCommands() {
-    GroupsDao groupsDao = new GroupsDaoImpl();
-    CoursesDao coursesDao = new CoursesDaoImpl();
-    StudentsDao studentsDao = new StudentsDaoImpl();
-    GroupOptions groupOptions = new GroupOptions(groupsDao);
-    CoursesOptions coursesOptions = new CoursesOptions(coursesDao, studentsDao);
-    StudentOptions studentOptions = new StudentOptions(studentsDao, coursesDao);
     commands = new HashMap<>();
-    commands.put("1", new GroupSizeCommand(scanner, groupOptions));
-    commands.put("2", new FindStudentsByCourseCommand(scanner, coursesOptions,
-        studentOptions));
-    commands.put("3", new AddStudentCommand(scanner, studentOptions));
-    commands.put("4", new DeleteByIdCommand(scanner, studentOptions));
-    commands.put("5", new AddToCourseCommand(scanner, coursesOptions));
-    commands.put("6", new RemoveFromCourseCommand(scanner, coursesOptions));
-    commands.put("7", new ExitCommand(scanner));
+    commands.put("1", commandDispatcher.getGroupSizeCommand());
+    commands.put("2", commandDispatcher.getFindStudentsByCourseCommand());
+    commands.put("3", commandDispatcher.getAddStudentCommand());
+    commands.put("4", commandDispatcher.getDeleteByIdCommand());
+    commands.put("5", commandDispatcher.getAddToCourseCommand());
+    commands.put("6", commandDispatcher.getRemoveFromCourseCommand());
+    commands.put("7", commandDispatcher.getExitCommand());
   }
 
   private void handleOptions(String option) {

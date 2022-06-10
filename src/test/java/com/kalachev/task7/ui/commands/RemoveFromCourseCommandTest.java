@@ -18,14 +18,14 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.CoursesOptions;
+import com.kalachev.task7.service.options.CoursesOptionsImpl;
 
 class RemoveFromCourseCommandTest {
 
   Command command;
   final static String NEWLINE = System.lineSeparator();
   Scanner mockScanner;
-  CoursesOptions mockOptions;
+  CoursesOptionsImpl mockOptions;
   String id = "1";
   String course = "Eng";
   static Initializer intInitializer = new InitializerImpl();
@@ -38,7 +38,7 @@ class RemoveFromCourseCommandTest {
   @BeforeEach
   void setUp() {
     mockScanner = Mockito.mock(Scanner.class);
-    mockOptions = Mockito.mock(CoursesOptions.class);
+    mockOptions = Mockito.mock(CoursesOptionsImpl.class);
   }
 
   @Test

@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.service.options.GroupOptions;
+import com.kalachev.task7.service.options_interfaces.GroupOptions;
 
 public class GroupSizeCommand implements Command {
 

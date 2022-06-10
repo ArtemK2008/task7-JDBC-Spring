@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.service.options.StudentOptionsImpl;
 
 class AddStudentCommandTest {
   Command command;
@@ -25,7 +25,7 @@ class AddStudentCommandTest {
   String lastname = "b";
   String group = "1";
   Scanner mockScanner;
-  StudentOptions mockOptions;
+  StudentOptionsImpl mockOptions;
   static Initializer intInitializer = new InitializerImpl();
 
   @BeforeAll
@@ -35,7 +35,7 @@ class AddStudentCommandTest {
 
   @BeforeEach
   void setUp() {
-    mockOptions = Mockito.mock(StudentOptions.class);
+    mockOptions = Mockito.mock(StudentOptionsImpl.class);
     mockScanner = Mockito.mock(Scanner.class);
   }
 

@@ -17,16 +17,16 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.CoursesOptions;
-import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.service.options.CoursesOptionsImpl;
+import com.kalachev.task7.service.options.StudentOptionsImpl;
 
 class FindStudentByCourseCommandTest {
 
   Command command;
   final static String NEWLINE = System.lineSeparator();
   Scanner mockScanner;
-  CoursesOptions mockCourseOptions;
-  StudentOptions mockStudentOptions;
+  CoursesOptionsImpl mockCourseOptions;
+  StudentOptionsImpl mockStudentOptions;
   String course = "Eng";
   static Initializer intInitializer = new InitializerImpl();
 
@@ -38,8 +38,8 @@ class FindStudentByCourseCommandTest {
   @BeforeEach
   void setUp() {
     mockScanner = Mockito.mock(Scanner.class);
-    mockCourseOptions = Mockito.mock(CoursesOptions.class);
-    mockStudentOptions = Mockito.mock(StudentOptions.class);
+    mockCourseOptions = Mockito.mock(CoursesOptionsImpl.class);
+    mockStudentOptions = Mockito.mock(StudentOptionsImpl.class);
   }
 
   @Test

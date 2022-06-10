@@ -1,4 +1,4 @@
-package com.kalachev.task7;
+package com.kalachev.task7.core;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.catchSystemExit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,12 +28,12 @@ import org.mockito.Mockito;
 
 import com.kalachev.task7.initialization.InitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.ui.ConsoleMenu;
+import com.kalachev.task7.ui.ConsoleMenuForCore;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
-class ConsoleMenuIT {
-  ConsoleMenu spyMenu;
+class ConsoleMenuCoreIT {
+  ConsoleMenuForCore spyMenu;
   Scanner mockScanner;
   Initializer spyInitializer;
   private final PrintStream standardOut = System.out;
@@ -66,7 +66,7 @@ class ConsoleMenuIT {
 
     mockScanner = Mockito.mock(Scanner.class);
     spyInitializer = Mockito.spy(InitializerImpl.class);
-    spyMenu = Mockito.spy(new ConsoleMenu(mockScanner, spyInitializer));
+    spyMenu = Mockito.spy(new ConsoleMenuForCore(mockScanner, spyInitializer));
     doNothing().when(spyMenu).cleanConsole();
   }
 

@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.kalachev.task7.service.options.CoursesOptions;
-import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.service.options_interfaces.CoursesOptions;
+import com.kalachev.task7.service.options_interfaces.StudentOptions;
 
 public class FindStudentsByCourseCommand implements Command {
   Scanner scanner;
   CoursesOptions courseOptions;
-  StudentOptions studentOptions;
+  StudentOptions studentOptionsImpl;
 
   public FindStudentsByCourseCommand(Scanner scanner,
-      CoursesOptions courseOptions, StudentOptions studentOptions) {
+      CoursesOptions courseOptions, StudentOptions studentOptionsImpl) {
     super();
     this.scanner = scanner;
     this.courseOptions = courseOptions;
-    this.studentOptions = studentOptions;
+    this.studentOptionsImpl = studentOptionsImpl;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class FindStudentsByCourseCommand implements Command {
 
   private void printAllCourseStudents(String course) {
     List<String> students = new ArrayList<>();
-    students = studentOptions.findByCourse(course);
+    students = studentOptionsImpl.findByCourse(course);
 
     if (students.isEmpty()) {
       System.out.println("No students in this course");

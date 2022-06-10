@@ -6,20 +6,22 @@ import java.util.stream.Collectors;
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
+import com.kalachev.task7.service.options_interfaces.StudentOptions;
 
-public class StudentOptions {
+public class StudentOptionsImpl implements StudentOptions {
 
   static final String SPACE = " ";
 
   StudentsDao studentsDao;
   CoursesDao coursesDao;
 
-  public StudentOptions(StudentsDao studentsDao, CoursesDao coursesDao) {
+  public StudentOptionsImpl(StudentsDao studentsDao, CoursesDao coursesDao) {
     super();
     this.studentsDao = studentsDao;
     this.coursesDao = coursesDao;
   }
 
+  @Override
   public List<String> findByCourse(String course) {
     if (!checkIfCourseExists(course)) {
       throw new IllegalArgumentException();
@@ -30,6 +32,7 @@ public class StudentOptions {
         .collect(Collectors.toList());
   }
 
+  @Override
   public boolean addNewStudent(String firstName, String lastName, int groupId) {
     boolean isAdded = false;
     if (groupId < 1 || groupId > 11) {
@@ -44,6 +47,7 @@ public class StudentOptions {
     return isAdded;
   }
 
+  @Override
   public boolean deleteStudentById(int id) {
     boolean isDeleted = false;
     if (id < 1) {
@@ -58,6 +62,7 @@ public class StudentOptions {
     return isDeleted;
   }
 
+  @Override
   public boolean checkIfStudentAlreadyInGroup(int groupId, String firstName,
       String lastName) {
     boolean isInGroup = false;
@@ -75,6 +80,7 @@ public class StudentOptions {
     return isExist;
   }
 
+  @Override
   public boolean checkIfStudentIdExists(int id) {
     boolean isExist = false;
     if (studentsDao.isIdExists(id)) {

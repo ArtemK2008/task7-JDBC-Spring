@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.service.options_interfaces.StudentOptions;
 
 public class DeleteByIdCommand implements Command {
 
