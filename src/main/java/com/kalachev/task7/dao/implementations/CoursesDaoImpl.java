@@ -18,7 +18,7 @@ public class CoursesDaoImpl implements CoursesDao {
   private static final String FIND_COURSE_DESCRIPTION = "SELECT course_name,course_description "
       + "FROM Courses WHERE course_name = (?)";
 
-  private static final String FIND_STUDENTS_FULLNAME = "SELECT student_id,group_id,first_name,last_name "
+  private static final String FIND_BY_ID = "SELECT student_id,group_id,first_name,last_name "
       + "FROM students " + "WHERE student_id = (?)";
 
   private static final String ADD_STUDENT_TO_COURSE = "INSERT INTO studentscoursesdata"
@@ -40,7 +40,7 @@ public class CoursesDaoImpl implements CoursesDao {
     ResultSet rs = null;
     try {
       connection = ConnectionManager.openDbConnection();
-      statement = connection.prepareStatement(FIND_STUDENTS_FULLNAME);
+      statement = connection.prepareStatement(FIND_BY_ID);
       statement.setInt(1, studentId);
       rs = statement.executeQuery();
       String firstName = null;

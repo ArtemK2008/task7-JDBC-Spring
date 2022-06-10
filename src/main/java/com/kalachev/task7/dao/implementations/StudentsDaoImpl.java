@@ -17,7 +17,7 @@ import com.kalachev.task7.utilities.JdbcUtil;
 
 public class StudentsDaoImpl implements StudentsDao {
 
-  private static final String FIND_STUDENTS = "SELECT student_id, group_id,first_name,last_name "
+  private static final String FIND_BY_COURSE = "SELECT student_id, group_id,first_name,last_name "
       + "FROM studentscoursesdata " + "WHERE course_name = (?)";
 
   private static final String INSERT_STUDENT = "INSERT INTO Students(group_id,first_name,last_name)"
@@ -43,7 +43,7 @@ public class StudentsDaoImpl implements StudentsDao {
     List<Student> students = new ArrayList<>();
     try {
       connection = ConnectionManager.openDbConnection();
-      statement = connection.prepareStatement(FIND_STUDENTS);
+      statement = connection.prepareStatement(FIND_BY_COURSE);
       statement.setString(1, courseName);
       rs = statement.executeQuery();
       while (rs.next()) {
