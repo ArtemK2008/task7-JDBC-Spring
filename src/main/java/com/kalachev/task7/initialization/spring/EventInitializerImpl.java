@@ -3,7 +3,7 @@ package com.kalachev.task7.initialization.spring;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
 import com.kalachev.task7.dao.implementations.core.StudentsDaoImpl;
@@ -44,7 +44,7 @@ public class EventInitializerImpl implements EventInitializer {
 
   @Override
   @EventListener
-  public void initializeTables(ContextStartedEvent event) {
+  public void initializeTables(ContextRefreshedEvent event) {
     initializeStartTables();
     generateStudentData();
     fillGroupsTable(groups);

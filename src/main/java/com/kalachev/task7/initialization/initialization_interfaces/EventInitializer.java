@@ -1,9 +1,9 @@
 package com.kalachev.task7.initialization.initialization_interfaces;
 
-import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 public interface EventInitializer {
 
-  void initializeTables(ContextStartedEvent event);
+  void initializeTables(ContextRefreshedEvent event);
 
 }
