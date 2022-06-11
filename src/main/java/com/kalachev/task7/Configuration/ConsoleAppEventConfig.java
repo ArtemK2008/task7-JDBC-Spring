@@ -24,18 +24,18 @@ import com.kalachev.task7.initialization.core.GroupInitializerImpl;
 import com.kalachev.task7.initialization.core.SchemaInitializerImpl;
 import com.kalachev.task7.initialization.core.StudentInitializerImpl;
 import com.kalachev.task7.initialization.initialization_interfaces.CoursesInitializer;
+import com.kalachev.task7.initialization.initialization_interfaces.EventInitializer;
 import com.kalachev.task7.initialization.initialization_interfaces.GroupInitializer;
-import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
 import com.kalachev.task7.initialization.initialization_interfaces.SchemaInitializer;
 import com.kalachev.task7.initialization.initialization_interfaces.StudentInitializer;
-import com.kalachev.task7.initialization.spring.SpringInitializer;
+import com.kalachev.task7.initialization.spring.EventInitializerImpl;
 import com.kalachev.task7.service.options.CoursesOptionsImpl;
 import com.kalachev.task7.service.options.GroupOptionsImpl;
 import com.kalachev.task7.service.options.StudentOptionsImpl;
 import com.kalachev.task7.service.options_interfaces.CoursesOptions;
 import com.kalachev.task7.service.options_interfaces.GroupOptions;
 import com.kalachev.task7.service.options_interfaces.StudentOptions;
-import com.kalachev.task7.ui.ConsoleMenuForSpring;
+import com.kalachev.task7.ui.ConsoleMenuForEvent;
 import com.kalachev.task7.ui.commands.AddStudentCommand;
 import com.kalachev.task7.ui.commands.AddToCourseCommand;
 import com.kalachev.task7.ui.commands.Command;
@@ -50,7 +50,7 @@ import com.kalachev.task7.ui.dispatcher.CommandDispatcherImpl;
 @Configuration
 @ComponentScan(basePackageClasses = { ComponentScanInterface.class })
 @PropertySource("classpath:DbProperties")
-public class ConsoleAppConfig {
+public class ConsoleAppEventConfig {
 
   @Autowired
   Environment env;
@@ -171,15 +171,14 @@ public class ConsoleAppConfig {
   }
 
   @Bean
-  public Initializer initializer() {
-    return new SpringInitializer(studentInitializerImpl(),
+  public EventInitializer eventInitializer() {
+    return new EventInitializerImpl(studentInitializerImpl(),
         coursesInitializerImpl(), groupInitializerImpl(),
         schemaInitializerImpl());
   }
 
   @Bean
-  public ConsoleMenuForSpring consoleMenuForSpring() {
-    return new ConsoleMenuForSpring(scanner(), initializer(),
-        commandDispatcher());
+  public ConsoleMenuForEvent consoleMenuForEvent() {
+    return new ConsoleMenuForEvent(scanner(), commandDispatcher());
   }
 }

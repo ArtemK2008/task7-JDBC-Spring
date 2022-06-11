@@ -4,17 +4,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.kalachev.task7.Configuration.ConsoleAppConfig;
-import com.kalachev.task7.ui.ConsoleMenuForSpring;
+import com.kalachev.task7.Configuration.ConsoleAppEventConfig;
+import com.kalachev.task7.ui.ConsoleMenuForEvent;
 
-public class AppRunnerSpring {
-
+public class AppRunnerEvent {
   public static void main(String[] args) {
     ApplicationContext context = new AnnotationConfigApplicationContext(
-        ConsoleAppConfig.class);
+        ConsoleAppEventConfig.class);
+    ((ConfigurableApplicationContext) context).start();
 
-    ConsoleMenuForSpring menu = context.getBean("consoleMenuForSpring",
-        ConsoleMenuForSpring.class);
+    ConsoleMenuForEvent menu = context.getBean("consoleMenuForEvent",
+        ConsoleMenuForEvent.class);
 
     menu.runSchoolApp();
     ((ConfigurableApplicationContext) context).close();
