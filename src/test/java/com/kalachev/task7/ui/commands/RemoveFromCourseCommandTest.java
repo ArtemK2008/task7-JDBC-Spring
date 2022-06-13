@@ -16,19 +16,33 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.initialization.InitializerImpl;
-import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.CoursesOptionsImpl;
+import com.kalachev.task7.initialization.CoursesInitializer;
+import com.kalachev.task7.initialization.GroupInitializer;
+import com.kalachev.task7.initialization.Initializer;
+import com.kalachev.task7.initialization.SchemaInitializer;
+import com.kalachev.task7.initialization.StudentInitializer;
+import com.kalachev.task7.initialization.imp.CoursesInitializerImpl;
+import com.kalachev.task7.initialization.imp.GroupInitializerImpl;
+import com.kalachev.task7.initialization.imp.InitializerImpl;
+import com.kalachev.task7.initialization.imp.SchemaInitializerImpl;
+import com.kalachev.task7.initialization.imp.StudentInitializerImpl;
+import com.kalachev.task7.service.CoursesOptions;
+import com.kalachev.task7.ui.commands.impl.RemoveFromCourseCommand;
 
 class RemoveFromCourseCommandTest {
 
   Command command;
   final static String NEWLINE = System.lineSeparator();
   Scanner mockScanner;
-  CoursesOptionsImpl mockOptions;
+  CoursesOptions mockOptions;
   String id = "1";
   String course = "Eng";
-  static Initializer intInitializer = new InitializerImpl();
+  static StudentInitializer studentInitializer = new StudentInitializerImpl();
+  static GroupInitializer groupInitializer = new GroupInitializerImpl();
+  static CoursesInitializer coursesInitializer = new CoursesInitializerImpl();
+  static SchemaInitializer schemaInitializer = new SchemaInitializerImpl();
+  static Initializer intInitializer = new InitializerImpl(studentInitializer,
+      coursesInitializer, groupInitializer, schemaInitializer);
 
   @BeforeAll
   static void startUp() {
@@ -38,7 +52,7 @@ class RemoveFromCourseCommandTest {
   @BeforeEach
   void setUp() {
     mockScanner = Mockito.mock(Scanner.class);
-    mockOptions = Mockito.mock(CoursesOptionsImpl.class);
+    mockOptions = Mockito.mock(CoursesOptions.class);
   }
 
   @Test

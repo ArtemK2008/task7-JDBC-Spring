@@ -16,8 +16,8 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.initialization.CoursesInitializerImpl;
-import com.kalachev.task7.initialization.initialization_interfaces.CoursesInitializer;
+import com.kalachev.task7.initialization.CoursesInitializer;
+import com.kalachev.task7.initialization.imp.CoursesInitializerImpl;
 
 class TestCourseInitializer {
   Map<String, String> courseWithDescription;

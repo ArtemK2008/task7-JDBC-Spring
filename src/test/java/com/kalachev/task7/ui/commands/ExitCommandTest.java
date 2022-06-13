@@ -10,14 +10,28 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kalachev.task7.initialization.InitializerImpl;
-import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
+import com.kalachev.task7.initialization.CoursesInitializer;
+import com.kalachev.task7.initialization.GroupInitializer;
+import com.kalachev.task7.initialization.Initializer;
+import com.kalachev.task7.initialization.SchemaInitializer;
+import com.kalachev.task7.initialization.StudentInitializer;
+import com.kalachev.task7.initialization.imp.CoursesInitializerImpl;
+import com.kalachev.task7.initialization.imp.GroupInitializerImpl;
+import com.kalachev.task7.initialization.imp.InitializerImpl;
+import com.kalachev.task7.initialization.imp.SchemaInitializerImpl;
+import com.kalachev.task7.initialization.imp.StudentInitializerImpl;
+import com.kalachev.task7.ui.commands.impl.ExitCommand;
 
 class ExitCommandTest {
 
   Scanner scanner;
   Command command;
-  static Initializer intInitializer = new InitializerImpl();
+  static StudentInitializer studentInitializer = new StudentInitializerImpl();
+  static GroupInitializer groupInitializer = new GroupInitializerImpl();
+  static CoursesInitializer coursesInitializer = new CoursesInitializerImpl();
+  static SchemaInitializer schemaInitializer = new SchemaInitializerImpl();
+  static Initializer intInitializer = new InitializerImpl(studentInitializer,
+      coursesInitializer, groupInitializer, schemaInitializer);
 
   private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 

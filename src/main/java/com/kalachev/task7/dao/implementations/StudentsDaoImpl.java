@@ -10,11 +10,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.interfaces.StudentsDao;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
+@Component
 public class StudentsDaoImpl implements StudentsDao {
 
   private static final String FIND_BY_COURSE = "SELECT student_id, group_id,first_name,last_name "

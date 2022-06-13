@@ -14,9 +14,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.initialization.InitializerImpl;
-import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.StudentOptionsImpl;
+import com.kalachev.task7.initialization.CoursesInitializer;
+import com.kalachev.task7.initialization.GroupInitializer;
+import com.kalachev.task7.initialization.Initializer;
+import com.kalachev.task7.initialization.SchemaInitializer;
+import com.kalachev.task7.initialization.StudentInitializer;
+import com.kalachev.task7.initialization.imp.CoursesInitializerImpl;
+import com.kalachev.task7.initialization.imp.GroupInitializerImpl;
+import com.kalachev.task7.initialization.imp.InitializerImpl;
+import com.kalachev.task7.initialization.imp.SchemaInitializerImpl;
+import com.kalachev.task7.initialization.imp.StudentInitializerImpl;
+import com.kalachev.task7.service.StudentOptions;
+import com.kalachev.task7.ui.commands.impl.AddStudentCommand;
 
 class AddStudentCommandTest {
   Command command;
@@ -25,8 +34,13 @@ class AddStudentCommandTest {
   String lastname = "b";
   String group = "1";
   Scanner mockScanner;
-  StudentOptionsImpl mockOptions;
-  static Initializer intInitializer = new InitializerImpl();
+  StudentOptions mockOptions;
+  static StudentInitializer studentInitializer = new StudentInitializerImpl();
+  static GroupInitializer groupInitializer = new GroupInitializerImpl();
+  static CoursesInitializer coursesInitializer = new CoursesInitializerImpl();
+  static SchemaInitializer schemaInitializer = new SchemaInitializerImpl();
+  static Initializer intInitializer = new InitializerImpl(studentInitializer,
+      coursesInitializer, groupInitializer, schemaInitializer);
 
   @BeforeAll
   static void startUp() {
@@ -35,7 +49,7 @@ class AddStudentCommandTest {
 
   @BeforeEach
   void setUp() {
-    mockOptions = Mockito.mock(StudentOptionsImpl.class);
+    mockOptions = Mockito.mock(StudentOptions.class);
     mockScanner = Mockito.mock(Scanner.class);
   }
 
@@ -50,6 +64,7 @@ class AddStudentCommandTest {
     Mockito.when(mockOptions.checkIfStudentAlreadyInGroup(anyInt(), anyString(),
         anyString())).thenReturn(false);
     command = new AddStudentCommand(mockScanner, mockOptions);
+
     // when
     command.execute();
     // then

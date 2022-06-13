@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.kalachev.task7.dao.entities.Group;
 import com.kalachev.task7.dao.interfaces.GroupsDao;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
+@Component
 public class GroupsDaoImpl implements GroupsDao {
 
   private static final String FIND_GROUP_BY_SIZE = "SELECT g.group_id,g.group_name FROM Students"
