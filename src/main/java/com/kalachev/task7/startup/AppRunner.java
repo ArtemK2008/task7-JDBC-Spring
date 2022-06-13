@@ -14,11 +14,6 @@ public class AppRunner {
     ApplicationContext context = new AnnotationConfigApplicationContext(
         ConsoleAppConfig.class);
     ConsoleMenu menu = (ConsoleMenu) context.getBean("consoleMenu");
-    String[] beanDefinitionNames = context.getBeanDefinitionNames();
-    for (String s : beanDefinitionNames) {
-      System.out.println(s);
-    }
-
     menu.runSchoolApp();
     ((ConfigurableApplicationContext) context).close();
 
