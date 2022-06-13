@@ -28,22 +28,18 @@ import com.kalachev.task7.ui.commands.impl.RemoveFromCourseCommand;
 public class ConsoleAppConfig {
 
   @Bean
-  public Scanner scanner() {
-    return new Scanner(System.in);
-  }
-
-  @Bean
   public Map<String, Command> commands(StudentOptions studentOptions,
-      GroupOptions groupOptions, CoursesOptions coursesOptions) {
+      GroupOptions groupOptions, CoursesOptions coursesOptions,
+      Scanner scanner) {
     Map<String, Command> commands = new LinkedHashMap<>();
-    commands.put("1", new GroupSizeCommand(scanner(), groupOptions));
-    commands.put("2", new FindStudentsByCourseCommand(scanner(), coursesOptions,
+    commands.put("1", new GroupSizeCommand(scanner, groupOptions));
+    commands.put("2", new FindStudentsByCourseCommand(scanner, coursesOptions,
         studentOptions));
-    commands.put("3", new AddStudentCommand(scanner(), studentOptions));
-    commands.put("4", new DeleteByIdCommand(scanner(), studentOptions));
-    commands.put("5", new AddToCourseCommand(scanner(), coursesOptions));
-    commands.put("6", new RemoveFromCourseCommand(scanner(), coursesOptions));
-    commands.put("7", new ExitCommand(scanner()));
+    commands.put("3", new AddStudentCommand(scanner, studentOptions));
+    commands.put("4", new DeleteByIdCommand(scanner, studentOptions));
+    commands.put("5", new AddToCourseCommand(scanner, coursesOptions));
+    commands.put("6", new RemoveFromCourseCommand(scanner, coursesOptions));
+    commands.put("7", new ExitCommand(scanner));
     return commands;
   }
 }
