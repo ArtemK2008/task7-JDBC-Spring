@@ -1,10 +1,11 @@
-package com.kalachev.task7.dao.core;
+package com.kalachev.task7.dao;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.dbunit.DBTestCase;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
@@ -12,8 +13,17 @@ import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-public class DbUnitConfig extends DBTestCase {
+import com.kalachev.task7.configuration.ConsoleAppConfig;
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = ConsoleAppConfig.class)
+public class DbUnitConfigSpring extends DBTestCase {
 
   Properties properties;
   IDatabaseTester databaseTester;
@@ -22,8 +32,12 @@ public class DbUnitConfig extends DBTestCase {
   String username;
   String password;
   IDataSet beforeData;
+  @Autowired
+  BasicDataSource dataSource;
+  @Autowired
+  JdbcTemplate template;
 
-  public DbUnitConfig() {
+  public DbUnitConfigSpring() {
     properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
     if (url != null) {
@@ -44,6 +58,7 @@ public class DbUnitConfig extends DBTestCase {
           username);
       System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD,
           password);
+
     }
   }
 

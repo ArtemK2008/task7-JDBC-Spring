@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.core;
+package com.kalachev.task7.dao;
 
 import java.io.FileInputStream;
 import java.sql.SQLException;
@@ -11,18 +11,26 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.kalachev.task7.configuration.ConsoleAppConfig;
 import com.kalachev.task7.dao.CoursesDao;
 import com.kalachev.task7.dao.entities.Course;
-import com.kalachev.task7.dao.impl.core.CoursesDaoImpl;
 
-class CoursesDaoImplTest extends DbUnitConfig {
-  CoursesDao coursesDao = new CoursesDaoImpl();
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = ConsoleAppConfig.class)
+class CourseDaoTest extends DbUnitConfigSpring {
+  @Autowired
+  CoursesDao coursesDao;
 
   @Override
   @BeforeEach
   public void setUp() throws Exception {
     super.setUp();
+
     beforeData = new FlatXmlDataSetBuilder()
         .build(new FileInputStream(getClass().getClassLoader()
             .getResource("dao/course/ActualCourseDataSet.xml").getFile()));
