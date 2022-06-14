@@ -21,20 +21,29 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.kalachev.task7.initialization.InitializerImpl;
-import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.ui.ConsoleMenu;
+import com.kalachev.task7.configuration.ConsoleAppConfig;
+import com.kalachev.task7.initialization.Initializer;
+import com.kalachev.task7.ui.menu.ConsoleMenu;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = ConsoleAppConfig.class)
 class ConsoleMenuIT {
+  @SpyBean
   ConsoleMenu spyMenu;
+  @MockBean
   Scanner mockScanner;
+  @SpyBean
   Initializer spyInitializer;
   private final PrintStream standardOut = System.out;
   ByteArrayOutputStream outputStreamCaptor;
@@ -53,20 +62,10 @@ class ConsoleMenuIT {
   private static final String ALREADY_IN_COURSE = "student already in course";
   private static final String BAD_INPUT = "Your Input was not correct";
 
-  @BeforeAll
-  static void initializeTables() {
-    final Initializer initializer = new InitializerImpl();
-    initializer.initializeTables();
-  }
-
   @BeforeEach
   public void setUp() {
     outputStreamCaptor = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStreamCaptor));
-
-    mockScanner = Mockito.mock(Scanner.class);
-    spyInitializer = Mockito.spy(InitializerImpl.class);
-    spyMenu = Mockito.spy(new ConsoleMenu(mockScanner, spyInitializer));
     doNothing().when(spyMenu).cleanConsole();
   }
 

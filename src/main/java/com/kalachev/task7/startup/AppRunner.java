@@ -1,18 +1,21 @@
 package com.kalachev.task7.startup;
 
-import java.util.Scanner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.kalachev.task7.initialization.InitializerImpl;
-import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.ui.ConsoleMenu;
+import com.kalachev.task7.configuration.ConsoleAppConfig;
+import com.kalachev.task7.ui.menu.ConsoleMenu;
 
 public class AppRunner {
 
   public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
-    Initializer initializer = new InitializerImpl();
-    ConsoleMenu app = new ConsoleMenu(scanner, initializer);
-    app.runSchoolApp();
+
+    ApplicationContext context = new AnnotationConfigApplicationContext(
+        ConsoleAppConfig.class);
+    ConsoleMenu menu = (ConsoleMenu) context.getBean("consoleMenu");
+    menu.runSchoolApp();
+    ((ConfigurableApplicationContext) context).close();
 
   }
 }

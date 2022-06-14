@@ -15,8 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.kalachev.task7.dao.entities.Student;
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
-import com.kalachev.task7.dao.interfaces.StudentsDao;
+import com.kalachev.task7.dao.impl.StudentsDaoImpl;
 
 class StudentDaoImplTest extends DbUnitConfig {
   StudentsDao studentsDao = new StudentsDaoImpl();

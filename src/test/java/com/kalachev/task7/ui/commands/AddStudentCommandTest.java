@@ -14,9 +14,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.kalachev.task7.initialization.InitializerImpl;
-import com.kalachev.task7.initialization.initialization_interfaces.Initializer;
-import com.kalachev.task7.service.options.StudentOptions;
+import com.kalachev.task7.initialization.CoursesInitializer;
+import com.kalachev.task7.initialization.GroupInitializer;
+import com.kalachev.task7.initialization.Initializer;
+import com.kalachev.task7.initialization.SchemaInitializer;
+import com.kalachev.task7.initialization.StudentInitializer;
+import com.kalachev.task7.initialization.impl.CoursesInitializerImpl;
+import com.kalachev.task7.initialization.impl.GroupInitializerImpl;
+import com.kalachev.task7.initialization.impl.InitializerImpl;
+import com.kalachev.task7.initialization.impl.SchemaInitializerImpl;
+import com.kalachev.task7.initialization.impl.StudentInitializerImpl;
+import com.kalachev.task7.service.StudentOptions;
+import com.kalachev.task7.ui.commands.impl.AddStudentCommand;
 
 class AddStudentCommandTest {
   Command command;
@@ -26,7 +35,12 @@ class AddStudentCommandTest {
   String group = "1";
   Scanner mockScanner;
   StudentOptions mockOptions;
-  static Initializer intInitializer = new InitializerImpl();
+  static StudentInitializer studentInitializer = new StudentInitializerImpl();
+  static GroupInitializer groupInitializer = new GroupInitializerImpl();
+  static CoursesInitializer coursesInitializer = new CoursesInitializerImpl();
+  static SchemaInitializer schemaInitializer = new SchemaInitializerImpl();
+  static Initializer intInitializer = new InitializerImpl(studentInitializer,
+      coursesInitializer, groupInitializer, schemaInitializer);
 
   @BeforeAll
   static void startUp() {
@@ -50,6 +64,7 @@ class AddStudentCommandTest {
     Mockito.when(mockOptions.checkIfStudentAlreadyInGroup(anyInt(), anyString(),
         anyString())).thenReturn(false);
     command = new AddStudentCommand(mockScanner, mockOptions);
+
     // when
     command.execute();
     // then
