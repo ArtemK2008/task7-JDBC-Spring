@@ -13,8 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.kalachev.task7.dao.entities.Course;
-import com.kalachev.task7.dao.implementations.CoursesDaoImpl;
-import com.kalachev.task7.dao.interfaces.CoursesDao;
+import com.kalachev.task7.dao.impl.CoursesDaoImpl;
 
 class CoursesDaoImplTest extends DbUnitConfig {
   CoursesDao coursesDao = new CoursesDaoImpl();

@@ -1,4 +1,4 @@
-package com.kalachev.task7.initialization.imp;
+package com.kalachev.task7.initialization.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kalachev.task7.dao.implementations.StudentsDaoImpl;
-import com.kalachev.task7.dao.interfaces.StudentsDao;
+import com.kalachev.task7.dao.StudentsDao;
+import com.kalachev.task7.dao.impl.StudentsDaoImpl;
 import com.kalachev.task7.initialization.CoursesInitializer;
 import com.kalachev.task7.initialization.GroupInitializer;
 import com.kalachev.task7.initialization.Initializer;

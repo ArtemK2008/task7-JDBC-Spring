@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.kalachev.task7.dao.GroupsDao;
 import com.kalachev.task7.dao.entities.Group;
-import com.kalachev.task7.dao.interfaces.GroupsDao;
 
 @Component
 public class GroupOptions {

@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Test;
 
 import com.kalachev.task7.initialization.GroupInitializer;
 import com.kalachev.task7.initialization.StudentInitializer;
-import com.kalachev.task7.initialization.imp.GroupInitializerImpl;
-import com.kalachev.task7.initialization.imp.StudentInitializerImpl;
+import com.kalachev.task7.initialization.impl.GroupInitializerImpl;
+import com.kalachev.task7.initialization.impl.StudentInitializerImpl;
 
 class TestGroupInitializer {
   static List<String> groups;

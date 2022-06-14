@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.interfaces;
+package com.kalachev.task7.dao;
 
 import java.util.List;
 

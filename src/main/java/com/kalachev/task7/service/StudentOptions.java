@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.kalachev.task7.dao.CoursesDao;
+import com.kalachev.task7.dao.StudentsDao;
 import com.kalachev.task7.dao.entities.Student;
-import com.kalachev.task7.dao.interfaces.CoursesDao;
-import com.kalachev.task7.dao.interfaces.StudentsDao;
 
 @Component
 public class StudentOptions {

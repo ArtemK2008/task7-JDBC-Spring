@@ -1,4 +1,4 @@
-package com.kalachev.task7.initialization.imp;
+package com.kalachev.task7.initialization.impl;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

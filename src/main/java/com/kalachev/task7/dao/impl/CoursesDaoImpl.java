@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.implementations;
+package com.kalachev.task7.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.kalachev.task7.dao.CoursesDao;
 import com.kalachev.task7.dao.entities.Course;
-import com.kalachev.task7.dao.interfaces.CoursesDao;
 import com.kalachev.task7.utilities.ConnectionManager;
 import com.kalachev.task7.utilities.JdbcUtil;
 

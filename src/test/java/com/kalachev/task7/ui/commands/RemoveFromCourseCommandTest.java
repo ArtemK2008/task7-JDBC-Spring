@@ -21,11 +21,11 @@ import com.kalachev.task7.initialization.GroupInitializer;
 import com.kalachev.task7.initialization.Initializer;
 import com.kalachev.task7.initialization.SchemaInitializer;
 import com.kalachev.task7.initialization.StudentInitializer;
-import com.kalachev.task7.initialization.imp.CoursesInitializerImpl;
-import com.kalachev.task7.initialization.imp.GroupInitializerImpl;
-import com.kalachev.task7.initialization.imp.InitializerImpl;
-import com.kalachev.task7.initialization.imp.SchemaInitializerImpl;
-import com.kalachev.task7.initialization.imp.StudentInitializerImpl;
+import com.kalachev.task7.initialization.impl.CoursesInitializerImpl;
+import com.kalachev.task7.initialization.impl.GroupInitializerImpl;
+import com.kalachev.task7.initialization.impl.InitializerImpl;
+import com.kalachev.task7.initialization.impl.SchemaInitializerImpl;
+import com.kalachev.task7.initialization.impl.StudentInitializerImpl;
 import com.kalachev.task7.service.CoursesOptions;
 import com.kalachev.task7.ui.commands.impl.RemoveFromCourseCommand;
 

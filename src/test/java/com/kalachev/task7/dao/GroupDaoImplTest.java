@@ -9,8 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.kalachev.task7.dao.entities.Group;
-import com.kalachev.task7.dao.implementations.GroupsDaoImpl;
-import com.kalachev.task7.dao.interfaces.GroupsDao;
+import com.kalachev.task7.dao.impl.GroupsDaoImpl;
 
 class GroupDaoImplTest extends DbUnitConfig {
 

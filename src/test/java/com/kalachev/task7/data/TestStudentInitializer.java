@@ -12,7 +12,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import com.kalachev.task7.initialization.StudentInitializer;
-import com.kalachev.task7.initialization.imp.StudentInitializerImpl;
+import com.kalachev.task7.initialization.impl.StudentInitializerImpl;
 
 class TestStudentInitializer {
   List<String> expected = Arrays.asList("Gwen Kuleshova", "Jane Ivanova",
