@@ -24,7 +24,7 @@ import com.kalachev.task7.dao.entities.Student;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConsoleAppConfig.class)
-class StudentDaoTest extends DbUnitConfigSpring {
+class StudentDaoTest extends DbUnitConfig {
   @Autowired
   StudentsDao studentsDao;
 

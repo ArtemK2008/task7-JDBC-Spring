@@ -22,7 +22,7 @@ import com.kalachev.task7.dao.entities.Course;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConsoleAppConfig.class)
-class CourseDaoTest extends DbUnitConfigSpring {
+class CourseDaoTest extends DbUnitConfig {
   @Autowired
   CoursesDao coursesDao;
 

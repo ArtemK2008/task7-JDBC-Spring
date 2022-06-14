@@ -18,7 +18,7 @@ import com.kalachev.task7.dao.entities.Group;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConsoleAppConfig.class)
-class GroupDaoTest extends DbUnitConfigSpring {
+class GroupDaoTest extends DbUnitConfig {
   @Autowired
   GroupsDao groupsDao;
 

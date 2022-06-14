@@ -23,7 +23,7 @@ import com.kalachev.task7.configuration.ConsoleAppConfig;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConsoleAppConfig.class)
-public class DbUnitConfigSpring extends DBTestCase {
+public class DbUnitConfig extends DBTestCase {
 
   Properties properties;
   IDatabaseTester databaseTester;
@@ -37,7 +37,7 @@ public class DbUnitConfigSpring extends DBTestCase {
   @Autowired
   JdbcTemplate template;
 
-  public DbUnitConfigSpring() {
+  public DbUnitConfig() {
     properties = new Properties();
     URL url = ClassLoader.getSystemResource("DbProperties");
     if (url != null) {
