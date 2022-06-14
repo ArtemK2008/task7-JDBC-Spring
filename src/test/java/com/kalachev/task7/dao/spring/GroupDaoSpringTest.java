@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao;
+package com.kalachev.task7.dao.spring;
 
 import java.io.FileInputStream;
 import java.util.LinkedList;
@@ -8,17 +8,19 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.dao.GroupsDao;
 import com.kalachev.task7.dao.entities.Group;
-import com.kalachev.task7.dao.impl.core.GroupsDaoImpl;
+import com.kalachev.task7.dao.impl.spring.GroupDaoSpring;
 
-class GroupDaoImplTest extends DbUnitConfig {
+class GroupDaoSpringTest extends DbUnitConfigSpring {
 
-  GroupsDao groupsDao = new GroupsDaoImpl();
+  GroupsDao groupsDao;
 
   @Override
   @BeforeEach
   public void setUp() throws Exception {
     super.setUp();
+    groupsDao = new GroupDaoSpring(template);
     beforeData = new FlatXmlDataSetBuilder()
         .build(new FileInputStream(getClass().getClassLoader()
             .getResource("dao/group/ActualGroupDataSet.xml").getFile()));

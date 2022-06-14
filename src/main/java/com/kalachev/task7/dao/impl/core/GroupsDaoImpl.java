@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.impl;
+package com.kalachev.task7.dao.impl.core;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

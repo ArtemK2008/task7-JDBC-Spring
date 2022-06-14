@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao.impl;
+package com.kalachev.task7.dao.impl.core;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,7 +37,8 @@ public class CoursesDaoImpl implements CoursesDao {
       + "FROM studentscoursesdata " + "WHERE course_name = (?)";
 
   @Override
-  public void addStudent(int studentId, String course) {
+  public boolean addStudent(int studentId, String course) {
+    boolean isAdded = false;
     Connection connection = null;
     PreparedStatement statement = null;
     ResultSet rs = null;
@@ -73,12 +74,14 @@ public class CoursesDaoImpl implements CoursesDao {
       statement.setString(5, course);
       statement.setString(6, courseDesciption);
       statement.executeUpdate();
+      isAdded = true;
     } catch (SQLException e) {
       System.out.println("Error while adding Student with id " + studentId
           + " to course " + course);
     } finally {
       JdbcUtil.closeAll(rs, statement, connection);
     }
+    return isAdded;
   }
 
   @Override
