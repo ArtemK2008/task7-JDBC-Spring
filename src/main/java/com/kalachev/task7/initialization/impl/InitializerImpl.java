@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.kalachev.task7.dao.StudentsDao;
@@ -43,7 +45,12 @@ public class InitializerImpl implements Initializer {
     this.schemaInitializerImpl = schemaInitializerImpl;
   }
 
+  @EventListener
   @Override
+  public void initializeTablesEvent(ContextRefreshedEvent event) {
+    initializeTables();
+  }
+
   public void initializeTables() {
     initializeStartTables();
     generateStudentData();

@@ -39,7 +39,6 @@ public class ConsoleMenu {
       "6: Remove the student from one of his or her courses", "7: Exit" };
 
   public void runSchoolApp() {
-    initializerImpl.initializeTables();
     cleanConsole();
     String option = "1";
     while (!"7".equals(option)) {
