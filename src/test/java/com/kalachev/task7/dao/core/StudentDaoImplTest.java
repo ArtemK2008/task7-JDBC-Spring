@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao;
+package com.kalachev.task7.dao.core;
 
 import java.io.FileInputStream;
 import java.sql.SQLException;
@@ -14,6 +14,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.kalachev.task7.dao.StudentsDao;
 import com.kalachev.task7.dao.entities.Student;
 import com.kalachev.task7.dao.impl.core.StudentsDaoImpl;
 

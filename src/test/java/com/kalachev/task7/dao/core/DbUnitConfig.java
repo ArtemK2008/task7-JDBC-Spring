@@ -1,4 +1,4 @@
-package com.kalachev.task7.dao;
+package com.kalachev.task7.dao.core;
 
 import java.io.IOException;
 import java.io.InputStream;
