@@ -6,6 +6,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.dbunit.DBTestCase;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -22,6 +24,7 @@ import com.kalachev.task7.configuration.ConsoleAppConfig;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConsoleAppConfig.class)
 @PropertySource("classpath:DbProperties")
+@Component
 public class DbUnitConfig extends DBTestCase {
 
   Properties properties;
@@ -40,13 +43,17 @@ public class DbUnitConfig extends DBTestCase {
   @Autowired
   JdbcTemplate template;
 
-  public DbUnitConfig() {
-
-  }
-
   @Override
   @BeforeEach
   public void setUp() throws Exception {
+    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS,
+        driver);
+    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
+        urlString);
+    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME,
+        username);
+    System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD,
+        password);
     databaseTester = new JdbcDatabaseTester(driver, urlString, username,
         password);
   }
