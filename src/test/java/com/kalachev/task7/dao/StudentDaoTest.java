@@ -13,12 +13,19 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.kalachev.task7.configuration.ConsoleAppConfig;
 import com.kalachev.task7.dao.entities.Student;
-import com.kalachev.task7.dao.impl.StudentsDaoImpl;
 
-class StudentDaoImplTest extends DbUnitConfig {
-  StudentsDao studentsDao = new StudentsDaoImpl();
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = ConsoleAppConfig.class)
+class StudentDaoTest extends DbUnitConfig {
+  @Autowired
+  StudentsDao studentsDao;
 
   @Override
   @BeforeEach

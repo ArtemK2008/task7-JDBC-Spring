@@ -5,9 +5,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.kalachev.task7.ComponentScanInterface;
 import com.kalachev.task7.service.CoursesOptions;
@@ -23,7 +28,7 @@ import com.kalachev.task7.ui.commands.impl.GroupSizeCommand;
 import com.kalachev.task7.ui.commands.impl.RemoveFromCourseCommand;
 
 @Configuration
-
+@PropertySource("classpath:DbProperties")
 @ComponentScan(basePackageClasses = { ComponentScanInterface.class })
 public class ConsoleAppConfig {
 
@@ -41,5 +46,30 @@ public class ConsoleAppConfig {
     commands.put("6", new RemoveFromCourseCommand(scanner, coursesOptions));
     commands.put("7", new ExitCommand(scanner));
     return commands;
+  }
+
+  @Autowired
+  Environment env;
+
+  @Bean
+  public BasicDataSource dataSource() {
+    BasicDataSource ds = new BasicDataSource();
+    ds.setDriverClassName(env.getProperty("JDBC_DRIVER"));
+    ds.setUrl(env.getProperty("URL"));
+    ds.setUsername(env.getProperty("NAME"));
+    ds.setPassword(env.getProperty("PASSWORD"));
+    ds.setInitialSize(5);
+    ds.setMaxTotal(10);
+    return ds;
+  }
+
+  @Bean
+  public JdbcTemplate jdbcTemplate() {
+    return new JdbcTemplate(dataSource());
+  }
+
+  @Bean
+  public Scanner scanner() {
+    return new Scanner(System.in);
   }
 }
